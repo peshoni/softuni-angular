@@ -1,0 +1,40 @@
+$toolbarHeight: 80px;
+
+mat-toolbar {
+    height: $toolbarHeight;
+}
+
+.mat-toolbar.mat-primary {
+    position: sticky;
+    z-index: 1;
+    height: $toolbarHeight;
+}
+
+mat-sidenav {
+    width: 200px;
+}
+
+.spacer {
+    width: 100%;
+}
+
+.sidenav-container {
+    height: calc(100% - $toolbarHeight);
+
+    mat-sidenav {
+        top: $toolbarHeight !important;
+    }
+
+    mat-list-item { 
+
+        .menu-row {
+            padding: 0 8px;
+            display: flex;
+            gap: 10px;
+        }
+    } 
+
+    mat-sidenav-content {
+        margin: 8px;
+    }
+}

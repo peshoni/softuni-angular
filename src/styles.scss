@@ -1,4 +1,35 @@
+@use "@angular/material" as mat;
+@include mat.core();
+
+$primary: mat.m2-define-palette(mat.$m2-teal-palette, 400);
+$accent: mat.m2-define-palette(mat.$m2-orange-palette, 400);
+// The warn palette is optional (defaults to red).
+$warn: mat.m2-define-palette(mat.$m2-deep-orange-palette, 900);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$theme: mat.m2-define-light-theme(
+    (
+        color: (
+            primary: $primary,
+            accent: $accent,
+            warn: $warn
+        )
+    )
+);
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($theme);
+
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+} 
