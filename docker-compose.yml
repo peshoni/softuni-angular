@@ -1,0 +1,61 @@
+version: "3.6"
+networks:
+  softuni-angular-net:
+    driver: "bridge"
+    ipam:
+      driver: default
+services:
+  ###
+  softuni-frontend:
+    container_name: softuni-tickets-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - "softuni-angular-net"
+    ports:
+      - "4201:80"
+  ###
+  postgres:
+    image: postgres:15.3
+    container_name: softuni_postgres
+    networks:
+      - "softuni-angular-net"
+    # hide in prod
+    ports:
+      - "5433:5432"
+    restart: always
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgrespassword
+  ###
+  graphql-engine:
+    container_name: softuni_hasura
+    image: hasura/graphql-engine:v2.43.0
+    ports:
+      - "8082:8080"
+    networks:
+      - "softuni-angular-net"
+    depends_on:
+      - "postgres"
+    restart: always
+    environment:
+      # HASURA_GRAPHQL_MiGRATTIONS_DIR: /metadata
+      # HASURA_GRAPHQL_METADATA_DIR: /migrations
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
+      ## enable the console served by server
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
+      ## enable debugging mode. It is recommended to disable this in production
+      HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+      HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256","key": "JWTSecretThatShouldBe32CharactersLong"}'
+      ## uncomment next line to set an admin secret
+      HASURA_GRAPHQL_ADMIN_SECRET: softuniAngularAdminSecret
+      HASURA_GRAPHQL_INFER_FUNCTION_PERMISSIONS: "false"
+      TZ: Europe/Sofia
+volumes:
+  db_data:
+
+# docker-compose down
+# docker-compose up --build -d  
