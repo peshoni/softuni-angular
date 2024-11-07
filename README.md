@@ -31,3 +31,18 @@ RUN `npm run hasura`
 # For adding configuration, metadata and migrations folders
 RUN `npm run hasura init graphql`
 
+## Apollo-Angular
+`ng add apollo-angular`
+
+`npm install --save-dev @graphql-codegen/cli @graphql-codegen/typescript @graphql-codegen/typescript-apollo-angular @graphql-codegen/typescript-operations`
+`npm i apollo-link-context` //for the connection settings
+
+## Hasura DEV
+for squash migrations use global hasura-cli:
+ 
+hasura migrate squash --skip-update-check --database-name="default" --delete-source --name "enumerators" --from 1730973747412
+hasura migrate squash --skip-update-check --database-name="default" --delete-source --name "users" --from 1730988457620
+hasura migrate squash --skip-update-check --database-name="default" --delete-source --name "projects" --from 1730988852144
+hasura migrate squash --skip-update-check --database-name="default" --delete-source --name "users" --from 1730989449789 
+
+hasura migrate apply --database-name="default"

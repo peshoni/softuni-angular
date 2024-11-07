@@ -1,0 +1,4 @@
+table:
+  name: project_statuses
+  schema: public
+is_enum: true

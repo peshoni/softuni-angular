@@ -1,0 +1,8 @@
+- "!include public_genders.yaml"
+- "!include public_project_statuses.yaml"
+- "!include public_projects.yaml"
+- "!include public_ticket_logs.yaml"
+- "!include public_ticket_statuses.yaml"
+- "!include public_tickets.yaml"
+- "!include public_user_roles.yaml"
+- "!include public_users.yaml"

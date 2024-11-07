@@ -49,8 +49,6 @@ services:
       ## enable debugging mode. It is recommended to disable this in production
       HASURA_GRAPHQL_DEV_MODE: "true"
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
-      HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256","key": "JWTSecretThatShouldBe32CharactersLong"}'
-      ## uncomment next line to set an admin secret
       HASURA_GRAPHQL_ADMIN_SECRET: softuniAngularAdminSecret
       HASURA_GRAPHQL_INFER_FUNCTION_PERMISSIONS: "false"
       TZ: Europe/Sofia

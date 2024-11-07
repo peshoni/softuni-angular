@@ -1,0 +1,18 @@
+query Enumerators{
+  genders {
+    value,
+    content
+  },
+  project_statuses{
+    value,
+    content
+  },
+  ticket_statuses{
+    value,
+    content
+  },
+  user_roles{
+    value,
+    content
+  } 
+}
