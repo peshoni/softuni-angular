@@ -13,15 +13,17 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { GraphQLModule } from './graphql.module';
+import { authGuardFn } from './guards/auth.guard';
 
 const routes: Routes = [
     { path: '', redirectTo: '', pathMatch: 'full' },
     {
-        path: '', // GoTo landing page of the Public Module
+        path: 'authorize', // GoTo landing page of the Public Module 
         loadChildren: () => import('../app/public/public.module').then((m) => m.PublicModule),
     },
     {
-        path: 'app',
+        path: '',
+        canActivate: [authGuardFn],
         loadChildren: () => import('../app/authorized/authorized.module').then((m) => m.AuthorizedModule),
     },
 ];
@@ -39,7 +41,7 @@ const routes: Routes = [
     imports: [
         RouterModule.forRoot(routes),
         BrowserModule,
-        RouterOutlet,
+        //RouterOutlet,
         CommonModule,
         // Material modules
         MatSidenavModule,

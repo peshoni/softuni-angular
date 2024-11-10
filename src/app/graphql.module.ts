@@ -3,8 +3,8 @@ import { inject, NgModule } from '@angular/core';
 import { provideApollo } from 'apollo-angular';
 import { ApolloClientOptions, InMemoryCache } from '@apollo/client/core';
 import { HttpLink } from 'apollo-angular/http';
-import { HttpHeaders } from '@angular/common/http';
-import { environment } from './environments/environment';
+import { HttpHeaders } from '@angular/common/http'; 
+import { environment } from '../environments/environment';
  
 export function createApollo(): ApolloClientOptions<any> {
     const httpLink = inject(HttpLink);

@@ -8,13 +8,13 @@
   <div class="spacer"></div>
 
   <div>
-    <div>
+    <div *ngIf="authorizationService.$credential | async">
       <div style="display: flex; align-items: center">
         <div style="display: block; align-items: center">
           <div style="font-size: 16px; height: 20px; text-align: end">
             name surname
           </div>
-          <div style="font-size: 12px; text-align: end"> 
+          <div style="font-size: 12px; text-align: end">
           </div>
         </div>
         <button class="user-image" mat-icon-button [matMenuTriggerFor]="userMenu">
@@ -28,18 +28,21 @@
     </mat-menu>
   </div>
 </mat-toolbar>
+
+
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #drawer fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+    @if(authorizationService.$credential | async){
     <mat-nav-list>
-      <mat-list-item routerLink="app/users">
+      <mat-list-item routerLink="/users">
         <div class="menu-row">
           <mat-icon color="primary">
             <span class="material-symbols-outlined"> groups </span>
           </mat-icon> {{ 'users' }}
         </div>
       </mat-list-item>
-      <mat-list-item routerLink="app/tickets">
+      <mat-list-item routerLink="/tickets">
         <div class="menu-row"> <mat-icon color="primary">
             <span class="material-symbols-outlined"> task </span>
           </mat-icon>
@@ -47,11 +50,36 @@
         </div>
       </mat-list-item>
     </mat-nav-list>
+    }@else{
+    <mat-nav-list>
+      <mat-list-item routerLink="/authorize">
+        <div class="menu-row">
+          <mat-icon color="primary">
+            <span class="material-symbols-outlined"> dashboard </span>
+          </mat-icon> {{ 'dashboard' }}
+        </div>
+      </mat-list-item>
+      <mat-list-item routerLink="/authorize/login">
+        <div class="menu-row">
+          <mat-icon color="primary">
+            <span class="material-symbols-outlined"> login </span>
+          </mat-icon> {{ 'login' }}
+        </div>
+      </mat-list-item>
+      <mat-list-item routerLink="/authorize/register">
+        <div class="menu-row"> <mat-icon color="primary">
+            <span class="material-symbols-outlined"> registration </span>
+          </mat-icon>
+          <div> {{ 'register' }} </div>
+        </div>
+      </mat-list-item>
+    </mat-nav-list>
+    }
+
   </mat-sidenav>
 
   <mat-sidenav-content>
-   
-      <router-outlet></router-outlet>
-   
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
+
 </mat-sidenav-container>

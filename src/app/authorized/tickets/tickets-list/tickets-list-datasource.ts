@@ -5,13 +5,13 @@ import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
 
 // TODO: Replace this with your own data model type
-export interface TicketsItem {
+export interface TicketsListItem {
   name: string;
   id: number;
 }
 
 // TODO: replace this with real data from your application
-const EXAMPLE_DATA: TicketsItem[] = [
+const EXAMPLE_DATA: TicketsListItem[] = [
   {id: 1, name: 'Hydrogen'},
   {id: 2, name: 'Helium'},
   {id: 3, name: 'Lithium'},
@@ -35,12 +35,12 @@ const EXAMPLE_DATA: TicketsItem[] = [
 ];
 
 /**
- * Data source for the Tickets view. This class should
+ * Data source for the TicketsList view. This class should
  * encapsulate all logic for fetching and manipulating the displayed data
  * (including sorting, pagination, and filtering).
  */
-export class TicketsDataSource extends DataSource<TicketsItem> {
-  data: TicketsItem[] = EXAMPLE_DATA;
+export class TicketsListDataSource extends DataSource<TicketsListItem> {
+  data: TicketsListItem[] = EXAMPLE_DATA;
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;
 
@@ -53,7 +53,7 @@ export class TicketsDataSource extends DataSource<TicketsItem> {
    * the returned stream emits new items.
    * @returns A stream of the items to be rendered.
    */
-  connect(): Observable<TicketsItem[]> {
+  connect(): Observable<TicketsListItem[]> {
     if (this.paginator && this.sort) {
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
@@ -76,7 +76,7 @@ export class TicketsDataSource extends DataSource<TicketsItem> {
    * Paginate the data (client-side). If you're using server-side pagination,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getPagedData(data: TicketsItem[]): TicketsItem[] {
+  private getPagedData(data: TicketsListItem[]): TicketsListItem[] {
     if (this.paginator) {
       const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
       return data.splice(startIndex, this.paginator.pageSize);
@@ -89,7 +89,7 @@ export class TicketsDataSource extends DataSource<TicketsItem> {
    * Sort the data (client-side). If you're using server-side sorting,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getSortedData(data: TicketsItem[]): TicketsItem[] {
+  private getSortedData(data: TicketsListItem[]): TicketsListItem[] {
     if (!this.sort || !this.sort.active || this.sort.direction === '') {
       return data;
     }

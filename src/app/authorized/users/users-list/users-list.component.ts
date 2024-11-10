@@ -2,18 +2,18 @@ import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { TicketsDataSource, TicketsItem } from './tickets-datasource';
+import { UsersListDataSource, UsersListItem } from './users-list-datasource';
 
 @Component({
-  selector: 'app-tickets',
-  templateUrl: './tickets.component.html',
-  styleUrl: './tickets.component.scss'
+  selector: 'app-users-list',
+  templateUrl: './users-list.component.html',
+  styleUrl: './users-list.component.scss'
 })
-export class TicketsComponent implements AfterViewInit {
+export class UsersListComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<TicketsItem>;
-  dataSource = new TicketsDataSource();
+  @ViewChild(MatTable) table!: MatTable<UsersListItem>;
+  dataSource = new UsersListDataSource();
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['id', 'name'];

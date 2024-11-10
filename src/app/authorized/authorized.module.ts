@@ -1,27 +1,28 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TicketsComponent } from './tickets/tickets.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { UsersComponent } from './users/users.component';
 import { RouterModule, Routes } from '@angular/router';
+import { TicketsListComponent } from './tickets/tickets-list/tickets-list.component';
+import { UsersListComponent } from './users/users-list/users-list.component';
 
 const routes: Routes = [
+  { path: '', redirectTo: 'tickets', pathMatch: 'full' },
   {
     path: 'tickets',
-    component: TicketsComponent
+    component: TicketsListComponent
   },
   {
     path: 'users',
-    component: UsersComponent
+    component: UsersListComponent
   }
 ];
 
 @NgModule({
   declarations: [
-    TicketsComponent,
-    UsersComponent
+    TicketsListComponent,
+    UsersListComponent
   ],
   imports: [
     RouterModule.forChild(routes),

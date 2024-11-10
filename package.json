@@ -9,7 +9,6 @@
     "test": "ng test",
     "hasura": "hasura --project hasura --skip-update-check",
     "hasura:console": "npm run hasura console",
-    "hasura:apply": "npm run hasura migrate apply",
     "generate-types": "graphql-codegen --config codegen.js",
     "watch-types": "graphql-codegen --config codegen.js --watch"
   },
@@ -25,6 +24,7 @@
     "@angular/platform-browser": "^18.2.0",
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.0",
+    "hasura-cli": "^2.36.1",
     "@apollo/client": "^3.0.0",
     "apollo-angular": "^7.2.1",
     "graphql": "^16",
@@ -45,7 +45,6 @@
     "@graphql-codegen/typescript-document-nodes": "^4.0.11",
     "@graphql-codegen/typescript-graphql-files-modules": "^3.0.0",
     "@types/jasmine": "~5.1.0",
-    "hasura-cli": "^2.36.1",
     "jasmine-core": "~5.2.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",

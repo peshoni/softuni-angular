@@ -5,13 +5,13 @@ import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
 
 // TODO: Replace this with your own data model type
-export interface UsersItem {
+export interface UsersListItem {
   name: string;
   id: number;
 }
 
 // TODO: replace this with real data from your application
-const EXAMPLE_DATA: UsersItem[] = [
+const EXAMPLE_DATA: UsersListItem[] = [
   {id: 1, name: 'Hydrogen'},
   {id: 2, name: 'Helium'},
   {id: 3, name: 'Lithium'},
@@ -35,12 +35,12 @@ const EXAMPLE_DATA: UsersItem[] = [
 ];
 
 /**
- * Data source for the Users view. This class should
+ * Data source for the UsersList view. This class should
  * encapsulate all logic for fetching and manipulating the displayed data
  * (including sorting, pagination, and filtering).
  */
-export class UsersDataSource extends DataSource<UsersItem> {
-  data: UsersItem[] = EXAMPLE_DATA;
+export class UsersListDataSource extends DataSource<UsersListItem> {
+  data: UsersListItem[] = EXAMPLE_DATA;
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;
 
@@ -53,7 +53,7 @@ export class UsersDataSource extends DataSource<UsersItem> {
    * the returned stream emits new items.
    * @returns A stream of the items to be rendered.
    */
-  connect(): Observable<UsersItem[]> {
+  connect(): Observable<UsersListItem[]> {
     if (this.paginator && this.sort) {
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
@@ -76,7 +76,7 @@ export class UsersDataSource extends DataSource<UsersItem> {
    * Paginate the data (client-side). If you're using server-side pagination,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getPagedData(data: UsersItem[]): UsersItem[] {
+  private getPagedData(data: UsersListItem[]): UsersListItem[] {
     if (this.paginator) {
       const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
       return data.splice(startIndex, this.paginator.pageSize);
@@ -89,7 +89,7 @@ export class UsersDataSource extends DataSource<UsersItem> {
    * Sort the data (client-side). If you're using server-side sorting,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getSortedData(data: UsersItem[]): UsersItem[] {
+  private getSortedData(data: UsersListItem[]): UsersListItem[] {
     if (!this.sort || !this.sort.active || this.sort.direction === '') {
       return data;
     }
