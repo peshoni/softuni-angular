@@ -20,6 +20,11 @@ app port: 4200
 hasura console: 8082
 postgres: 5433 
 
+
+## Data model : ERD
+
+![alt text](readme-images/image.png)
+
 ## Development
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.5.

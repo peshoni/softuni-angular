@@ -6,9 +6,14 @@ import { MatSortModule } from '@angular/material/sort';
 import { RouterModule, Routes } from '@angular/router';
 import { TicketsListComponent } from './tickets/tickets-list/tickets-list.component';
 import { UsersListComponent } from './users/users-list/users-list.component';
+import { ProjectsListComponent } from './projects/projects-list/projects-list.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'tickets', pathMatch: 'full' },
+  { path: '', redirectTo: 'projects', pathMatch: 'full' },
+  {
+    path: 'projects',
+    component: ProjectsListComponent
+  },
   {
     path: 'tickets',
     component: TicketsListComponent
@@ -22,7 +27,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     TicketsListComponent,
-    UsersListComponent
+    UsersListComponent,
+    ProjectsListComponent
   ],
   imports: [
     RouterModule.forChild(routes),

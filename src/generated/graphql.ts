@@ -15,6 +15,34 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+  timestamptz: { input: any; output: any; }
+  uuid: { input: any; output: any; }
+};
+
+/** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
+export type Boolean_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars['Boolean']['input']>;
+  _gt?: InputMaybe<Scalars['Boolean']['input']>;
+  _gte?: InputMaybe<Scalars['Boolean']['input']>;
+  _in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['Boolean']['input']>;
+  _lte?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<Scalars['Boolean']['input']>;
+  _nin?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+};
+
+/** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
+export type Int_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars['Int']['input']>;
+  _gt?: InputMaybe<Scalars['Int']['input']>;
+  _gte?: InputMaybe<Scalars['Int']['input']>;
+  _in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['Int']['input']>;
+  _lte?: InputMaybe<Scalars['Int']['input']>;
+  _neq?: InputMaybe<Scalars['Int']['input']>;
+  _nin?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
 /** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
@@ -100,6 +128,24 @@ export type Genders_Bool_Exp = {
 export const enum Genders_Constraint {
   /** unique or primary key constraint on columns "value" */
   GendersPkey = 'genders_pkey'
+};
+
+export const enum Genders_Enum {
+  /** gender-female */
+  Female = 'female',
+  /** gender-male */
+  Male = 'male',
+  /** gender-other */
+  Other = 'other'
+};
+
+/** Boolean expression to compare columns of type "genders_enum". All fields are combined with logical 'AND'. */
+export type Genders_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<Genders_Enum>;
+  _in?: InputMaybe<Array<Genders_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<Genders_Enum>;
+  _nin?: InputMaybe<Array<Genders_Enum>>;
 };
 
 /** input type for inserting data into table "genders" */
@@ -203,14 +249,30 @@ export type Mutation_Root = {
   delete_project_statuses?: Maybe<Project_Statuses_Mutation_Response>;
   /** delete single row from the table: "project_statuses" */
   delete_project_statuses_by_pk?: Maybe<Project_Statuses>;
+  /** delete data from the table: "projects" */
+  delete_projects?: Maybe<Projects_Mutation_Response>;
+  /** delete single row from the table: "projects" */
+  delete_projects_by_pk?: Maybe<Projects>;
+  /** delete data from the table: "ticket_logs" */
+  delete_ticket_logs?: Maybe<Ticket_Logs_Mutation_Response>;
+  /** delete single row from the table: "ticket_logs" */
+  delete_ticket_logs_by_pk?: Maybe<Ticket_Logs>;
   /** delete data from the table: "ticket_statuses" */
   delete_ticket_statuses?: Maybe<Ticket_Statuses_Mutation_Response>;
   /** delete single row from the table: "ticket_statuses" */
   delete_ticket_statuses_by_pk?: Maybe<Ticket_Statuses>;
+  /** delete data from the table: "tickets" */
+  delete_tickets?: Maybe<Tickets_Mutation_Response>;
+  /** delete single row from the table: "tickets" */
+  delete_tickets_by_pk?: Maybe<Tickets>;
   /** delete data from the table: "user_roles" */
   delete_user_roles?: Maybe<User_Roles_Mutation_Response>;
   /** delete single row from the table: "user_roles" */
   delete_user_roles_by_pk?: Maybe<User_Roles>;
+  /** delete data from the table: "users" */
+  delete_users?: Maybe<Users_Mutation_Response>;
+  /** delete single row from the table: "users" */
+  delete_users_by_pk?: Maybe<Users>;
   /** insert data into the table: "genders" */
   insert_genders?: Maybe<Genders_Mutation_Response>;
   /** insert a single row into the table: "genders" */
@@ -219,14 +281,30 @@ export type Mutation_Root = {
   insert_project_statuses?: Maybe<Project_Statuses_Mutation_Response>;
   /** insert a single row into the table: "project_statuses" */
   insert_project_statuses_one?: Maybe<Project_Statuses>;
+  /** insert data into the table: "projects" */
+  insert_projects?: Maybe<Projects_Mutation_Response>;
+  /** insert a single row into the table: "projects" */
+  insert_projects_one?: Maybe<Projects>;
+  /** insert data into the table: "ticket_logs" */
+  insert_ticket_logs?: Maybe<Ticket_Logs_Mutation_Response>;
+  /** insert a single row into the table: "ticket_logs" */
+  insert_ticket_logs_one?: Maybe<Ticket_Logs>;
   /** insert data into the table: "ticket_statuses" */
   insert_ticket_statuses?: Maybe<Ticket_Statuses_Mutation_Response>;
   /** insert a single row into the table: "ticket_statuses" */
   insert_ticket_statuses_one?: Maybe<Ticket_Statuses>;
+  /** insert data into the table: "tickets" */
+  insert_tickets?: Maybe<Tickets_Mutation_Response>;
+  /** insert a single row into the table: "tickets" */
+  insert_tickets_one?: Maybe<Tickets>;
   /** insert data into the table: "user_roles" */
   insert_user_roles?: Maybe<User_Roles_Mutation_Response>;
   /** insert a single row into the table: "user_roles" */
   insert_user_roles_one?: Maybe<User_Roles>;
+  /** insert data into the table: "users" */
+  insert_users?: Maybe<Users_Mutation_Response>;
+  /** insert a single row into the table: "users" */
+  insert_users_one?: Maybe<Users>;
   /** update data of the table: "genders" */
   update_genders?: Maybe<Genders_Mutation_Response>;
   /** update single row of the table: "genders" */
@@ -239,18 +317,42 @@ export type Mutation_Root = {
   update_project_statuses_by_pk?: Maybe<Project_Statuses>;
   /** update multiples rows of table: "project_statuses" */
   update_project_statuses_many?: Maybe<Array<Maybe<Project_Statuses_Mutation_Response>>>;
+  /** update data of the table: "projects" */
+  update_projects?: Maybe<Projects_Mutation_Response>;
+  /** update single row of the table: "projects" */
+  update_projects_by_pk?: Maybe<Projects>;
+  /** update multiples rows of table: "projects" */
+  update_projects_many?: Maybe<Array<Maybe<Projects_Mutation_Response>>>;
+  /** update data of the table: "ticket_logs" */
+  update_ticket_logs?: Maybe<Ticket_Logs_Mutation_Response>;
+  /** update single row of the table: "ticket_logs" */
+  update_ticket_logs_by_pk?: Maybe<Ticket_Logs>;
+  /** update multiples rows of table: "ticket_logs" */
+  update_ticket_logs_many?: Maybe<Array<Maybe<Ticket_Logs_Mutation_Response>>>;
   /** update data of the table: "ticket_statuses" */
   update_ticket_statuses?: Maybe<Ticket_Statuses_Mutation_Response>;
   /** update single row of the table: "ticket_statuses" */
   update_ticket_statuses_by_pk?: Maybe<Ticket_Statuses>;
   /** update multiples rows of table: "ticket_statuses" */
   update_ticket_statuses_many?: Maybe<Array<Maybe<Ticket_Statuses_Mutation_Response>>>;
+  /** update data of the table: "tickets" */
+  update_tickets?: Maybe<Tickets_Mutation_Response>;
+  /** update single row of the table: "tickets" */
+  update_tickets_by_pk?: Maybe<Tickets>;
+  /** update multiples rows of table: "tickets" */
+  update_tickets_many?: Maybe<Array<Maybe<Tickets_Mutation_Response>>>;
   /** update data of the table: "user_roles" */
   update_user_roles?: Maybe<User_Roles_Mutation_Response>;
   /** update single row of the table: "user_roles" */
   update_user_roles_by_pk?: Maybe<User_Roles>;
   /** update multiples rows of table: "user_roles" */
   update_user_roles_many?: Maybe<Array<Maybe<User_Roles_Mutation_Response>>>;
+  /** update data of the table: "users" */
+  update_users?: Maybe<Users_Mutation_Response>;
+  /** update single row of the table: "users" */
+  update_users_by_pk?: Maybe<Users>;
+  /** update multiples rows of table: "users" */
+  update_users_many?: Maybe<Array<Maybe<Users_Mutation_Response>>>;
 };
 
 
@@ -279,6 +381,30 @@ export type Mutation_RootDelete_Project_Statuses_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_ProjectsArgs = {
+  where: Projects_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Projects_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Ticket_LogsArgs = {
+  where: Ticket_Logs_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Ticket_Logs_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_Ticket_StatusesArgs = {
   where: Ticket_Statuses_Bool_Exp;
 };
@@ -291,6 +417,18 @@ export type Mutation_RootDelete_Ticket_Statuses_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_TicketsArgs = {
+  where: Tickets_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Tickets_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_User_RolesArgs = {
   where: User_Roles_Bool_Exp;
 };
@@ -299,6 +437,18 @@ export type Mutation_RootDelete_User_RolesArgs = {
 /** mutation root */
 export type Mutation_RootDelete_User_Roles_By_PkArgs = {
   value: Scalars['String']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_UsersArgs = {
+  where: Users_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Users_By_PkArgs = {
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -331,6 +481,34 @@ export type Mutation_RootInsert_Project_Statuses_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_ProjectsArgs = {
+  objects: Array<Projects_Insert_Input>;
+  on_conflict?: InputMaybe<Projects_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Projects_OneArgs = {
+  object: Projects_Insert_Input;
+  on_conflict?: InputMaybe<Projects_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Ticket_LogsArgs = {
+  objects: Array<Ticket_Logs_Insert_Input>;
+  on_conflict?: InputMaybe<Ticket_Logs_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Ticket_Logs_OneArgs = {
+  object: Ticket_Logs_Insert_Input;
+  on_conflict?: InputMaybe<Ticket_Logs_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_Ticket_StatusesArgs = {
   objects: Array<Ticket_Statuses_Insert_Input>;
   on_conflict?: InputMaybe<Ticket_Statuses_On_Conflict>;
@@ -345,6 +523,20 @@ export type Mutation_RootInsert_Ticket_Statuses_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_TicketsArgs = {
+  objects: Array<Tickets_Insert_Input>;
+  on_conflict?: InputMaybe<Tickets_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Tickets_OneArgs = {
+  object: Tickets_Insert_Input;
+  on_conflict?: InputMaybe<Tickets_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_User_RolesArgs = {
   objects: Array<User_Roles_Insert_Input>;
   on_conflict?: InputMaybe<User_Roles_On_Conflict>;
@@ -355,6 +547,20 @@ export type Mutation_RootInsert_User_RolesArgs = {
 export type Mutation_RootInsert_User_Roles_OneArgs = {
   object: User_Roles_Insert_Input;
   on_conflict?: InputMaybe<User_Roles_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_UsersArgs = {
+  objects: Array<Users_Insert_Input>;
+  on_conflict?: InputMaybe<Users_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Users_OneArgs = {
+  object: Users_Insert_Input;
+  on_conflict?: InputMaybe<Users_On_Conflict>;
 };
 
 
@@ -399,6 +605,46 @@ export type Mutation_RootUpdate_Project_Statuses_ManyArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_ProjectsArgs = {
+  _set?: InputMaybe<Projects_Set_Input>;
+  where: Projects_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Projects_By_PkArgs = {
+  _set?: InputMaybe<Projects_Set_Input>;
+  pk_columns: Projects_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Projects_ManyArgs = {
+  updates: Array<Projects_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Ticket_LogsArgs = {
+  _set?: InputMaybe<Ticket_Logs_Set_Input>;
+  where: Ticket_Logs_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Ticket_Logs_By_PkArgs = {
+  _set?: InputMaybe<Ticket_Logs_Set_Input>;
+  pk_columns: Ticket_Logs_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Ticket_Logs_ManyArgs = {
+  updates: Array<Ticket_Logs_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Ticket_StatusesArgs = {
   _set?: InputMaybe<Ticket_Statuses_Set_Input>;
   where: Ticket_Statuses_Bool_Exp;
@@ -419,6 +665,26 @@ export type Mutation_RootUpdate_Ticket_Statuses_ManyArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_TicketsArgs = {
+  _set?: InputMaybe<Tickets_Set_Input>;
+  where: Tickets_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Tickets_By_PkArgs = {
+  _set?: InputMaybe<Tickets_Set_Input>;
+  pk_columns: Tickets_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Tickets_ManyArgs = {
+  updates: Array<Tickets_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_User_RolesArgs = {
   _set?: InputMaybe<User_Roles_Set_Input>;
   where: User_Roles_Bool_Exp;
@@ -435,6 +701,28 @@ export type Mutation_RootUpdate_User_Roles_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_User_Roles_ManyArgs = {
   updates: Array<User_Roles_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_UsersArgs = {
+  _inc?: InputMaybe<Users_Inc_Input>;
+  _set?: InputMaybe<Users_Set_Input>;
+  where: Users_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Users_By_PkArgs = {
+  _inc?: InputMaybe<Users_Inc_Input>;
+  _set?: InputMaybe<Users_Set_Input>;
+  pk_columns: Users_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Users_ManyArgs = {
+  updates: Array<Users_Updates>;
 };
 
 /** column ordering options */
@@ -497,6 +785,24 @@ export const enum Project_Statuses_Constraint {
   ProjectStatusesPkey = 'project_statuses_pkey'
 };
 
+export const enum Project_Statuses_Enum {
+  /** project-done */
+  Done = 'done',
+  /** project-in-progress */
+  InProgress = 'in_progress',
+  /** project-open */
+  Open = 'open'
+};
+
+/** Boolean expression to compare columns of type "project_statuses_enum". All fields are combined with logical 'AND'. */
+export type Project_Statuses_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<Project_Statuses_Enum>;
+  _in?: InputMaybe<Array<Project_Statuses_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<Project_Statuses_Enum>;
+  _nin?: InputMaybe<Array<Project_Statuses_Enum>>;
+};
+
 /** input type for inserting data into table "project_statuses" */
 export type Project_Statuses_Insert_Input = {
   content?: InputMaybe<Scalars['String']['input']>;
@@ -524,6 +830,13 @@ export type Project_Statuses_Mutation_Response = {
   affected_rows: Scalars['Int']['output'];
   /** data from the rows affected by the mutation */
   returning: Array<Project_Statuses>;
+};
+
+/** input type for inserting object relation for remote table "project_statuses" */
+export type Project_Statuses_Obj_Rel_Insert_Input = {
+  data: Project_Statuses_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Project_Statuses_On_Conflict>;
 };
 
 /** on_conflict condition type for table "project_statuses" */
@@ -587,6 +900,250 @@ export type Project_Statuses_Updates = {
   where: Project_Statuses_Bool_Exp;
 };
 
+/** columns and relationships of "projects" */
+export type Projects = {
+  __typename?: 'projects';
+  code: Scalars['String']['output'];
+  created_at: Scalars['timestamptz']['output'];
+  description: Scalars['String']['output'];
+  id: Scalars['uuid']['output'];
+  label: Scalars['String']['output'];
+  owner_id: Scalars['uuid']['output'];
+  /** An object relationship */
+  project_status: Project_Statuses;
+  status: Project_Statuses_Enum;
+  /** fetch data from the table: "tickets" */
+  tickets: Array<Tickets>;
+  /** fetch aggregated fields from the table: "tickets" */
+  tickets_aggregate: Tickets_Aggregate;
+  updated_at: Scalars['timestamptz']['output'];
+  /** An object relationship */
+  user: Users;
+};
+
+
+/** columns and relationships of "projects" */
+export type ProjectsTicketsArgs = {
+  distinct_on?: InputMaybe<Array<Tickets_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Tickets_Order_By>>;
+  where?: InputMaybe<Tickets_Bool_Exp>;
+};
+
+
+/** columns and relationships of "projects" */
+export type ProjectsTickets_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Tickets_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Tickets_Order_By>>;
+  where?: InputMaybe<Tickets_Bool_Exp>;
+};
+
+/** aggregated selection of "projects" */
+export type Projects_Aggregate = {
+  __typename?: 'projects_aggregate';
+  aggregate?: Maybe<Projects_Aggregate_Fields>;
+  nodes: Array<Projects>;
+};
+
+/** aggregate fields of "projects" */
+export type Projects_Aggregate_Fields = {
+  __typename?: 'projects_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<Projects_Max_Fields>;
+  min?: Maybe<Projects_Min_Fields>;
+};
+
+
+/** aggregate fields of "projects" */
+export type Projects_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Projects_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "projects". All fields are combined with a logical 'AND'. */
+export type Projects_Bool_Exp = {
+  _and?: InputMaybe<Array<Projects_Bool_Exp>>;
+  _not?: InputMaybe<Projects_Bool_Exp>;
+  _or?: InputMaybe<Array<Projects_Bool_Exp>>;
+  code?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  description?: InputMaybe<String_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  label?: InputMaybe<String_Comparison_Exp>;
+  owner_id?: InputMaybe<Uuid_Comparison_Exp>;
+  project_status?: InputMaybe<Project_Statuses_Bool_Exp>;
+  status?: InputMaybe<Project_Statuses_Enum_Comparison_Exp>;
+  tickets?: InputMaybe<Tickets_Bool_Exp>;
+  tickets_aggregate?: InputMaybe<Tickets_Aggregate_Bool_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  user?: InputMaybe<Users_Bool_Exp>;
+};
+
+/** unique or primary key constraints on table "projects" */
+export const enum Projects_Constraint {
+  /** unique or primary key constraint on columns "code" */
+  ProjectsCodeKey = 'projects_code_key',
+  /** unique or primary key constraint on columns "id" */
+  ProjectsPkey = 'projects_pkey'
+};
+
+/** input type for inserting data into table "projects" */
+export type Projects_Insert_Input = {
+  code?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  label?: InputMaybe<Scalars['String']['input']>;
+  owner_id?: InputMaybe<Scalars['uuid']['input']>;
+  project_status?: InputMaybe<Project_Statuses_Obj_Rel_Insert_Input>;
+  status?: InputMaybe<Project_Statuses_Enum>;
+  tickets?: InputMaybe<Tickets_Arr_Rel_Insert_Input>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  user?: InputMaybe<Users_Obj_Rel_Insert_Input>;
+};
+
+/** aggregate max on columns */
+export type Projects_Max_Fields = {
+  __typename?: 'projects_max_fields';
+  code?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  label?: Maybe<Scalars['String']['output']>;
+  owner_id?: Maybe<Scalars['uuid']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** aggregate min on columns */
+export type Projects_Min_Fields = {
+  __typename?: 'projects_min_fields';
+  code?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  label?: Maybe<Scalars['String']['output']>;
+  owner_id?: Maybe<Scalars['uuid']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** response of any mutation on the table "projects" */
+export type Projects_Mutation_Response = {
+  __typename?: 'projects_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Projects>;
+};
+
+/** on_conflict condition type for table "projects" */
+export type Projects_On_Conflict = {
+  constraint: Projects_Constraint;
+  update_columns?: Array<Projects_Update_Column>;
+  where?: InputMaybe<Projects_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "projects". */
+export type Projects_Order_By = {
+  code?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  description?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  label?: InputMaybe<Order_By>;
+  owner_id?: InputMaybe<Order_By>;
+  project_status?: InputMaybe<Project_Statuses_Order_By>;
+  status?: InputMaybe<Order_By>;
+  tickets_aggregate?: InputMaybe<Tickets_Aggregate_Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  user?: InputMaybe<Users_Order_By>;
+};
+
+/** primary key columns input for table: projects */
+export type Projects_Pk_Columns_Input = {
+  id: Scalars['uuid']['input'];
+};
+
+/** select columns of table "projects" */
+export const enum Projects_Select_Column {
+  /** column name */
+  Code = 'code',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Description = 'description',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Label = 'label',
+  /** column name */
+  OwnerId = 'owner_id',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+/** input type for updating data in table "projects" */
+export type Projects_Set_Input = {
+  code?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  label?: InputMaybe<Scalars['String']['input']>;
+  owner_id?: InputMaybe<Scalars['uuid']['input']>;
+  status?: InputMaybe<Project_Statuses_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** Streaming cursor of the table "projects" */
+export type Projects_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Projects_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Projects_Stream_Cursor_Value_Input = {
+  code?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  label?: InputMaybe<Scalars['String']['input']>;
+  owner_id?: InputMaybe<Scalars['uuid']['input']>;
+  status?: InputMaybe<Project_Statuses_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** update columns of table "projects" */
+export const enum Projects_Update_Column {
+  /** column name */
+  Code = 'code',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Description = 'description',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Label = 'label',
+  /** column name */
+  OwnerId = 'owner_id',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+export type Projects_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Projects_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Projects_Bool_Exp;
+};
+
 export type Query_Root = {
   __typename?: 'query_root';
   /** fetch data from the table: "genders" */
@@ -601,18 +1158,42 @@ export type Query_Root = {
   project_statuses_aggregate: Project_Statuses_Aggregate;
   /** fetch data from the table: "project_statuses" using primary key columns */
   project_statuses_by_pk?: Maybe<Project_Statuses>;
+  /** fetch data from the table: "projects" */
+  projects: Array<Projects>;
+  /** fetch aggregated fields from the table: "projects" */
+  projects_aggregate: Projects_Aggregate;
+  /** fetch data from the table: "projects" using primary key columns */
+  projects_by_pk?: Maybe<Projects>;
+  /** fetch data from the table: "ticket_logs" */
+  ticket_logs: Array<Ticket_Logs>;
+  /** fetch aggregated fields from the table: "ticket_logs" */
+  ticket_logs_aggregate: Ticket_Logs_Aggregate;
+  /** fetch data from the table: "ticket_logs" using primary key columns */
+  ticket_logs_by_pk?: Maybe<Ticket_Logs>;
   /** fetch data from the table: "ticket_statuses" */
   ticket_statuses: Array<Ticket_Statuses>;
   /** fetch aggregated fields from the table: "ticket_statuses" */
   ticket_statuses_aggregate: Ticket_Statuses_Aggregate;
   /** fetch data from the table: "ticket_statuses" using primary key columns */
   ticket_statuses_by_pk?: Maybe<Ticket_Statuses>;
+  /** fetch data from the table: "tickets" */
+  tickets: Array<Tickets>;
+  /** fetch aggregated fields from the table: "tickets" */
+  tickets_aggregate: Tickets_Aggregate;
+  /** fetch data from the table: "tickets" using primary key columns */
+  tickets_by_pk?: Maybe<Tickets>;
   /** fetch data from the table: "user_roles" */
   user_roles: Array<User_Roles>;
   /** fetch aggregated fields from the table: "user_roles" */
   user_roles_aggregate: User_Roles_Aggregate;
   /** fetch data from the table: "user_roles" using primary key columns */
   user_roles_by_pk?: Maybe<User_Roles>;
+  /** fetch data from the table: "users" */
+  users: Array<Users>;
+  /** fetch aggregated fields from the table: "users" */
+  users_aggregate: Users_Aggregate;
+  /** fetch data from the table: "users" using primary key columns */
+  users_by_pk?: Maybe<Users>;
 };
 
 
@@ -662,6 +1243,52 @@ export type Query_RootProject_Statuses_By_PkArgs = {
 };
 
 
+export type Query_RootProjectsArgs = {
+  distinct_on?: InputMaybe<Array<Projects_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Projects_Order_By>>;
+  where?: InputMaybe<Projects_Bool_Exp>;
+};
+
+
+export type Query_RootProjects_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Projects_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Projects_Order_By>>;
+  where?: InputMaybe<Projects_Bool_Exp>;
+};
+
+
+export type Query_RootProjects_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Query_RootTicket_LogsArgs = {
+  distinct_on?: InputMaybe<Array<Ticket_Logs_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Ticket_Logs_Order_By>>;
+  where?: InputMaybe<Ticket_Logs_Bool_Exp>;
+};
+
+
+export type Query_RootTicket_Logs_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Ticket_Logs_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Ticket_Logs_Order_By>>;
+  where?: InputMaybe<Ticket_Logs_Bool_Exp>;
+};
+
+
+export type Query_RootTicket_Logs_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
 export type Query_RootTicket_StatusesArgs = {
   distinct_on?: InputMaybe<Array<Ticket_Statuses_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -682,6 +1309,29 @@ export type Query_RootTicket_Statuses_AggregateArgs = {
 
 export type Query_RootTicket_Statuses_By_PkArgs = {
   value: Scalars['String']['input'];
+};
+
+
+export type Query_RootTicketsArgs = {
+  distinct_on?: InputMaybe<Array<Tickets_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Tickets_Order_By>>;
+  where?: InputMaybe<Tickets_Bool_Exp>;
+};
+
+
+export type Query_RootTickets_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Tickets_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Tickets_Order_By>>;
+  where?: InputMaybe<Tickets_Bool_Exp>;
+};
+
+
+export type Query_RootTickets_By_PkArgs = {
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -707,6 +1357,29 @@ export type Query_RootUser_Roles_By_PkArgs = {
   value: Scalars['String']['input'];
 };
 
+
+export type Query_RootUsersArgs = {
+  distinct_on?: InputMaybe<Array<Users_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Users_Order_By>>;
+  where?: InputMaybe<Users_Bool_Exp>;
+};
+
+
+export type Query_RootUsers_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Users_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Users_Order_By>>;
+  where?: InputMaybe<Users_Bool_Exp>;
+};
+
+
+export type Query_RootUsers_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
 export type Subscription_Root = {
   __typename?: 'subscription_root';
   /** fetch data from the table: "genders" */
@@ -725,6 +1398,22 @@ export type Subscription_Root = {
   project_statuses_by_pk?: Maybe<Project_Statuses>;
   /** fetch data from the table in a streaming manner: "project_statuses" */
   project_statuses_stream: Array<Project_Statuses>;
+  /** fetch data from the table: "projects" */
+  projects: Array<Projects>;
+  /** fetch aggregated fields from the table: "projects" */
+  projects_aggregate: Projects_Aggregate;
+  /** fetch data from the table: "projects" using primary key columns */
+  projects_by_pk?: Maybe<Projects>;
+  /** fetch data from the table in a streaming manner: "projects" */
+  projects_stream: Array<Projects>;
+  /** fetch data from the table: "ticket_logs" */
+  ticket_logs: Array<Ticket_Logs>;
+  /** fetch aggregated fields from the table: "ticket_logs" */
+  ticket_logs_aggregate: Ticket_Logs_Aggregate;
+  /** fetch data from the table: "ticket_logs" using primary key columns */
+  ticket_logs_by_pk?: Maybe<Ticket_Logs>;
+  /** fetch data from the table in a streaming manner: "ticket_logs" */
+  ticket_logs_stream: Array<Ticket_Logs>;
   /** fetch data from the table: "ticket_statuses" */
   ticket_statuses: Array<Ticket_Statuses>;
   /** fetch aggregated fields from the table: "ticket_statuses" */
@@ -733,6 +1422,14 @@ export type Subscription_Root = {
   ticket_statuses_by_pk?: Maybe<Ticket_Statuses>;
   /** fetch data from the table in a streaming manner: "ticket_statuses" */
   ticket_statuses_stream: Array<Ticket_Statuses>;
+  /** fetch data from the table: "tickets" */
+  tickets: Array<Tickets>;
+  /** fetch aggregated fields from the table: "tickets" */
+  tickets_aggregate: Tickets_Aggregate;
+  /** fetch data from the table: "tickets" using primary key columns */
+  tickets_by_pk?: Maybe<Tickets>;
+  /** fetch data from the table in a streaming manner: "tickets" */
+  tickets_stream: Array<Tickets>;
   /** fetch data from the table: "user_roles" */
   user_roles: Array<User_Roles>;
   /** fetch aggregated fields from the table: "user_roles" */
@@ -741,6 +1438,14 @@ export type Subscription_Root = {
   user_roles_by_pk?: Maybe<User_Roles>;
   /** fetch data from the table in a streaming manner: "user_roles" */
   user_roles_stream: Array<User_Roles>;
+  /** fetch data from the table: "users" */
+  users: Array<Users>;
+  /** fetch aggregated fields from the table: "users" */
+  users_aggregate: Users_Aggregate;
+  /** fetch data from the table: "users" using primary key columns */
+  users_by_pk?: Maybe<Users>;
+  /** fetch data from the table in a streaming manner: "users" */
+  users_stream: Array<Users>;
 };
 
 
@@ -804,6 +1509,66 @@ export type Subscription_RootProject_Statuses_StreamArgs = {
 };
 
 
+export type Subscription_RootProjectsArgs = {
+  distinct_on?: InputMaybe<Array<Projects_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Projects_Order_By>>;
+  where?: InputMaybe<Projects_Bool_Exp>;
+};
+
+
+export type Subscription_RootProjects_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Projects_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Projects_Order_By>>;
+  where?: InputMaybe<Projects_Bool_Exp>;
+};
+
+
+export type Subscription_RootProjects_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootProjects_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Projects_Stream_Cursor_Input>>;
+  where?: InputMaybe<Projects_Bool_Exp>;
+};
+
+
+export type Subscription_RootTicket_LogsArgs = {
+  distinct_on?: InputMaybe<Array<Ticket_Logs_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Ticket_Logs_Order_By>>;
+  where?: InputMaybe<Ticket_Logs_Bool_Exp>;
+};
+
+
+export type Subscription_RootTicket_Logs_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Ticket_Logs_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Ticket_Logs_Order_By>>;
+  where?: InputMaybe<Ticket_Logs_Bool_Exp>;
+};
+
+
+export type Subscription_RootTicket_Logs_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootTicket_Logs_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Ticket_Logs_Stream_Cursor_Input>>;
+  where?: InputMaybe<Ticket_Logs_Bool_Exp>;
+};
+
+
 export type Subscription_RootTicket_StatusesArgs = {
   distinct_on?: InputMaybe<Array<Ticket_Statuses_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -834,6 +1599,36 @@ export type Subscription_RootTicket_Statuses_StreamArgs = {
 };
 
 
+export type Subscription_RootTicketsArgs = {
+  distinct_on?: InputMaybe<Array<Tickets_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Tickets_Order_By>>;
+  where?: InputMaybe<Tickets_Bool_Exp>;
+};
+
+
+export type Subscription_RootTickets_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Tickets_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Tickets_Order_By>>;
+  where?: InputMaybe<Tickets_Bool_Exp>;
+};
+
+
+export type Subscription_RootTickets_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootTickets_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Tickets_Stream_Cursor_Input>>;
+  where?: InputMaybe<Tickets_Bool_Exp>;
+};
+
+
 export type Subscription_RootUser_RolesArgs = {
   distinct_on?: InputMaybe<Array<User_Roles_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -861,6 +1656,228 @@ export type Subscription_RootUser_Roles_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<User_Roles_Stream_Cursor_Input>>;
   where?: InputMaybe<User_Roles_Bool_Exp>;
+};
+
+
+export type Subscription_RootUsersArgs = {
+  distinct_on?: InputMaybe<Array<Users_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Users_Order_By>>;
+  where?: InputMaybe<Users_Bool_Exp>;
+};
+
+
+export type Subscription_RootUsers_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Users_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Users_Order_By>>;
+  where?: InputMaybe<Users_Bool_Exp>;
+};
+
+
+export type Subscription_RootUsers_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootUsers_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Users_Stream_Cursor_Input>>;
+  where?: InputMaybe<Users_Bool_Exp>;
+};
+
+/** columns and relationships of "ticket_logs" */
+export type Ticket_Logs = {
+  __typename?: 'ticket_logs';
+  created_at: Scalars['timestamptz']['output'];
+  deleted: Scalars['Boolean']['output'];
+  description: Scalars['String']['output'];
+  id: Scalars['uuid']['output'];
+  ticket_id: Scalars['uuid']['output'];
+  updated_at: Scalars['timestamptz']['output'];
+  user_id: Scalars['uuid']['output'];
+};
+
+/** aggregated selection of "ticket_logs" */
+export type Ticket_Logs_Aggregate = {
+  __typename?: 'ticket_logs_aggregate';
+  aggregate?: Maybe<Ticket_Logs_Aggregate_Fields>;
+  nodes: Array<Ticket_Logs>;
+};
+
+/** aggregate fields of "ticket_logs" */
+export type Ticket_Logs_Aggregate_Fields = {
+  __typename?: 'ticket_logs_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<Ticket_Logs_Max_Fields>;
+  min?: Maybe<Ticket_Logs_Min_Fields>;
+};
+
+
+/** aggregate fields of "ticket_logs" */
+export type Ticket_Logs_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Ticket_Logs_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "ticket_logs". All fields are combined with a logical 'AND'. */
+export type Ticket_Logs_Bool_Exp = {
+  _and?: InputMaybe<Array<Ticket_Logs_Bool_Exp>>;
+  _not?: InputMaybe<Ticket_Logs_Bool_Exp>;
+  _or?: InputMaybe<Array<Ticket_Logs_Bool_Exp>>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  deleted?: InputMaybe<Boolean_Comparison_Exp>;
+  description?: InputMaybe<String_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  ticket_id?: InputMaybe<Uuid_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  user_id?: InputMaybe<Uuid_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "ticket_logs" */
+export const enum Ticket_Logs_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  TicketLogsPkey = 'ticket_logs_pkey'
+};
+
+/** input type for inserting data into table "ticket_logs" */
+export type Ticket_Logs_Insert_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  deleted?: InputMaybe<Scalars['Boolean']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  ticket_id?: InputMaybe<Scalars['uuid']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  user_id?: InputMaybe<Scalars['uuid']['input']>;
+};
+
+/** aggregate max on columns */
+export type Ticket_Logs_Max_Fields = {
+  __typename?: 'ticket_logs_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  ticket_id?: Maybe<Scalars['uuid']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+  user_id?: Maybe<Scalars['uuid']['output']>;
+};
+
+/** aggregate min on columns */
+export type Ticket_Logs_Min_Fields = {
+  __typename?: 'ticket_logs_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  ticket_id?: Maybe<Scalars['uuid']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+  user_id?: Maybe<Scalars['uuid']['output']>;
+};
+
+/** response of any mutation on the table "ticket_logs" */
+export type Ticket_Logs_Mutation_Response = {
+  __typename?: 'ticket_logs_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Ticket_Logs>;
+};
+
+/** on_conflict condition type for table "ticket_logs" */
+export type Ticket_Logs_On_Conflict = {
+  constraint: Ticket_Logs_Constraint;
+  update_columns?: Array<Ticket_Logs_Update_Column>;
+  where?: InputMaybe<Ticket_Logs_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "ticket_logs". */
+export type Ticket_Logs_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  deleted?: InputMaybe<Order_By>;
+  description?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  ticket_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: ticket_logs */
+export type Ticket_Logs_Pk_Columns_Input = {
+  id: Scalars['uuid']['input'];
+};
+
+/** select columns of table "ticket_logs" */
+export const enum Ticket_Logs_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Deleted = 'deleted',
+  /** column name */
+  Description = 'description',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  TicketId = 'ticket_id',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserId = 'user_id'
+};
+
+/** input type for updating data in table "ticket_logs" */
+export type Ticket_Logs_Set_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  deleted?: InputMaybe<Scalars['Boolean']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  ticket_id?: InputMaybe<Scalars['uuid']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  user_id?: InputMaybe<Scalars['uuid']['input']>;
+};
+
+/** Streaming cursor of the table "ticket_logs" */
+export type Ticket_Logs_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Ticket_Logs_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Ticket_Logs_Stream_Cursor_Value_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  deleted?: InputMaybe<Scalars['Boolean']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  ticket_id?: InputMaybe<Scalars['uuid']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  user_id?: InputMaybe<Scalars['uuid']['input']>;
+};
+
+/** update columns of table "ticket_logs" */
+export const enum Ticket_Logs_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Deleted = 'deleted',
+  /** column name */
+  Description = 'description',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  TicketId = 'ticket_id',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserId = 'user_id'
+};
+
+export type Ticket_Logs_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Ticket_Logs_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Ticket_Logs_Bool_Exp;
 };
 
 /** columns and relationships of "ticket_statuses" */
@@ -905,6 +1922,26 @@ export type Ticket_Statuses_Bool_Exp = {
 export const enum Ticket_Statuses_Constraint {
   /** unique or primary key constraint on columns "value" */
   TicketStatusesPkey = 'ticket_statuses_pkey'
+};
+
+export const enum Ticket_Statuses_Enum {
+  /** ticket-done */
+  Done = 'done',
+  /** ticket-in-progress */
+  InProgress = 'in_progress',
+  /** ticket-in-test */
+  InTest = 'in_test',
+  /** ticket-new */
+  New = 'new'
+};
+
+/** Boolean expression to compare columns of type "ticket_statuses_enum". All fields are combined with logical 'AND'. */
+export type Ticket_Statuses_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<Ticket_Statuses_Enum>;
+  _in?: InputMaybe<Array<Ticket_Statuses_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<Ticket_Statuses_Enum>;
+  _nin?: InputMaybe<Array<Ticket_Statuses_Enum>>;
 };
 
 /** input type for inserting data into table "ticket_statuses" */
@@ -997,6 +2034,286 @@ export type Ticket_Statuses_Updates = {
   where: Ticket_Statuses_Bool_Exp;
 };
 
+/** columns and relationships of "tickets" */
+export type Tickets = {
+  __typename?: 'tickets';
+  assignee_id?: Maybe<Scalars['uuid']['output']>;
+  code: Scalars['String']['output'];
+  created_at: Scalars['timestamptz']['output'];
+  description: Scalars['String']['output'];
+  id: Scalars['uuid']['output'];
+  project_id: Scalars['uuid']['output'];
+  reporter_id: Scalars['uuid']['output'];
+  status: Ticket_Statuses_Enum;
+  updated_at: Scalars['timestamptz']['output'];
+};
+
+/** aggregated selection of "tickets" */
+export type Tickets_Aggregate = {
+  __typename?: 'tickets_aggregate';
+  aggregate?: Maybe<Tickets_Aggregate_Fields>;
+  nodes: Array<Tickets>;
+};
+
+export type Tickets_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Tickets_Aggregate_Bool_Exp_Count>;
+};
+
+export type Tickets_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Tickets_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Tickets_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "tickets" */
+export type Tickets_Aggregate_Fields = {
+  __typename?: 'tickets_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<Tickets_Max_Fields>;
+  min?: Maybe<Tickets_Min_Fields>;
+};
+
+
+/** aggregate fields of "tickets" */
+export type Tickets_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Tickets_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** order by aggregate values of table "tickets" */
+export type Tickets_Aggregate_Order_By = {
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Tickets_Max_Order_By>;
+  min?: InputMaybe<Tickets_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "tickets" */
+export type Tickets_Arr_Rel_Insert_Input = {
+  data: Array<Tickets_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Tickets_On_Conflict>;
+};
+
+/** Boolean expression to filter rows from the table "tickets". All fields are combined with a logical 'AND'. */
+export type Tickets_Bool_Exp = {
+  _and?: InputMaybe<Array<Tickets_Bool_Exp>>;
+  _not?: InputMaybe<Tickets_Bool_Exp>;
+  _or?: InputMaybe<Array<Tickets_Bool_Exp>>;
+  assignee_id?: InputMaybe<Uuid_Comparison_Exp>;
+  code?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  description?: InputMaybe<String_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  project_id?: InputMaybe<Uuid_Comparison_Exp>;
+  reporter_id?: InputMaybe<Uuid_Comparison_Exp>;
+  status?: InputMaybe<Ticket_Statuses_Enum_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "tickets" */
+export const enum Tickets_Constraint {
+  /** unique or primary key constraint on columns "code" */
+  TicketsCodeKey = 'tickets_code_key',
+  /** unique or primary key constraint on columns "id" */
+  TicketsPkey = 'tickets_pkey'
+};
+
+/** input type for inserting data into table "tickets" */
+export type Tickets_Insert_Input = {
+  assignee_id?: InputMaybe<Scalars['uuid']['input']>;
+  code?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  project_id?: InputMaybe<Scalars['uuid']['input']>;
+  reporter_id?: InputMaybe<Scalars['uuid']['input']>;
+  status?: InputMaybe<Ticket_Statuses_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate max on columns */
+export type Tickets_Max_Fields = {
+  __typename?: 'tickets_max_fields';
+  assignee_id?: Maybe<Scalars['uuid']['output']>;
+  code?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  project_id?: Maybe<Scalars['uuid']['output']>;
+  reporter_id?: Maybe<Scalars['uuid']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** order by max() on columns of table "tickets" */
+export type Tickets_Max_Order_By = {
+  assignee_id?: InputMaybe<Order_By>;
+  code?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  description?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  project_id?: InputMaybe<Order_By>;
+  reporter_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Tickets_Min_Fields = {
+  __typename?: 'tickets_min_fields';
+  assignee_id?: Maybe<Scalars['uuid']['output']>;
+  code?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  project_id?: Maybe<Scalars['uuid']['output']>;
+  reporter_id?: Maybe<Scalars['uuid']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** order by min() on columns of table "tickets" */
+export type Tickets_Min_Order_By = {
+  assignee_id?: InputMaybe<Order_By>;
+  code?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  description?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  project_id?: InputMaybe<Order_By>;
+  reporter_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "tickets" */
+export type Tickets_Mutation_Response = {
+  __typename?: 'tickets_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Tickets>;
+};
+
+/** on_conflict condition type for table "tickets" */
+export type Tickets_On_Conflict = {
+  constraint: Tickets_Constraint;
+  update_columns?: Array<Tickets_Update_Column>;
+  where?: InputMaybe<Tickets_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "tickets". */
+export type Tickets_Order_By = {
+  assignee_id?: InputMaybe<Order_By>;
+  code?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  description?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  project_id?: InputMaybe<Order_By>;
+  reporter_id?: InputMaybe<Order_By>;
+  status?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: tickets */
+export type Tickets_Pk_Columns_Input = {
+  id: Scalars['uuid']['input'];
+};
+
+/** select columns of table "tickets" */
+export const enum Tickets_Select_Column {
+  /** column name */
+  AssigneeId = 'assignee_id',
+  /** column name */
+  Code = 'code',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Description = 'description',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  ProjectId = 'project_id',
+  /** column name */
+  ReporterId = 'reporter_id',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+/** input type for updating data in table "tickets" */
+export type Tickets_Set_Input = {
+  assignee_id?: InputMaybe<Scalars['uuid']['input']>;
+  code?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  project_id?: InputMaybe<Scalars['uuid']['input']>;
+  reporter_id?: InputMaybe<Scalars['uuid']['input']>;
+  status?: InputMaybe<Ticket_Statuses_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** Streaming cursor of the table "tickets" */
+export type Tickets_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Tickets_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Tickets_Stream_Cursor_Value_Input = {
+  assignee_id?: InputMaybe<Scalars['uuid']['input']>;
+  code?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  project_id?: InputMaybe<Scalars['uuid']['input']>;
+  reporter_id?: InputMaybe<Scalars['uuid']['input']>;
+  status?: InputMaybe<Ticket_Statuses_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** update columns of table "tickets" */
+export const enum Tickets_Update_Column {
+  /** column name */
+  AssigneeId = 'assignee_id',
+  /** column name */
+  Code = 'code',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Description = 'description',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  ProjectId = 'project_id',
+  /** column name */
+  ReporterId = 'reporter_id',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  UpdatedAt = 'updated_at'
+};
+
+export type Tickets_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Tickets_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Tickets_Bool_Exp;
+};
+
+/** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
+export type Timestamptz_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars['timestamptz']['input']>;
+  _gt?: InputMaybe<Scalars['timestamptz']['input']>;
+  _gte?: InputMaybe<Scalars['timestamptz']['input']>;
+  _in?: InputMaybe<Array<Scalars['timestamptz']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['timestamptz']['input']>;
+  _lte?: InputMaybe<Scalars['timestamptz']['input']>;
+  _neq?: InputMaybe<Scalars['timestamptz']['input']>;
+  _nin?: InputMaybe<Array<Scalars['timestamptz']['input']>>;
+};
+
 /** columns and relationships of "user_roles" */
 export type User_Roles = {
   __typename?: 'user_roles';
@@ -1039,6 +2356,24 @@ export type User_Roles_Bool_Exp = {
 export const enum User_Roles_Constraint {
   /** unique or primary key constraint on columns "value" */
   UserRolesPkey = 'user_roles_pkey'
+};
+
+export const enum User_Roles_Enum {
+  /** administrator */
+  Administrator = 'administrator',
+  /** assignee */
+  Assignee = 'assignee',
+  /** reporter */
+  Reporter = 'reporter'
+};
+
+/** Boolean expression to compare columns of type "user_roles_enum". All fields are combined with logical 'AND'. */
+export type User_Roles_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<User_Roles_Enum>;
+  _in?: InputMaybe<Array<User_Roles_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<User_Roles_Enum>;
+  _nin?: InputMaybe<Array<User_Roles_Enum>>;
 };
 
 /** input type for inserting data into table "user_roles" */
@@ -1131,11 +2466,480 @@ export type User_Roles_Updates = {
   where: User_Roles_Bool_Exp;
 };
 
+/** columns and relationships of "users" */
+export type Users = {
+  __typename?: 'users';
+  age: Scalars['Int']['output'];
+  created_at: Scalars['timestamptz']['output'];
+  email: Scalars['String']['output'];
+  family: Scalars['String']['output'];
+  gender: Genders_Enum;
+  id: Scalars['uuid']['output'];
+  name: Scalars['String']['output'];
+  password: Scalars['String']['output'];
+  role: User_Roles_Enum;
+  surname: Scalars['String']['output'];
+  updated_at: Scalars['timestamptz']['output'];
+  username: Scalars['String']['output'];
+};
+
+/** aggregated selection of "users" */
+export type Users_Aggregate = {
+  __typename?: 'users_aggregate';
+  aggregate?: Maybe<Users_Aggregate_Fields>;
+  nodes: Array<Users>;
+};
+
+/** aggregate fields of "users" */
+export type Users_Aggregate_Fields = {
+  __typename?: 'users_aggregate_fields';
+  avg?: Maybe<Users_Avg_Fields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<Users_Max_Fields>;
+  min?: Maybe<Users_Min_Fields>;
+  stddev?: Maybe<Users_Stddev_Fields>;
+  stddev_pop?: Maybe<Users_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Users_Stddev_Samp_Fields>;
+  sum?: Maybe<Users_Sum_Fields>;
+  var_pop?: Maybe<Users_Var_Pop_Fields>;
+  var_samp?: Maybe<Users_Var_Samp_Fields>;
+  variance?: Maybe<Users_Variance_Fields>;
+};
+
+
+/** aggregate fields of "users" */
+export type Users_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Users_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** aggregate avg on columns */
+export type Users_Avg_Fields = {
+  __typename?: 'users_avg_fields';
+  age?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Boolean expression to filter rows from the table "users". All fields are combined with a logical 'AND'. */
+export type Users_Bool_Exp = {
+  _and?: InputMaybe<Array<Users_Bool_Exp>>;
+  _not?: InputMaybe<Users_Bool_Exp>;
+  _or?: InputMaybe<Array<Users_Bool_Exp>>;
+  age?: InputMaybe<Int_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  email?: InputMaybe<String_Comparison_Exp>;
+  family?: InputMaybe<String_Comparison_Exp>;
+  gender?: InputMaybe<Genders_Enum_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  name?: InputMaybe<String_Comparison_Exp>;
+  password?: InputMaybe<String_Comparison_Exp>;
+  role?: InputMaybe<User_Roles_Enum_Comparison_Exp>;
+  surname?: InputMaybe<String_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  username?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "users" */
+export const enum Users_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  UsersPkey = 'users_pkey'
+};
+
+/** input type for incrementing numeric columns in table "users" */
+export type Users_Inc_Input = {
+  age?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** input type for inserting data into table "users" */
+export type Users_Insert_Input = {
+  age?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  family?: InputMaybe<Scalars['String']['input']>;
+  gender?: InputMaybe<Genders_Enum>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
+  role?: InputMaybe<User_Roles_Enum>;
+  surname?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  username?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregate max on columns */
+export type Users_Max_Fields = {
+  __typename?: 'users_max_fields';
+  age?: Maybe<Scalars['Int']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
+  family?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  password?: Maybe<Scalars['String']['output']>;
+  surname?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+  username?: Maybe<Scalars['String']['output']>;
+};
+
+/** aggregate min on columns */
+export type Users_Min_Fields = {
+  __typename?: 'users_min_fields';
+  age?: Maybe<Scalars['Int']['output']>;
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
+  family?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  password?: Maybe<Scalars['String']['output']>;
+  surname?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+  username?: Maybe<Scalars['String']['output']>;
+};
+
+/** response of any mutation on the table "users" */
+export type Users_Mutation_Response = {
+  __typename?: 'users_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Users>;
+};
+
+/** input type for inserting object relation for remote table "users" */
+export type Users_Obj_Rel_Insert_Input = {
+  data: Users_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Users_On_Conflict>;
+};
+
+/** on_conflict condition type for table "users" */
+export type Users_On_Conflict = {
+  constraint: Users_Constraint;
+  update_columns?: Array<Users_Update_Column>;
+  where?: InputMaybe<Users_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "users". */
+export type Users_Order_By = {
+  age?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  email?: InputMaybe<Order_By>;
+  family?: InputMaybe<Order_By>;
+  gender?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  password?: InputMaybe<Order_By>;
+  role?: InputMaybe<Order_By>;
+  surname?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  username?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: users */
+export type Users_Pk_Columns_Input = {
+  id: Scalars['uuid']['input'];
+};
+
+/** select columns of table "users" */
+export const enum Users_Select_Column {
+  /** column name */
+  Age = 'age',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Email = 'email',
+  /** column name */
+  Family = 'family',
+  /** column name */
+  Gender = 'gender',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  Password = 'password',
+  /** column name */
+  Role = 'role',
+  /** column name */
+  Surname = 'surname',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  Username = 'username'
+};
+
+/** input type for updating data in table "users" */
+export type Users_Set_Input = {
+  age?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  family?: InputMaybe<Scalars['String']['input']>;
+  gender?: InputMaybe<Genders_Enum>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
+  role?: InputMaybe<User_Roles_Enum>;
+  surname?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  username?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregate stddev on columns */
+export type Users_Stddev_Fields = {
+  __typename?: 'users_stddev_fields';
+  age?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Users_Stddev_Pop_Fields = {
+  __typename?: 'users_stddev_pop_fields';
+  age?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Users_Stddev_Samp_Fields = {
+  __typename?: 'users_stddev_samp_fields';
+  age?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Streaming cursor of the table "users" */
+export type Users_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Users_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Users_Stream_Cursor_Value_Input = {
+  age?: InputMaybe<Scalars['Int']['input']>;
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  family?: InputMaybe<Scalars['String']['input']>;
+  gender?: InputMaybe<Genders_Enum>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  password?: InputMaybe<Scalars['String']['input']>;
+  role?: InputMaybe<User_Roles_Enum>;
+  surname?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  username?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregate sum on columns */
+export type Users_Sum_Fields = {
+  __typename?: 'users_sum_fields';
+  age?: Maybe<Scalars['Int']['output']>;
+};
+
+/** update columns of table "users" */
+export const enum Users_Update_Column {
+  /** column name */
+  Age = 'age',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Email = 'email',
+  /** column name */
+  Family = 'family',
+  /** column name */
+  Gender = 'gender',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  Password = 'password',
+  /** column name */
+  Role = 'role',
+  /** column name */
+  Surname = 'surname',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  Username = 'username'
+};
+
+export type Users_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Users_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Users_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Users_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Users_Var_Pop_Fields = {
+  __typename?: 'users_var_pop_fields';
+  age?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate var_samp on columns */
+export type Users_Var_Samp_Fields = {
+  __typename?: 'users_var_samp_fields';
+  age?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate variance on columns */
+export type Users_Variance_Fields = {
+  __typename?: 'users_variance_fields';
+  age?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'. */
+export type Uuid_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars['uuid']['input']>;
+  _gt?: InputMaybe<Scalars['uuid']['input']>;
+  _gte?: InputMaybe<Scalars['uuid']['input']>;
+  _in?: InputMaybe<Array<Scalars['uuid']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['uuid']['input']>;
+  _lte?: InputMaybe<Scalars['uuid']['input']>;
+  _neq?: InputMaybe<Scalars['uuid']['input']>;
+  _nin?: InputMaybe<Array<Scalars['uuid']['input']>>;
+};
+
+export type GetProjectsQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  condition?: Projects_Bool_Exp;
+  orderBy?: InputMaybe<Array<Projects_Order_By> | Projects_Order_By>;
+}>;
+
+
+export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'projects', id: any, created_at: any, updated_at: any, code: string, status: Project_Statuses_Enum, description: string, label: string, owner: { __typename?: 'users', id: any, name: string, family: string } }>, projects_aggregate: { __typename?: 'projects_aggregate', aggregate?: { __typename?: 'projects_aggregate_fields', count: number } | null } };
+
+export type GetTicketsQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  condition?: Tickets_Bool_Exp;
+  orderBy?: InputMaybe<Array<Tickets_Order_By> | Tickets_Order_By>;
+}>;
+
+
+export type GetTicketsQuery = { __typename?: 'query_root', tickets: Array<{ __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, code: string, status: Ticket_Statuses_Enum, description: string, reporter_id: any, assignee_id?: any | null }>, tickets_aggregate: { __typename?: 'tickets_aggregate', aggregate?: { __typename?: 'tickets_aggregate_fields', count: number } | null } };
+
+export type TableTicketFieldsFragment = { __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, code: string, status: Ticket_Statuses_Enum, description: string, reporter_id: any, assignee_id?: any | null };
+
+export type GetUsersQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  condition?: Users_Bool_Exp;
+  orderBy?: InputMaybe<Array<Users_Order_By> | Users_Order_By>;
+}>;
+
+
+export type GetUsersQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: any, created_at: any, updated_at: any, username: string, password: string, name: string, surname: string, family: string, email: string, age: number, gender: Genders_Enum, role: User_Roles_Enum }>, users_aggregate: { __typename?: 'users_aggregate', aggregate?: { __typename?: 'users_aggregate_fields', count: number } | null } };
+
 export type EnumeratorsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type EnumeratorsQuery = { __typename?: 'query_root', genders: Array<{ __typename?: 'genders', value: string, content: string }>, project_statuses: Array<{ __typename?: 'project_statuses', value: string, content: string }>, ticket_statuses: Array<{ __typename?: 'ticket_statuses', value: string, content: string }>, user_roles: Array<{ __typename?: 'user_roles', value: string, content: string }> };
 
+export const TableTicketFieldsFragmentDoc = gql`
+    fragment TableTicketFields on tickets {
+  id
+  created_at
+  updated_at
+  project_id
+  code
+  status
+  description
+  reporter_id
+  assignee_id
+}
+    `;
+export const GetProjectsDocument = gql`
+    query GetProjects($limit: Int, $offset: Int, $condition: projects_bool_exp! = {}, $orderBy: [projects_order_by!] = {created_at: desc}) {
+  projects(where: $condition, limit: $limit, offset: $offset, order_by: $orderBy) {
+    id
+    created_at
+    updated_at
+    code
+    status
+    description
+    label
+    owner: user {
+      id
+      name
+      family
+    }
+  }
+  projects_aggregate(where: $condition) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetProjectsGQL extends Apollo.Query<GetProjectsQuery, GetProjectsQueryVariables> {
+    document = GetProjectsDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetTicketsDocument = gql`
+    query GetTickets($limit: Int, $offset: Int, $condition: tickets_bool_exp! = {}, $orderBy: [tickets_order_by!] = {created_at: desc}) {
+  tickets(where: $condition, limit: $limit, offset: $offset, order_by: $orderBy) {
+    ...TableTicketFields
+  }
+  tickets_aggregate(where: $condition) {
+    aggregate {
+      count
+    }
+  }
+}
+    ${TableTicketFieldsFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetTicketsGQL extends Apollo.Query<GetTicketsQuery, GetTicketsQueryVariables> {
+    document = GetTicketsDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetUsersDocument = gql`
+    query GetUsers($limit: Int, $offset: Int, $condition: users_bool_exp! = {}, $orderBy: [users_order_by!] = {created_at: desc}) {
+  users(where: $condition, limit: $limit, offset: $offset, order_by: $orderBy) {
+    id
+    created_at
+    updated_at
+    username
+    password
+    name
+    surname
+    family
+    email
+    age
+    gender
+    role
+  }
+  users_aggregate(where: $condition) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetUsersGQL extends Apollo.Query<GetUsersQuery, GetUsersQueryVariables> {
+    document = GetUsersDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
 export const EnumeratorsDocument = gql`
     query Enumerators {
   genders {

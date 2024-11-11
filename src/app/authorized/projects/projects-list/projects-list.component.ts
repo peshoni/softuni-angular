@@ -2,20 +2,20 @@ import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { UsersListDataSource, UsersListItem } from './users-list-datasource';
+import { ProjectsListDataSource, ProjectsListItem } from './projects-list-datasource';
 import { addTableRowAnimation } from '../../../animations/add-row-animation';
 
 @Component({
-  selector: 'app-users-list',
-  templateUrl: './users-list.component.html',
-  styleUrl: './users-list.component.scss',
+  selector: 'app-projects-list',
+  templateUrl: './projects-list.component.html',
+  styleUrl: './projects-list.component.scss',
   animations: [addTableRowAnimation],
 })
-export class UsersListComponent implements AfterViewInit {
+export class ProjectsListComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<UsersListItem>;
-  dataSource = new UsersListDataSource();
+  @ViewChild(MatTable) table!: MatTable<ProjectsListItem>;
+  dataSource = new ProjectsListDataSource();
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['id', 'name'];

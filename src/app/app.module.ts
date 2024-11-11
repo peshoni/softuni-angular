@@ -17,8 +17,10 @@ import { authGuardFn } from './guards/auth.guard';
 
 const routes: Routes = [
     { path: '', redirectTo: '', pathMatch: 'full' },
+
     {
-        path: 'authorize', // GoTo landing page of the Public Module 
+        path: 'authorize', // GoTo landing page of the Public Module
+        canActivate: [authGuardFn],
         loadChildren: () => import('../app/public/public.module').then((m) => m.PublicModule),
     },
     {
@@ -26,6 +28,7 @@ const routes: Routes = [
         canActivate: [authGuardFn],
         loadChildren: () => import('../app/authorized/authorized.module').then((m) => m.AuthorizedModule),
     },
+    { path: '**', redirectTo: 'authorize', pathMatch: 'full' } // all missing paths navigates to 'authorize'
 ];
 
 @NgModule({

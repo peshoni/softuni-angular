@@ -1,0 +1,32 @@
+query GetProjects(
+  $limit: Int
+  $offset: Int
+  $condition: projects_bool_exp! = {}
+  $orderBy: [projects_order_by!] = { created_at: desc }
+) {
+  projects(
+    where: $condition
+    limit: $limit
+    offset: $offset
+    order_by: $orderBy
+  ) {
+    id
+    created_at
+    updated_at
+    code
+    status
+    description
+    label
+    owner: user {
+      id
+      name
+      family
+    }
+  }
+
+  projects_aggregate(where: $condition) {
+    aggregate {
+      count
+    }
+  }
+}

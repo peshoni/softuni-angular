@@ -3,11 +3,13 @@ import { MatTable } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { TicketsListDataSource, TicketsListItem } from './tickets-list-datasource';
+import { addTableRowAnimation } from '../../../animations/add-row-animation';
 
 @Component({
   selector: 'app-tickets-list',
   templateUrl: './tickets-list.component.html',
-  styleUrl: './tickets-list.component.scss'
+  styleUrl: './tickets-list.component.scss',
+  animations: [addTableRowAnimation],
 })
 export class TicketsListComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;

@@ -1,0 +1,27 @@
+query GetUsers(
+  $limit: Int
+  $offset: Int
+  $condition: users_bool_exp! = {}
+  $orderBy: [users_order_by!] = { created_at: desc }
+) {
+  users(where: $condition, limit: $limit, offset: $offset, order_by: $orderBy) {
+    id
+    created_at
+    updated_at
+    username
+    password
+    name
+    surname
+    family
+    email
+    age
+    gender
+    role
+  }
+
+  users_aggregate(where: $condition) {
+    aggregate {
+      count
+    }
+  }
+}

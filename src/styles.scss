@@ -32,4 +32,16 @@ body {
     margin: 0;
     padding: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
-} 
+}
+
+// #region Common styles
+.table {
+    margin: 0 4px;
+    .no-data-row {
+        text-align: center;
+        height: 50px;
+        font-size: 16px;
+        color: mat.m2-get-color-from-palette($warn, 800);
+    }
+}
+// #endregion Common styles 

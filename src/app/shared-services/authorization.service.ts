@@ -7,7 +7,9 @@ import { BehaviorSubject } from 'rxjs';
 export class AuthorizationService {
   private readonly credential: BehaviorSubject<any> = new BehaviorSubject(null);
   $credential = this.credential.asObservable();
-  constructor() { }
+  constructor() {
+    this.setCredentials("fakeCredential")
+   }
 
   setCredentials(credential: any) {
     this.credential.next(credential);

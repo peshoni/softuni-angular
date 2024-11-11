@@ -1,0 +1,33 @@
+query GetTickets(
+  $limit: Int
+  $offset: Int
+  $condition: tickets_bool_exp! = {}
+  $orderBy: [tickets_order_by!] = { created_at: desc }
+) {
+  tickets(
+    where: $condition
+    limit: $limit
+    offset: $offset
+    order_by: $orderBy
+  ) {
+    ...TableTicketFields
+  }
+
+  tickets_aggregate(where: $condition) {
+    aggregate {
+      count
+    }
+  }
+}
+
+fragment TableTicketFields on tickets {
+  id
+  created_at
+  updated_at
+  project_id
+  code
+  status
+  description
+  reporter_id
+  assignee_id
+}
