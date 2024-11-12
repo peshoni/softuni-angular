@@ -35,7 +35,8 @@ const routes: Routes = [
     CommonModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatPaginatorModule
   ]
 })
 export class AuthorizedModule { }

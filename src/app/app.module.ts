@@ -1,6 +1,6 @@
 import { NgModule, provideZoneChangeDetection } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, RouterOutlet, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -46,6 +46,8 @@ const routes: Routes = [
         BrowserModule,
         //RouterOutlet,
         CommonModule,
+
+        GraphQLModule,
         // Material modules
         MatSidenavModule,
         MatToolbarModule,
@@ -53,8 +55,7 @@ const routes: Routes = [
         MatListModule,
         MatButtonModule,
         MatMenuModule,
-        MatExpansionModule,
-        GraphQLModule
+        MatExpansionModule
     ]
 })
 export class AppModule { }

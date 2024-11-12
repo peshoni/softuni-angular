@@ -1,9 +1,11 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, inject, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { ProjectsListDataSource, ProjectsListItem } from './projects-list-datasource';
+import { ProjectsListDataSource } from './projects-list-datasource';
 import { addTableRowAnimation } from '../../../animations/add-row-animation';
+import { GetProjectsQuery, Projects } from '../../../../generated/graphql';
+import { ProjectsService } from '../projects.service';
 
 @Component({
   selector: 'app-projects-list',
@@ -12,13 +14,17 @@ import { addTableRowAnimation } from '../../../animations/add-row-animation';
   animations: [addTableRowAnimation],
 })
 export class ProjectsListComponent implements AfterViewInit {
+  private projectsService: ProjectsService = inject(ProjectsService);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<ProjectsListItem>;
-  dataSource = new ProjectsListDataSource();
+  @ViewChild(MatTable) table!: MatTable<GetProjectsQuery['projects']>;
+  dataSource: ProjectsListDataSource;// = new ProjectsListDataSource(this.projectsService);
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'name'];
+  displayedColumns = ['id'];
+  constructor() {
+    this.dataSource = new ProjectsListDataSource(this.projectsService);
+  }
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
