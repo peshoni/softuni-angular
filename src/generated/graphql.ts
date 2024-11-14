@@ -177,6 +177,13 @@ export type Genders_Mutation_Response = {
   returning: Array<Genders>;
 };
 
+/** input type for inserting object relation for remote table "genders" */
+export type Genders_Obj_Rel_Insert_Input = {
+  data: Genders_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Genders_On_Conflict>;
+};
+
 /** on_conflict condition type for table "genders" */
 export type Genders_On_Conflict = {
   constraint: Genders_Constraint;
@@ -832,13 +839,6 @@ export type Project_Statuses_Mutation_Response = {
   returning: Array<Project_Statuses>;
 };
 
-/** input type for inserting object relation for remote table "project_statuses" */
-export type Project_Statuses_Obj_Rel_Insert_Input = {
-  data: Project_Statuses_Insert_Input;
-  /** upsert condition */
-  on_conflict?: InputMaybe<Project_Statuses_On_Conflict>;
-};
-
 /** on_conflict condition type for table "project_statuses" */
 export type Project_Statuses_On_Conflict = {
   constraint: Project_Statuses_Constraint;
@@ -909,36 +909,10 @@ export type Projects = {
   id: Scalars['uuid']['output'];
   label: Scalars['String']['output'];
   owner_id: Scalars['uuid']['output'];
-  /** An object relationship */
-  project_status: Project_Statuses;
   status: Project_Statuses_Enum;
-  /** fetch data from the table: "tickets" */
-  tickets: Array<Tickets>;
-  /** fetch aggregated fields from the table: "tickets" */
-  tickets_aggregate: Tickets_Aggregate;
   updated_at: Scalars['timestamptz']['output'];
   /** An object relationship */
   user: Users;
-};
-
-
-/** columns and relationships of "projects" */
-export type ProjectsTicketsArgs = {
-  distinct_on?: InputMaybe<Array<Tickets_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Tickets_Order_By>>;
-  where?: InputMaybe<Tickets_Bool_Exp>;
-};
-
-
-/** columns and relationships of "projects" */
-export type ProjectsTickets_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Tickets_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Tickets_Order_By>>;
-  where?: InputMaybe<Tickets_Bool_Exp>;
 };
 
 /** aggregated selection of "projects" */
@@ -974,10 +948,7 @@ export type Projects_Bool_Exp = {
   id?: InputMaybe<Uuid_Comparison_Exp>;
   label?: InputMaybe<String_Comparison_Exp>;
   owner_id?: InputMaybe<Uuid_Comparison_Exp>;
-  project_status?: InputMaybe<Project_Statuses_Bool_Exp>;
   status?: InputMaybe<Project_Statuses_Enum_Comparison_Exp>;
-  tickets?: InputMaybe<Tickets_Bool_Exp>;
-  tickets_aggregate?: InputMaybe<Tickets_Aggregate_Bool_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   user?: InputMaybe<Users_Bool_Exp>;
 };
@@ -998,9 +969,7 @@ export type Projects_Insert_Input = {
   id?: InputMaybe<Scalars['uuid']['input']>;
   label?: InputMaybe<Scalars['String']['input']>;
   owner_id?: InputMaybe<Scalars['uuid']['input']>;
-  project_status?: InputMaybe<Project_Statuses_Obj_Rel_Insert_Input>;
   status?: InputMaybe<Project_Statuses_Enum>;
-  tickets?: InputMaybe<Tickets_Arr_Rel_Insert_Input>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   user?: InputMaybe<Users_Obj_Rel_Insert_Input>;
 };
@@ -1053,9 +1022,7 @@ export type Projects_Order_By = {
   id?: InputMaybe<Order_By>;
   label?: InputMaybe<Order_By>;
   owner_id?: InputMaybe<Order_By>;
-  project_status?: InputMaybe<Project_Statuses_Order_By>;
   status?: InputMaybe<Order_By>;
-  tickets_aggregate?: InputMaybe<Tickets_Aggregate_Order_By>;
   updated_at?: InputMaybe<Order_By>;
   user?: InputMaybe<Users_Order_By>;
 };
@@ -1188,9 +1155,9 @@ export type Query_Root = {
   user_roles_aggregate: User_Roles_Aggregate;
   /** fetch data from the table: "user_roles" using primary key columns */
   user_roles_by_pk?: Maybe<User_Roles>;
-  /** fetch data from the table: "users" */
+  /** An array relationship */
   users: Array<Users>;
-  /** fetch aggregated fields from the table: "users" */
+  /** An aggregate relationship */
   users_aggregate: Users_Aggregate;
   /** fetch data from the table: "users" using primary key columns */
   users_by_pk?: Maybe<Users>;
@@ -1438,9 +1405,9 @@ export type Subscription_Root = {
   user_roles_by_pk?: Maybe<User_Roles>;
   /** fetch data from the table in a streaming manner: "user_roles" */
   user_roles_stream: Array<User_Roles>;
-  /** fetch data from the table: "users" */
+  /** An array relationship */
   users: Array<Users>;
-  /** fetch aggregated fields from the table: "users" */
+  /** An aggregate relationship */
   users_aggregate: Users_Aggregate;
   /** fetch data from the table: "users" using primary key columns */
   users_by_pk?: Maybe<Users>;
@@ -2055,17 +2022,6 @@ export type Tickets_Aggregate = {
   nodes: Array<Tickets>;
 };
 
-export type Tickets_Aggregate_Bool_Exp = {
-  count?: InputMaybe<Tickets_Aggregate_Bool_Exp_Count>;
-};
-
-export type Tickets_Aggregate_Bool_Exp_Count = {
-  arguments?: InputMaybe<Array<Tickets_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<Tickets_Bool_Exp>;
-  predicate: Int_Comparison_Exp;
-};
-
 /** aggregate fields of "tickets" */
 export type Tickets_Aggregate_Fields = {
   __typename?: 'tickets_aggregate_fields';
@@ -2079,20 +2035,6 @@ export type Tickets_Aggregate_Fields = {
 export type Tickets_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<Tickets_Select_Column>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-/** order by aggregate values of table "tickets" */
-export type Tickets_Aggregate_Order_By = {
-  count?: InputMaybe<Order_By>;
-  max?: InputMaybe<Tickets_Max_Order_By>;
-  min?: InputMaybe<Tickets_Min_Order_By>;
-};
-
-/** input type for inserting array relation for remote table "tickets" */
-export type Tickets_Arr_Rel_Insert_Input = {
-  data: Array<Tickets_Insert_Input>;
-  /** upsert condition */
-  on_conflict?: InputMaybe<Tickets_On_Conflict>;
 };
 
 /** Boolean expression to filter rows from the table "tickets". All fields are combined with a logical 'AND'. */
@@ -2145,18 +2087,6 @@ export type Tickets_Max_Fields = {
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
-/** order by max() on columns of table "tickets" */
-export type Tickets_Max_Order_By = {
-  assignee_id?: InputMaybe<Order_By>;
-  code?: InputMaybe<Order_By>;
-  created_at?: InputMaybe<Order_By>;
-  description?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  project_id?: InputMaybe<Order_By>;
-  reporter_id?: InputMaybe<Order_By>;
-  updated_at?: InputMaybe<Order_By>;
-};
-
 /** aggregate min on columns */
 export type Tickets_Min_Fields = {
   __typename?: 'tickets_min_fields';
@@ -2168,18 +2098,6 @@ export type Tickets_Min_Fields = {
   project_id?: Maybe<Scalars['uuid']['output']>;
   reporter_id?: Maybe<Scalars['uuid']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
-};
-
-/** order by min() on columns of table "tickets" */
-export type Tickets_Min_Order_By = {
-  assignee_id?: InputMaybe<Order_By>;
-  code?: InputMaybe<Order_By>;
-  created_at?: InputMaybe<Order_By>;
-  description?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  project_id?: InputMaybe<Order_By>;
-  reporter_id?: InputMaybe<Order_By>;
-  updated_at?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "tickets" */
@@ -2318,7 +2236,31 @@ export type Timestamptz_Comparison_Exp = {
 export type User_Roles = {
   __typename?: 'user_roles';
   content: Scalars['String']['output'];
+  /** An array relationship */
+  users: Array<Users>;
+  /** An aggregate relationship */
+  users_aggregate: Users_Aggregate;
   value: Scalars['String']['output'];
+};
+
+
+/** columns and relationships of "user_roles" */
+export type User_RolesUsersArgs = {
+  distinct_on?: InputMaybe<Array<Users_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Users_Order_By>>;
+  where?: InputMaybe<Users_Bool_Exp>;
+};
+
+
+/** columns and relationships of "user_roles" */
+export type User_RolesUsers_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Users_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Users_Order_By>>;
+  where?: InputMaybe<Users_Bool_Exp>;
 };
 
 /** aggregated selection of "user_roles" */
@@ -2349,6 +2291,8 @@ export type User_Roles_Bool_Exp = {
   _not?: InputMaybe<User_Roles_Bool_Exp>;
   _or?: InputMaybe<Array<User_Roles_Bool_Exp>>;
   content?: InputMaybe<String_Comparison_Exp>;
+  users?: InputMaybe<Users_Bool_Exp>;
+  users_aggregate?: InputMaybe<Users_Aggregate_Bool_Exp>;
   value?: InputMaybe<String_Comparison_Exp>;
 };
 
@@ -2379,6 +2323,7 @@ export type User_Roles_Enum_Comparison_Exp = {
 /** input type for inserting data into table "user_roles" */
 export type User_Roles_Insert_Input = {
   content?: InputMaybe<Scalars['String']['input']>;
+  users?: InputMaybe<Users_Arr_Rel_Insert_Input>;
   value?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -2405,6 +2350,13 @@ export type User_Roles_Mutation_Response = {
   returning: Array<User_Roles>;
 };
 
+/** input type for inserting object relation for remote table "user_roles" */
+export type User_Roles_Obj_Rel_Insert_Input = {
+  data: User_Roles_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<User_Roles_On_Conflict>;
+};
+
 /** on_conflict condition type for table "user_roles" */
 export type User_Roles_On_Conflict = {
   constraint: User_Roles_Constraint;
@@ -2415,6 +2367,7 @@ export type User_Roles_On_Conflict = {
 /** Ordering options when selecting data from "user_roles". */
 export type User_Roles_Order_By = {
   content?: InputMaybe<Order_By>;
+  users_aggregate?: InputMaybe<Users_Aggregate_Order_By>;
   value?: InputMaybe<Order_By>;
 };
 
@@ -2474,12 +2427,16 @@ export type Users = {
   email: Scalars['String']['output'];
   family: Scalars['String']['output'];
   gender: Genders_Enum;
+  /** An object relationship */
+  genderByGender: Genders;
   id: Scalars['uuid']['output'];
   name: Scalars['String']['output'];
   password: Scalars['String']['output'];
   role: User_Roles_Enum;
   surname: Scalars['String']['output'];
   updated_at: Scalars['timestamptz']['output'];
+  /** An object relationship */
+  user_role: User_Roles;
   username: Scalars['String']['output'];
 };
 
@@ -2488,6 +2445,17 @@ export type Users_Aggregate = {
   __typename?: 'users_aggregate';
   aggregate?: Maybe<Users_Aggregate_Fields>;
   nodes: Array<Users>;
+};
+
+export type Users_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Users_Aggregate_Bool_Exp_Count>;
+};
+
+export type Users_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Users_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Users_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "users" */
@@ -2513,10 +2481,37 @@ export type Users_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+/** order by aggregate values of table "users" */
+export type Users_Aggregate_Order_By = {
+  avg?: InputMaybe<Users_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Users_Max_Order_By>;
+  min?: InputMaybe<Users_Min_Order_By>;
+  stddev?: InputMaybe<Users_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Users_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Users_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Users_Sum_Order_By>;
+  var_pop?: InputMaybe<Users_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Users_Var_Samp_Order_By>;
+  variance?: InputMaybe<Users_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "users" */
+export type Users_Arr_Rel_Insert_Input = {
+  data: Array<Users_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Users_On_Conflict>;
+};
+
 /** aggregate avg on columns */
 export type Users_Avg_Fields = {
   __typename?: 'users_avg_fields';
   age?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by avg() on columns of table "users" */
+export type Users_Avg_Order_By = {
+  age?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "users". All fields are combined with a logical 'AND'. */
@@ -2529,12 +2524,14 @@ export type Users_Bool_Exp = {
   email?: InputMaybe<String_Comparison_Exp>;
   family?: InputMaybe<String_Comparison_Exp>;
   gender?: InputMaybe<Genders_Enum_Comparison_Exp>;
+  genderByGender?: InputMaybe<Genders_Bool_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
   password?: InputMaybe<String_Comparison_Exp>;
   role?: InputMaybe<User_Roles_Enum_Comparison_Exp>;
   surname?: InputMaybe<String_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  user_role?: InputMaybe<User_Roles_Bool_Exp>;
   username?: InputMaybe<String_Comparison_Exp>;
 };
 
@@ -2556,12 +2553,14 @@ export type Users_Insert_Input = {
   email?: InputMaybe<Scalars['String']['input']>;
   family?: InputMaybe<Scalars['String']['input']>;
   gender?: InputMaybe<Genders_Enum>;
+  genderByGender?: InputMaybe<Genders_Obj_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   password?: InputMaybe<Scalars['String']['input']>;
   role?: InputMaybe<User_Roles_Enum>;
   surname?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  user_role?: InputMaybe<User_Roles_Obj_Rel_Insert_Input>;
   username?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -2580,6 +2579,20 @@ export type Users_Max_Fields = {
   username?: Maybe<Scalars['String']['output']>;
 };
 
+/** order by max() on columns of table "users" */
+export type Users_Max_Order_By = {
+  age?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  email?: InputMaybe<Order_By>;
+  family?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  password?: InputMaybe<Order_By>;
+  surname?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  username?: InputMaybe<Order_By>;
+};
+
 /** aggregate min on columns */
 export type Users_Min_Fields = {
   __typename?: 'users_min_fields';
@@ -2593,6 +2606,20 @@ export type Users_Min_Fields = {
   surname?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   username?: Maybe<Scalars['String']['output']>;
+};
+
+/** order by min() on columns of table "users" */
+export type Users_Min_Order_By = {
+  age?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  email?: InputMaybe<Order_By>;
+  family?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  password?: InputMaybe<Order_By>;
+  surname?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  username?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "users" */
@@ -2625,12 +2652,14 @@ export type Users_Order_By = {
   email?: InputMaybe<Order_By>;
   family?: InputMaybe<Order_By>;
   gender?: InputMaybe<Order_By>;
+  genderByGender?: InputMaybe<Genders_Order_By>;
   id?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   password?: InputMaybe<Order_By>;
   role?: InputMaybe<Order_By>;
   surname?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
+  user_role?: InputMaybe<User_Roles_Order_By>;
   username?: InputMaybe<Order_By>;
 };
 
@@ -2689,16 +2718,31 @@ export type Users_Stddev_Fields = {
   age?: Maybe<Scalars['Float']['output']>;
 };
 
+/** order by stddev() on columns of table "users" */
+export type Users_Stddev_Order_By = {
+  age?: InputMaybe<Order_By>;
+};
+
 /** aggregate stddev_pop on columns */
 export type Users_Stddev_Pop_Fields = {
   __typename?: 'users_stddev_pop_fields';
   age?: Maybe<Scalars['Float']['output']>;
 };
 
+/** order by stddev_pop() on columns of table "users" */
+export type Users_Stddev_Pop_Order_By = {
+  age?: InputMaybe<Order_By>;
+};
+
 /** aggregate stddev_samp on columns */
 export type Users_Stddev_Samp_Fields = {
   __typename?: 'users_stddev_samp_fields';
   age?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_samp() on columns of table "users" */
+export type Users_Stddev_Samp_Order_By = {
+  age?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "users" */
@@ -2729,6 +2773,11 @@ export type Users_Stream_Cursor_Value_Input = {
 export type Users_Sum_Fields = {
   __typename?: 'users_sum_fields';
   age?: Maybe<Scalars['Int']['output']>;
+};
+
+/** order by sum() on columns of table "users" */
+export type Users_Sum_Order_By = {
+  age?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "users" */
@@ -2774,16 +2823,31 @@ export type Users_Var_Pop_Fields = {
   age?: Maybe<Scalars['Float']['output']>;
 };
 
+/** order by var_pop() on columns of table "users" */
+export type Users_Var_Pop_Order_By = {
+  age?: InputMaybe<Order_By>;
+};
+
 /** aggregate var_samp on columns */
 export type Users_Var_Samp_Fields = {
   __typename?: 'users_var_samp_fields';
   age?: Maybe<Scalars['Float']['output']>;
 };
 
+/** order by var_samp() on columns of table "users" */
+export type Users_Var_Samp_Order_By = {
+  age?: InputMaybe<Order_By>;
+};
+
 /** aggregate variance on columns */
 export type Users_Variance_Fields = {
   __typename?: 'users_variance_fields';
   age?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by variance() on columns of table "users" */
+export type Users_Variance_Order_By = {
+  age?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'. */
@@ -2829,7 +2893,7 @@ export type GetUsersQueryVariables = Exact<{
 }>;
 
 
-export type GetUsersQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: any, created_at: any, updated_at: any, username: string, password: string, name: string, surname: string, family: string, email: string, age: number, gender: Genders_Enum, role: User_Roles_Enum }>, users_aggregate: { __typename?: 'users_aggregate', aggregate?: { __typename?: 'users_aggregate_fields', count: number } | null } };
+export type GetUsersQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: any, created_at: any, updated_at: any, username: string, name: string, surname: string, family: string, email: string, age: number, gender: Genders_Enum, role: User_Roles_Enum, user_gender: { __typename?: 'genders', value: string, content: string }, user_role: { __typename?: 'user_roles', value: string, content: string } }>, users_aggregate: { __typename?: 'users_aggregate', aggregate?: { __typename?: 'users_aggregate_fields', count: number } | null } };
 
 export type EnumeratorsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2913,14 +2977,21 @@ export const GetUsersDocument = gql`
     created_at
     updated_at
     username
-    password
     name
     surname
     family
     email
     age
     gender
+    user_gender: genderByGender {
+      value
+      content
+    }
     role
+    user_role {
+      value
+      content
+    }
   }
   users_aggregate(where: $condition) {
     aggregate {

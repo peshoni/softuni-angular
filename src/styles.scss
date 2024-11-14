@@ -43,5 +43,8 @@ body {
         font-size: 16px;
         color: mat.m2-get-color-from-palette($warn, 800);
     }
+    .hiddenElement {
+        display: none;
+    }
 }
 // #endregion Common styles 
