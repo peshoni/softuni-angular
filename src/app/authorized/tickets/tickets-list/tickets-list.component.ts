@@ -4,9 +4,18 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { TicketsListDataSource, TicketsListItem } from './tickets-list-datasource';
 import { addTableRowAnimation } from '../../../animations/add-row-animation';
+import { AuthorizationService } from '../../../services/authorization.service';
+import { MaterialModule } from '../../../modules/material/material.module';
 
 @Component({
   selector: 'app-tickets-list',
+  standalone: true,
+  imports: [
+    MaterialModule
+  ],
+  providers: [
+    AuthorizationService
+  ],
   templateUrl: './tickets-list.component.html',
   styleUrl: './tickets-list.component.scss',
   animations: [addTableRowAnimation],

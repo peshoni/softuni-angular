@@ -69,6 +69,7 @@ hasura migrate squash --skip-update-check --database-name="default" --delete-sou
 hasura migrate squash --skip-update-check --database-name="default" --delete-source --name "projects" --from 1730988852144
 hasura migrate squash --skip-update-check --database-name="default" --delete-source --name "users" --from 1730989449789
 
+npm run hasura metadata export
 
 hasura metadata apply
 hasura migrate apply --database-name <database-name>

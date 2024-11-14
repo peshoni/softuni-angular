@@ -1,18 +1,19 @@
 import { DataSource } from '@angular/cdk/collections';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatSort, Sort } from '@angular/material/sort';
 import { map, mergeAll, switchMap, tap } from 'rxjs/operators';
-import { Observable, of as observableOf, merge, of, BehaviorSubject } from 'rxjs';
+import { Observable, of as observableOf, merge, of, BehaviorSubject, combineLatest } from 'rxjs';
 import { GetProjectsQuery, Order_By, Projects, Projects_Order_By } from '../../../../generated/graphql';
 import { QueryRef } from 'apollo-angular';
 import { ProjectsService } from '../projects.service';
+import { ApolloQueryResult } from '@apollo/client/core';
 
 /**
  * Data source for the ProjectsList view. This class should
  * encapsulate all logic for fetching and manipulating the displayed data
  * (including sorting, pagination, and filtering).
  */
-export class ProjectsListDataSource extends DataSource<GetProjectsQuery['projects']> {
+export class ProjectsListDataSource extends DataSource<GetProjectsQuery["projects"]> {
   data$?: Observable<GetProjectsQuery['projects']>;  // ProjectsListItem[] = EXAMPLE_DATA;
   paginator?: MatPaginator;
   sort?: MatSort;
@@ -29,7 +30,10 @@ export class ProjectsListDataSource extends DataSource<GetProjectsQuery['project
    * the returned stream emits new items.
    * @returns A stream of the items to be rendered.
    */
-  connect(): Observable<GetProjectsQuery['projects'] | any> {
+
+  //[ApolloQueryResult<GetProjectsQuery>  , PageEvent, Sort]  
+  //Observable<ApolloQueryResult<GetProjectsQuery['projects']> | null> 
+  connect(): GetProjectsQuery['projects'] | any{//Observable<GetProjectsQuery['projects'] >
     if (this.paginator && this.sort) {
       const limit: number = this.paginator.pageSize;
       const offset: number = this.paginator.pageIndex * this.paginator.pageSize;
@@ -44,21 +48,22 @@ export class ProjectsListDataSource extends DataSource<GetProjectsQuery['project
       // stream for the data-table to consume.
       const dataMutations = [
         this.queryRef.valueChanges,
-        // this.paginator.page,
+        //  this.paginator.page,
         // this.sort.sortChange,
       ];
 
-      return merge(...dataMutations, this.paginator.page, this.sort.sortChange)
+      return merge(this.queryRef.valueChanges, this.paginator.page, this.sort.sortChange)
         .pipe(
           tap(() => console.log('loading....')/* this.loading.next(true)*/),
-          switchMap((fromWhere) => {
+          switchMap((fromWhere: ApolloQueryResult<GetProjectsQuery> | PageEvent | Sort) => {
+            //   console.log(fromWhere);
             let order: any = new Object({});
-            if (this.sort && this.sort.active && this.sort.active.length > 0) {
-              const field = this.sort.active;
-              this.sort.direction.indexOf('sc') !== -1
-                ? (order[this.sort.active] = this.sort.direction)
-                : (order = {});
-            }
+              if ( this.sort?.active && this.sort.active.length > 0) {
+                const field = this.sort.active;
+                this.sort.direction.indexOf('sc') !== -1
+                  ? (order[this.sort.active] = this.sort.direction)
+                  : (order = {});
+              }
 
             if (this.queryRef && this.paginator && Object.keys(fromWhere).indexOf('data') < 0) {
               return this.queryRef.refetch({
@@ -68,21 +73,20 @@ export class ProjectsListDataSource extends DataSource<GetProjectsQuery['project
                 orderBy: order,
               });
             } else {
-
               return this.queryRef?.valueChanges ?? of();
             }
           }),
           map(({ data, loading, errors }) => {
-            console.log(data)
+            console.log(data);
             // this.loading.next(loading);
-            console.log('stop loading')
+            console.log('stop loading');
             if (errors) {
               console.log(errors);
               console.log(data);
               const errorMessage = errors[0].message;
               console.log(errorMessage);
               if (errorMessage.includes('query_root')) {
-                console.log('query_root')
+                console.log('query_root');
               }
               // this.counter.next(0);
               console.log(errorMessage);
@@ -92,16 +96,16 @@ export class ProjectsListDataSource extends DataSource<GetProjectsQuery['project
             }
             this.counter.next(data.projects_aggregate.aggregate?.count ?? 0);
             this.currentPageData.next(data.projects);
-            return data.projects;
+            return data.projects;// as GetProjectsQuery['projects'];
           }
           )
         );
 
-
     } else {
       console.log('Please set the paginator and sort on the data source before connecting.');
-      return of([] as any as GetProjectsQuery['projects']);
-      //return undefined
+      //  return of([] as any as GetProjectsQuery['projects'][]);
+      throw Error('Please set the paginator and sort on the data source before connecting.');
+      //return of([]);
     }
   }
 

@@ -1,10 +1,7 @@
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
-import { MatTableModule } from '@angular/material/table';
-
 import { TicketsListComponent } from './tickets-list.component';
+import { MaterialModule } from '../../../modules/material/material.module';
 
 describe('TicketsListComponent', () => {
   let component: TicketsListComponent;
@@ -12,12 +9,10 @@ describe('TicketsListComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [TicketsListComponent],
-      imports: [
+      declarations: [],
+      imports: [TicketsListComponent,
         NoopAnimationsModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatTableModule,
+        MaterialModule,
       ]
     }).compileComponents();
   }));

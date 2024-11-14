@@ -1,7 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { LandingComponent } from './landing.component';
-import { PublicModule } from '../public.module';
 
 describe('LandingComponent', () => {
   let component: LandingComponent;
@@ -9,8 +7,7 @@ describe('LandingComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PublicModule],
-      declarations:[LandingComponent]
+      imports:[LandingComponent]
     })
     .compileComponents();
 

@@ -1,10 +1,8 @@
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
-import { MatTableModule } from '@angular/material/table';
-
 import { ProjectsListComponent } from './projects-list.component';
+import { MaterialModule } from '../../../modules/material/material.module';
+import { GetProjectsGQL } from '../../../../generated/graphql';
 
 describe('ProjectsListComponent', () => {
   let component: ProjectsListComponent;
@@ -12,12 +10,12 @@ describe('ProjectsListComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ProjectsListComponent],
+      declarations: [],
       imports: [
+        ProjectsListComponent,
         NoopAnimationsModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatTableModule,
+        MaterialModule,
+        GetProjectsGQL
       ]
     }).compileComponents();
   }));

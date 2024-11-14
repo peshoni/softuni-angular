@@ -1,10 +1,7 @@
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
-import { MatTableModule } from '@angular/material/table';
-
 import { UsersListComponent } from './users-list.component';
+import { MaterialModule } from '../../../modules/material/material.module';
 
 describe('UsersListComponent', () => {
   let component: UsersListComponent;
@@ -12,12 +9,11 @@ describe('UsersListComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [UsersListComponent],
+      declarations: [],
       imports: [
+        UsersListComponent,
         NoopAnimationsModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatTableModule,
+        MaterialModule,
       ]
     }).compileComponents();
   }));
