@@ -1,0 +1,26 @@
+<form [formGroup]="form" novalidate (ngSubmit)="confirm()" class="dialog-container">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>{{ title }}</mat-card-title>
+        </mat-card-header>
+
+        <!-- Inputs -->
+        <mat-card-content>
+            <div class="inputs-wrapper">
+            </div>
+        </mat-card-content>
+
+        <!-- Actions -->
+        <mat-card-actions>
+            <div class="form-actions">
+                <button type="button" mat-raised-button (click)="cancel()" [disabled]="submitted$ | async">
+                    Cancel
+                </button>
+                <button mat-raised-button color="primary" type="submit"
+                    [disabled]="(submitted$ | async) || form.invalid">
+                    Submit
+                </button>
+            </div>
+        </mat-card-actions>
+    </mat-card>
+</form>

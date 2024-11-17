@@ -4,6 +4,7 @@ import { ProjectsListComponent } from "./_authorized/projects/projects-list/proj
 import { TicketsListComponent } from "./_authorized/tickets/tickets-list/tickets-list.component";
 import { UsersListComponent } from "./_authorized/users/users-list/users-list.component";
 import { LandingComponent } from "./_public/landing/landing.component";
+import { ProjectDetailsComponent } from "./_authorized/projects/project-details/project-details.component";
  
 export const routes: Routes = [
   { path: '', redirectTo: '', pathMatch: 'full' },
@@ -25,11 +26,10 @@ export const routes: Routes = [
         path: 'projects',
         component: ProjectsListComponent
       },
-      // {
-      //   path: 'projects/details/:id',
-      //   component: ProjectDetailsComponent
-      //   activatedRoute.snapshot.params['id']
-      // },
+      {
+        path: 'projects/details/:id',
+        component: ProjectDetailsComponent
+      },
       {
         path: 'tickets',
         component: TicketsListComponent

@@ -35,6 +35,8 @@ body {
 }
 
 // #region Common styles
+
+$max-mobile-width: 600px;
 .table {
     margin: 0;
     .no-data-row {
@@ -47,4 +49,49 @@ body {
         display: none;
     }
 }
-// #endregion Common styles 
+
+.custom-dialog-container,
+.mat-mdc-card {
+    .mat-mdc-card-header {
+        display: flex;
+        justify-content: center;
+        padding-bottom: 8px !important;
+    }
+
+    .inputs-wrapper {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+
+        @media (max-width: $max-mobile-width) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .form-actions {
+        width: 100%;
+        margin: 0;
+        padding: 6px 4px;
+        gap: 1rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+
+        button {
+            min-width: 120px;
+        }
+
+        @media (max-width: $max-mobile-width) {
+            flex-direction: column;
+
+            button {
+                min-width: 100%;
+            }
+        }
+    }
+}
+
+.custom-dialog-backdrop {
+    background: rgba(0, 0, 0, 0.5);
+}
+// #endregion Common styles

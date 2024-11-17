@@ -25,7 +25,7 @@ export class UsersListComponent implements AfterViewInit {
   dataSource = new UsersListDataSource();
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'username'];
+  displayedColumns = ['id', 'username', 'name','family','actions'];
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;

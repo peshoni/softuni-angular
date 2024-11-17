@@ -12,6 +12,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
 
 const materialModules = [
   CommonModule,
@@ -30,7 +32,12 @@ const materialModules = [
   MatSortModule,
   MatPaginatorModule,
   MatProgressBarModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatMenuModule,
+
+  // Dialogs and forms
+  MatCardModule,
+  MatFormFieldModule,
 ];
 @NgModule({
   imports: [...materialModules

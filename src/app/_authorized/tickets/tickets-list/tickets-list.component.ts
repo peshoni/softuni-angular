@@ -3,17 +3,17 @@ import { MatTable } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { TicketsListDataSource } from './tickets-list-datasource';
-import { addTableRowAnimation } from '../../../animations/add-row-animation';
-import { AuthorizationService } from '../../../services/authorization.service';
+import { addTableRowAnimation } from '../../../animations/add-row-animation'; 
 import { MaterialModule } from '../../../modules/material/material.module';
 import { GetTicketsQuery } from '../../../../generated/graphql';
 import { TableNavbarComponent } from '../../shared/table-navbar/table-navbar.component';
+import { TicketsService } from '../tickets.service';
 
 @Component({
   selector: 'app-tickets-list',
   standalone: true,
   imports: [MaterialModule, TableNavbarComponent],
-  providers: [ ],
+  providers: [TicketsService ],
   templateUrl: './tickets-list.component.html',
   styleUrl: './tickets-list.component.scss',
   animations: [addTableRowAnimation],
@@ -25,7 +25,7 @@ export class TicketsListComponent implements AfterViewInit {
   dataSource = new TicketsListDataSource();
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id'];
+  displayedColumns = ['id','actions'];
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;

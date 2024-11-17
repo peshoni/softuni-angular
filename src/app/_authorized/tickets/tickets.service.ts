@@ -1,9 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { GetTicketsGQL, Tickets_Bool_Exp, Tickets_Order_By } from '../../../generated/graphql';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable( )
 export class TicketsService {
   private readonly getTicketsGQL: GetTicketsGQL = inject(GetTicketsGQL);
 
