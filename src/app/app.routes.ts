@@ -1,10 +1,10 @@
 import { Routes } from "@angular/router";
 import { authGuardFn } from "./guards/auth.guard";
-import { ProjectsListComponent } from "./authorized/projects/projects-list/projects-list.component";
-import { TicketsListComponent } from "./authorized/tickets/tickets-list/tickets-list.component";
-import { UsersListComponent } from "./authorized/users/users-list/users-list.component";
-import { LandingComponent } from "./public/landing/landing.component";
-
+import { ProjectsListComponent } from "./_authorized/projects/projects-list/projects-list.component";
+import { TicketsListComponent } from "./_authorized/tickets/tickets-list/tickets-list.component";
+import { UsersListComponent } from "./_authorized/users/users-list/users-list.component";
+import { LandingComponent } from "./_public/landing/landing.component";
+ 
 export const routes: Routes = [
   { path: '', redirectTo: '', pathMatch: 'full' },
   {

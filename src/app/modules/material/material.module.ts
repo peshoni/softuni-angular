@@ -10,7 +10,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 const materialModules = [
   CommonModule,
@@ -28,6 +29,8 @@ const materialModules = [
   MatPaginatorModule,
   MatSortModule,
   MatPaginatorModule,
+  MatProgressBarModule,
+  MatProgressSpinnerModule
 ];
 @NgModule({
   imports: [...materialModules

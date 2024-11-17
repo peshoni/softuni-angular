@@ -23,6 +23,10 @@ mat-sidenav {
 
     mat-sidenav {
         top: $toolbarHeight !important;
+
+        .selected{ 
+            background: rgba(lightgray, .5) ;
+        }
     }
 
     mat-list-item { 
@@ -35,6 +39,6 @@ mat-sidenav {
     } 
 
     mat-sidenav-content {
-        margin: 8px;
+        padding: 8px;
     }
 }

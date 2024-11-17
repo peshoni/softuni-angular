@@ -1,9 +1,9 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { map, Observable, shareReplay } from 'rxjs';
 import { EnumeratorsGQL, EnumeratorsQuery } from '../generated/graphql';
 import { AuthorizationService } from './services/authorization.service';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { HttpHeaders } from '@angular/common/http';
 import { InMemoryCache } from '@apollo/client/cache';
 import { ApolloClientOptions } from '@apollo/client/core';
@@ -50,15 +50,17 @@ export function createApollo(): ApolloClientOptions<any> {
   styleUrl: './app.component.scss'
 })
 
-export class AppComponent {
-
+export class AppComponent implements OnInit {
   isHandset$: Observable<boolean>;
-  title = 'softuni-tickets-app';
+  title = 'Softuni Tickets App';
+  currentUrl: string = '';
 
   constructor(
     public authorizationService: AuthorizationService,
     private readonly breakpointObserver: BreakpointObserver,
-    private readonly enumeratorsGQL: EnumeratorsGQL) {
+    private readonly enumeratorsGQL: EnumeratorsGQL,
+    private readonly router: Router
+  ) {
 
     this.enumeratorsGQL.fetch().subscribe(({ data }) => {
       const enums: EnumeratorsQuery = data;
@@ -76,6 +78,15 @@ export class AppComponent {
         map((result) => result.matches),
         shareReplay()
       );
+  }
+  ngOnInit(): void {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        console.log(event.url)
+        this.currentUrl = event.url.split('/')[1];
+      }
+
+    })
   }
 }
 

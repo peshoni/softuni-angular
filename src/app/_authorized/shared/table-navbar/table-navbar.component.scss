@@ -1,0 +1,14 @@
+.table-navbar-wrapper {
+    margin-bottom: 8px;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .table-navbar-label {
+        width: 100%;
+        padding: 4px;
+        font-size: larger;
+        font-weight: 500;
+    }
+}
