@@ -1,63 +1,112 @@
-import { Component, Inject, inject, Optional } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '../../../modules/material/material.module';
-import { BehaviorSubject } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DetailsBaseComponent } from '../../shared/details-base/details-base.component';
+import { ProjectsService } from '../projects.service';
+import { ApolloQueryResult } from '@apollo/client/core';
+import { GetProjectByIdQuery, Project_Statuses_Enum, Projects_Insert_Input } from '../../../../generated/graphql';
+import { MatSnackBarConfig, MatSnackBarDismiss } from '@angular/material/snack-bar';
+import { PathSegments } from '../../../app.routes';
+import { CommonUtils, SnackbarTypes } from '../../../utils/common-utils';
+import { FormsService } from '../../../services/forms.service';
 @Component({
   selector: 'app-project-details',
   standalone: true,
   imports: [ReactiveFormsModule, MaterialModule, MatDialogModule],
-  providers: [],
+  providers: [ProjectsService],
   templateUrl: './project-details.component.html',
   styleUrl: './project-details.component.scss'
 })
-export class ProjectDetailsComponent {
-  private readonly router: Router = inject(Router);
-  private readonly formBuilder: FormBuilder = inject(FormBuilder);
-  form!: FormGroup;
-  title: string = '';
-  private isCreateMode: boolean;
+export class ProjectDetailsComponent extends DetailsBaseComponent<ProjectDetailsComponent> implements OnInit {
+  private readonly projectsService: ProjectsService = inject(ProjectsService);
+  private readonly formsService: FormsService = inject(FormsService);
+  statuses = Project_Statuses_Enum;
+  readOnly = false
 
-  private readonly submitted: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  submitted$ = this.submitted.asObservable();
-  //@Optional() @Inject(MD_DIALOG_DATA) data: any
-  constructor(private readonly activatedRoute: ActivatedRoute,
-    @Optional() @Inject(MAT_DIALOG_DATA) data: any,
-    @Optional() public dialogRef: MatDialogRef<ProjectDetailsComponent>) {
 
-    console.log(data)
-    console.log(dialogRef);
-    const projectID = this.activatedRoute.snapshot.params['id'];
-    this.isCreateMode = projectID
-    if (projectID && !data ) {
-      this.title = 'Preview...';
-      this.isCreateMode = false;
-    } else {
-      this.title = 'Create...';
-      this.isCreateMode = true;
-    }
+  ngOnInit(): void {
+
 
     this.form = this.formBuilder.group({
       //declare inputs here..
-      alabala: []
+      id: [null, Validators.required],
+      status: [null, Validators.required],
+      label: [null, Validators.required],
+      description: [null, Validators.required],
     });
+
+    this.title = this.isCreateMode ? 'Add project details' : 'Project details';
+    if (this.isCreateMode) {
+
+
+    } else {
+      this.projectsService.getProjectById(this.paramId).subscribe((response: ApolloQueryResult<GetProjectByIdQuery>) => {
+        if (response.error || response.errors) {
+          const config: MatSnackBarConfig<any> = CommonUtils.getSnackbarConfig(SnackbarTypes.WARN);
+          const ref = this.matSnackBar.open('Resource wasn\'t found.', '', config);
+
+          ref.afterDismissed().subscribe((dismiss: MatSnackBarDismiss) => {
+            this.router.navigate([PathSegments.PROJECTS])
+          })
+        } else {
+          const project = response.data.projects[0];
+
+          this.currentUserId = "62dd11ed-34a8-4635-bd24-4b1cf4f4ab46+++";
+          this.isInPreviewMode = !this.isCreateMode && (this.currentUserId !== project.owner.id);
+
+          if (this.currentUserId === project.owner.id) {
+            console.log('CanEdit')
+          } else {
+            console.log('Preview mode...')
+
+            this.readOnly = true
+            //   this.form.disable();
+            //  this.formsService.disableAllFromControlsRecursively(this.form)  
+          }
+
+          console.log('hydrate form..')
+          console.log(project)
+          this.form.patchValue(project)
+        }
+      })
+    }
   }
 
   cancel() {
     if (this.dialogRef) {
       this.dialogRef.close({ status: false });
-    } 
-     else {
-      // do nothing .. this.router.navigate(['projects']);
+    }
+    else {
+      // do nothing .. 
+      this.router.navigate([PathSegments.PROJECTS]);
     }
   }
-  confirm() { 
+  confirm() {
+    this.formsService.validateFormGroupControlsRecursively(this.form);
+    if (this.form.invalid) {
+      return;
+    }
+
+    const formValue = this.form.getRawValue();
+    console.log(formValue)
+
 
     if (this.dialogRef) {
-      this.dialogRef.close({ status: true });
+      // user id "62dd11ed-34a8-4635-bd24-4b1cf4f4ab46"
+      // insert and close
+      // this.dialogRef.close({ status: true });
+      // const insert:Projects_Insert_Input = { 
+      //   label: '',
+      //   owner_id : '', // this user
+      //   status: '',
+      //   description: '', 
+      // }
+
     } else {
-      this.router.navigate(['projects']);
+      this.submitted.set(true) 
+
+      //this.router.navigate([PathSegments.PROJECTS]);
     }
   }
 }

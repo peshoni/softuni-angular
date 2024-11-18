@@ -1,10 +1,13 @@
 import { inject, Injectable } from '@angular/core';
-import { Exact, GetProjectsGQL, GetProjectsQuery, InputMaybe, Projects_Bool_Exp, Projects_Order_By, Scalars } from '../../../generated/graphql';
+import { Exact, GetProjectByIdGQL, GetProjectByIdQuery, GetProjectsGQL, GetProjectsQuery, InputMaybe, Projects_Bool_Exp, Projects_Order_By, Scalars } from '../../../generated/graphql';
 import { QueryRef } from 'apollo-angular';
+import { ApolloQueryResult } from '@apollo/client/core';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class ProjectsService {
   private readonly getProjectsGQL: GetProjectsGQL = inject(GetProjectsGQL);
+  private readonly getProjectByIdGQL: GetProjectByIdGQL = inject(GetProjectByIdGQL);
 
   /**
    * Gets page with the projects data objects.
@@ -29,5 +32,17 @@ export class ProjectsService {
         pollInterval: 5 * 1000,
       }
     );
+  }
+  /**
+   * Gets project by ID
+   * @param id 
+   * @returns 
+   */
+  getProjectById(id: string): Observable<ApolloQueryResult<GetProjectByIdQuery>> {
+    return this.getProjectByIdGQL.fetch({ id }, {
+      fetchPolicy: 'cache-first',
+      errorPolicy: 'all',
+      partialRefetch: true
+    });
   }
 }

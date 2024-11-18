@@ -18,12 +18,12 @@ module.exports = {
           "typescript-operations",
           "typescript-apollo-angular",
         ],
-        config: {
+        config: { //https://the-guild.dev/graphql/codegen/plugins/typescript/typescript
           skipTypename: false,
           withHooks: true,
           withHOC: false,
           withComponent: false,
-          constEnums: true
+          constEnums: false, // removes const from enums when generates types
         },
       },
       "./graphql.schema.json": {

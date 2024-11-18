@@ -4,19 +4,19 @@
 <div class="mat-elevation-z2 table">
   <table mat-table class="full-width-table" matSort aria-label="Elements">
     <!-- Id Column -->
-    <ng-container matColumnDef="id" sticky>
+    <ng-container matColumnDef="id" sticky >
       <th mat-header-cell *matHeaderCellDef>Id</th>
-      <td mat-cell *matCellDef="let row">{{row.id}}</td>
+      <td mat-cell class="aa" *matCellDef="let row">{{row.id.split('-')[0]}}</td>
+    </ng-container>
+    <!-- status Owner -->
+    <ng-container matColumnDef="owner">
+      <th mat-header-cell *matHeaderCellDef>owner</th>
+      <td mat-cell *matCellDef="let row">{{row.owner.name}} {{row.owner.family}}</td>
     </ng-container>
     <!-- status Column -->
     <ng-container matColumnDef="status">
       <th mat-header-cell *matHeaderCellDef>status</th>
       <td mat-cell *matCellDef="let row">{{row.status}}</td>
-    </ng-container>
-    <!-- code Column -->
-    <ng-container matColumnDef="code">
-      <th mat-header-cell *matHeaderCellDef>code</th>
-      <td mat-cell *matCellDef="let row">{{row.code}}</td>
     </ng-container>
     <!-- label Column -->
     <ng-container matColumnDef="label">
@@ -30,11 +30,11 @@
         <button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" mat-icon-button>
           <mat-icon>more_vert</mat-icon>
         </button>
-        <mat-menu #menu="matMenu"> 
-          <button mat-menu-item  (click)="showDetails(row)">
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="showDetails(row)">
             <mat-icon>edit</mat-icon>
             <!-- TODO Preview or edit -->
-            <span  >edit</span>
+            <span>edit</span>
           </button>
           <button mat-menu-item>
             <mat-icon>delete</mat-icon>

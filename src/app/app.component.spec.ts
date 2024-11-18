@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { EnumeratorsGQL } from '../generated/graphql';
 
 describe('AppComponent', () => {
   beforeEach(async () => {

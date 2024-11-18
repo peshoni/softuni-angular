@@ -79,12 +79,12 @@ export type String_Comparison_Exp = {
 };
 
 /** ordering argument of a cursor */
-export const enum Cursor_Ordering {
+export enum Cursor_Ordering {
   /** ascending ordering of the cursor */
   Asc = 'ASC',
   /** descending ordering of the cursor */
   Desc = 'DESC'
-};
+}
 
 /** columns and relationships of "genders" */
 export type Genders = {
@@ -125,19 +125,19 @@ export type Genders_Bool_Exp = {
 };
 
 /** unique or primary key constraints on table "genders" */
-export const enum Genders_Constraint {
+export enum Genders_Constraint {
   /** unique or primary key constraint on columns "value" */
   GendersPkey = 'genders_pkey'
-};
+}
 
-export const enum Genders_Enum {
+export enum Genders_Enum {
   /** gender-female */
   Female = 'female',
   /** gender-male */
   Male = 'male',
   /** gender-other */
   Other = 'other'
-};
+}
 
 /** Boolean expression to compare columns of type "genders_enum". All fields are combined with logical 'AND'. */
 export type Genders_Enum_Comparison_Exp = {
@@ -203,12 +203,12 @@ export type Genders_Pk_Columns_Input = {
 };
 
 /** select columns of table "genders" */
-export const enum Genders_Select_Column {
+export enum Genders_Select_Column {
   /** column name */
   Content = 'content',
   /** column name */
   Value = 'value'
-};
+}
 
 /** input type for updating data in table "genders" */
 export type Genders_Set_Input = {
@@ -231,12 +231,12 @@ export type Genders_Stream_Cursor_Value_Input = {
 };
 
 /** update columns of table "genders" */
-export const enum Genders_Update_Column {
+export enum Genders_Update_Column {
   /** column name */
   Content = 'content',
   /** column name */
   Value = 'value'
-};
+}
 
 export type Genders_Updates = {
   /** sets the columns of the filtered rows to the given values */
@@ -733,7 +733,7 @@ export type Mutation_RootUpdate_Users_ManyArgs = {
 };
 
 /** column ordering options */
-export const enum Order_By {
+export enum Order_By {
   /** in ascending order, nulls last */
   Asc = 'asc',
   /** in ascending order, nulls first */
@@ -746,7 +746,7 @@ export const enum Order_By {
   DescNullsFirst = 'desc_nulls_first',
   /** in descending order, nulls last */
   DescNullsLast = 'desc_nulls_last'
-};
+}
 
 /** columns and relationships of "project_statuses" */
 export type Project_Statuses = {
@@ -787,19 +787,19 @@ export type Project_Statuses_Bool_Exp = {
 };
 
 /** unique or primary key constraints on table "project_statuses" */
-export const enum Project_Statuses_Constraint {
+export enum Project_Statuses_Constraint {
   /** unique or primary key constraint on columns "value" */
   ProjectStatusesPkey = 'project_statuses_pkey'
-};
+}
 
-export const enum Project_Statuses_Enum {
+export enum Project_Statuses_Enum {
   /** project-done */
   Done = 'done',
   /** project-in-progress */
   InProgress = 'in_progress',
   /** project-open */
   Open = 'open'
-};
+}
 
 /** Boolean expression to compare columns of type "project_statuses_enum". All fields are combined with logical 'AND'. */
 export type Project_Statuses_Enum_Comparison_Exp = {
@@ -858,12 +858,12 @@ export type Project_Statuses_Pk_Columns_Input = {
 };
 
 /** select columns of table "project_statuses" */
-export const enum Project_Statuses_Select_Column {
+export enum Project_Statuses_Select_Column {
   /** column name */
   Content = 'content',
   /** column name */
   Value = 'value'
-};
+}
 
 /** input type for updating data in table "project_statuses" */
 export type Project_Statuses_Set_Input = {
@@ -886,12 +886,12 @@ export type Project_Statuses_Stream_Cursor_Value_Input = {
 };
 
 /** update columns of table "project_statuses" */
-export const enum Project_Statuses_Update_Column {
+export enum Project_Statuses_Update_Column {
   /** column name */
   Content = 'content',
   /** column name */
   Value = 'value'
-};
+}
 
 export type Project_Statuses_Updates = {
   /** sets the columns of the filtered rows to the given values */
@@ -903,7 +903,6 @@ export type Project_Statuses_Updates = {
 /** columns and relationships of "projects" */
 export type Projects = {
   __typename?: 'projects';
-  code: Scalars['String']['output'];
   created_at: Scalars['timestamptz']['output'];
   description: Scalars['String']['output'];
   id: Scalars['uuid']['output'];
@@ -942,7 +941,6 @@ export type Projects_Bool_Exp = {
   _and?: InputMaybe<Array<Projects_Bool_Exp>>;
   _not?: InputMaybe<Projects_Bool_Exp>;
   _or?: InputMaybe<Array<Projects_Bool_Exp>>;
-  code?: InputMaybe<String_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   description?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
@@ -954,16 +952,13 @@ export type Projects_Bool_Exp = {
 };
 
 /** unique or primary key constraints on table "projects" */
-export const enum Projects_Constraint {
-  /** unique or primary key constraint on columns "code" */
-  ProjectsCodeKey = 'projects_code_key',
+export enum Projects_Constraint {
   /** unique or primary key constraint on columns "id" */
   ProjectsPkey = 'projects_pkey'
-};
+}
 
 /** input type for inserting data into table "projects" */
 export type Projects_Insert_Input = {
-  code?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
@@ -977,7 +972,6 @@ export type Projects_Insert_Input = {
 /** aggregate max on columns */
 export type Projects_Max_Fields = {
   __typename?: 'projects_max_fields';
-  code?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
@@ -989,7 +983,6 @@ export type Projects_Max_Fields = {
 /** aggregate min on columns */
 export type Projects_Min_Fields = {
   __typename?: 'projects_min_fields';
-  code?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
@@ -1016,7 +1009,6 @@ export type Projects_On_Conflict = {
 
 /** Ordering options when selecting data from "projects". */
 export type Projects_Order_By = {
-  code?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   description?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
@@ -1033,9 +1025,7 @@ export type Projects_Pk_Columns_Input = {
 };
 
 /** select columns of table "projects" */
-export const enum Projects_Select_Column {
-  /** column name */
-  Code = 'code',
+export enum Projects_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -1050,11 +1040,10 @@ export const enum Projects_Select_Column {
   Status = 'status',
   /** column name */
   UpdatedAt = 'updated_at'
-};
+}
 
 /** input type for updating data in table "projects" */
 export type Projects_Set_Input = {
-  code?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
@@ -1074,7 +1063,6 @@ export type Projects_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Projects_Stream_Cursor_Value_Input = {
-  code?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
@@ -1085,9 +1073,7 @@ export type Projects_Stream_Cursor_Value_Input = {
 };
 
 /** update columns of table "projects" */
-export const enum Projects_Update_Column {
-  /** column name */
-  Code = 'code',
+export enum Projects_Update_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -1102,7 +1088,7 @@ export const enum Projects_Update_Column {
   Status = 'status',
   /** column name */
   UpdatedAt = 'updated_at'
-};
+}
 
 export type Projects_Updates = {
   /** sets the columns of the filtered rows to the given values */
@@ -1704,10 +1690,10 @@ export type Ticket_Logs_Bool_Exp = {
 };
 
 /** unique or primary key constraints on table "ticket_logs" */
-export const enum Ticket_Logs_Constraint {
+export enum Ticket_Logs_Constraint {
   /** unique or primary key constraint on columns "id" */
   TicketLogsPkey = 'ticket_logs_pkey'
-};
+}
 
 /** input type for inserting data into table "ticket_logs" */
 export type Ticket_Logs_Insert_Input = {
@@ -1775,7 +1761,7 @@ export type Ticket_Logs_Pk_Columns_Input = {
 };
 
 /** select columns of table "ticket_logs" */
-export const enum Ticket_Logs_Select_Column {
+export enum Ticket_Logs_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -1790,7 +1776,7 @@ export const enum Ticket_Logs_Select_Column {
   UpdatedAt = 'updated_at',
   /** column name */
   UserId = 'user_id'
-};
+}
 
 /** input type for updating data in table "ticket_logs" */
 export type Ticket_Logs_Set_Input = {
@@ -1823,7 +1809,7 @@ export type Ticket_Logs_Stream_Cursor_Value_Input = {
 };
 
 /** update columns of table "ticket_logs" */
-export const enum Ticket_Logs_Update_Column {
+export enum Ticket_Logs_Update_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -1838,7 +1824,7 @@ export const enum Ticket_Logs_Update_Column {
   UpdatedAt = 'updated_at',
   /** column name */
   UserId = 'user_id'
-};
+}
 
 export type Ticket_Logs_Updates = {
   /** sets the columns of the filtered rows to the given values */
@@ -1886,12 +1872,12 @@ export type Ticket_Statuses_Bool_Exp = {
 };
 
 /** unique or primary key constraints on table "ticket_statuses" */
-export const enum Ticket_Statuses_Constraint {
+export enum Ticket_Statuses_Constraint {
   /** unique or primary key constraint on columns "value" */
   TicketStatusesPkey = 'ticket_statuses_pkey'
-};
+}
 
-export const enum Ticket_Statuses_Enum {
+export enum Ticket_Statuses_Enum {
   /** ticket-done */
   Done = 'done',
   /** ticket-in-progress */
@@ -1900,7 +1886,7 @@ export const enum Ticket_Statuses_Enum {
   InTest = 'in_test',
   /** ticket-new */
   New = 'new'
-};
+}
 
 /** Boolean expression to compare columns of type "ticket_statuses_enum". All fields are combined with logical 'AND'. */
 export type Ticket_Statuses_Enum_Comparison_Exp = {
@@ -1959,12 +1945,12 @@ export type Ticket_Statuses_Pk_Columns_Input = {
 };
 
 /** select columns of table "ticket_statuses" */
-export const enum Ticket_Statuses_Select_Column {
+export enum Ticket_Statuses_Select_Column {
   /** column name */
   Content = 'content',
   /** column name */
   Value = 'value'
-};
+}
 
 /** input type for updating data in table "ticket_statuses" */
 export type Ticket_Statuses_Set_Input = {
@@ -1987,12 +1973,12 @@ export type Ticket_Statuses_Stream_Cursor_Value_Input = {
 };
 
 /** update columns of table "ticket_statuses" */
-export const enum Ticket_Statuses_Update_Column {
+export enum Ticket_Statuses_Update_Column {
   /** column name */
   Content = 'content',
   /** column name */
   Value = 'value'
-};
+}
 
 export type Ticket_Statuses_Updates = {
   /** sets the columns of the filtered rows to the given values */
@@ -2005,7 +1991,6 @@ export type Ticket_Statuses_Updates = {
 export type Tickets = {
   __typename?: 'tickets';
   assignee_id?: Maybe<Scalars['uuid']['output']>;
-  code: Scalars['String']['output'];
   created_at: Scalars['timestamptz']['output'];
   description: Scalars['String']['output'];
   id: Scalars['uuid']['output'];
@@ -2043,7 +2028,6 @@ export type Tickets_Bool_Exp = {
   _not?: InputMaybe<Tickets_Bool_Exp>;
   _or?: InputMaybe<Array<Tickets_Bool_Exp>>;
   assignee_id?: InputMaybe<Uuid_Comparison_Exp>;
-  code?: InputMaybe<String_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   description?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
@@ -2054,17 +2038,14 @@ export type Tickets_Bool_Exp = {
 };
 
 /** unique or primary key constraints on table "tickets" */
-export const enum Tickets_Constraint {
-  /** unique or primary key constraint on columns "code" */
-  TicketsCodeKey = 'tickets_code_key',
+export enum Tickets_Constraint {
   /** unique or primary key constraint on columns "id" */
   TicketsPkey = 'tickets_pkey'
-};
+}
 
 /** input type for inserting data into table "tickets" */
 export type Tickets_Insert_Input = {
   assignee_id?: InputMaybe<Scalars['uuid']['input']>;
-  code?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
@@ -2078,7 +2059,6 @@ export type Tickets_Insert_Input = {
 export type Tickets_Max_Fields = {
   __typename?: 'tickets_max_fields';
   assignee_id?: Maybe<Scalars['uuid']['output']>;
-  code?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
@@ -2091,7 +2071,6 @@ export type Tickets_Max_Fields = {
 export type Tickets_Min_Fields = {
   __typename?: 'tickets_min_fields';
   assignee_id?: Maybe<Scalars['uuid']['output']>;
-  code?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
@@ -2119,7 +2098,6 @@ export type Tickets_On_Conflict = {
 /** Ordering options when selecting data from "tickets". */
 export type Tickets_Order_By = {
   assignee_id?: InputMaybe<Order_By>;
-  code?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   description?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
@@ -2135,11 +2113,9 @@ export type Tickets_Pk_Columns_Input = {
 };
 
 /** select columns of table "tickets" */
-export const enum Tickets_Select_Column {
+export enum Tickets_Select_Column {
   /** column name */
   AssigneeId = 'assignee_id',
-  /** column name */
-  Code = 'code',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -2154,12 +2130,11 @@ export const enum Tickets_Select_Column {
   Status = 'status',
   /** column name */
   UpdatedAt = 'updated_at'
-};
+}
 
 /** input type for updating data in table "tickets" */
 export type Tickets_Set_Input = {
   assignee_id?: InputMaybe<Scalars['uuid']['input']>;
-  code?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
@@ -2180,7 +2155,6 @@ export type Tickets_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type Tickets_Stream_Cursor_Value_Input = {
   assignee_id?: InputMaybe<Scalars['uuid']['input']>;
-  code?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
@@ -2191,11 +2165,9 @@ export type Tickets_Stream_Cursor_Value_Input = {
 };
 
 /** update columns of table "tickets" */
-export const enum Tickets_Update_Column {
+export enum Tickets_Update_Column {
   /** column name */
   AssigneeId = 'assignee_id',
-  /** column name */
-  Code = 'code',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -2210,7 +2182,7 @@ export const enum Tickets_Update_Column {
   Status = 'status',
   /** column name */
   UpdatedAt = 'updated_at'
-};
+}
 
 export type Tickets_Updates = {
   /** sets the columns of the filtered rows to the given values */
@@ -2297,19 +2269,19 @@ export type User_Roles_Bool_Exp = {
 };
 
 /** unique or primary key constraints on table "user_roles" */
-export const enum User_Roles_Constraint {
+export enum User_Roles_Constraint {
   /** unique or primary key constraint on columns "value" */
   UserRolesPkey = 'user_roles_pkey'
-};
+}
 
-export const enum User_Roles_Enum {
+export enum User_Roles_Enum {
   /** administrator */
   Administrator = 'administrator',
   /** assignee */
   Assignee = 'assignee',
   /** reporter */
   Reporter = 'reporter'
-};
+}
 
 /** Boolean expression to compare columns of type "user_roles_enum". All fields are combined with logical 'AND'. */
 export type User_Roles_Enum_Comparison_Exp = {
@@ -2377,12 +2349,12 @@ export type User_Roles_Pk_Columns_Input = {
 };
 
 /** select columns of table "user_roles" */
-export const enum User_Roles_Select_Column {
+export enum User_Roles_Select_Column {
   /** column name */
   Content = 'content',
   /** column name */
   Value = 'value'
-};
+}
 
 /** input type for updating data in table "user_roles" */
 export type User_Roles_Set_Input = {
@@ -2405,12 +2377,12 @@ export type User_Roles_Stream_Cursor_Value_Input = {
 };
 
 /** update columns of table "user_roles" */
-export const enum User_Roles_Update_Column {
+export enum User_Roles_Update_Column {
   /** column name */
   Content = 'content',
   /** column name */
   Value = 'value'
-};
+}
 
 export type User_Roles_Updates = {
   /** sets the columns of the filtered rows to the given values */
@@ -2536,10 +2508,10 @@ export type Users_Bool_Exp = {
 };
 
 /** unique or primary key constraints on table "users" */
-export const enum Users_Constraint {
+export enum Users_Constraint {
   /** unique or primary key constraint on columns "id" */
   UsersPkey = 'users_pkey'
-};
+}
 
 /** input type for incrementing numeric columns in table "users" */
 export type Users_Inc_Input = {
@@ -2669,7 +2641,7 @@ export type Users_Pk_Columns_Input = {
 };
 
 /** select columns of table "users" */
-export const enum Users_Select_Column {
+export enum Users_Select_Column {
   /** column name */
   Age = 'age',
   /** column name */
@@ -2694,7 +2666,7 @@ export const enum Users_Select_Column {
   UpdatedAt = 'updated_at',
   /** column name */
   Username = 'username'
-};
+}
 
 /** input type for updating data in table "users" */
 export type Users_Set_Input = {
@@ -2781,7 +2753,7 @@ export type Users_Sum_Order_By = {
 };
 
 /** update columns of table "users" */
-export const enum Users_Update_Column {
+export enum Users_Update_Column {
   /** column name */
   Age = 'age',
   /** column name */
@@ -2806,7 +2778,7 @@ export const enum Users_Update_Column {
   UpdatedAt = 'updated_at',
   /** column name */
   Username = 'username'
-};
+}
 
 export type Users_Updates = {
   /** increments the numeric columns with given value of the filtered values */
@@ -2871,7 +2843,16 @@ export type GetProjectsQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'projects', id: any, created_at: any, updated_at: any, code: string, status: Project_Statuses_Enum, description: string, label: string, owner: { __typename?: 'users', id: any, name: string, family: string } }>, projects_aggregate: { __typename?: 'projects_aggregate', aggregate?: { __typename?: 'projects_aggregate_fields', count: number } | null } };
+export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'projects', id: any, created_at: any, updated_at: any, status: Project_Statuses_Enum, description: string, label: string, owner: { __typename?: 'users', id: any, name: string, family: string } }>, projects_aggregate: { __typename?: 'projects_aggregate', aggregate?: { __typename?: 'projects_aggregate_fields', count: number } | null } };
+
+export type GetProjectByIdQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['uuid']['input']>;
+}>;
+
+
+export type GetProjectByIdQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'projects', id: any, created_at: any, updated_at: any, status: Project_Statuses_Enum, description: string, label: string, owner: { __typename?: 'users', id: any, name: string, family: string } }> };
+
+export type ProjectFieldsFragment = { __typename?: 'projects', id: any, created_at: any, updated_at: any, status: Project_Statuses_Enum, description: string, label: string, owner: { __typename?: 'users', id: any, name: string, family: string } };
 
 export type GetTicketsQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -2881,9 +2862,9 @@ export type GetTicketsQueryVariables = Exact<{
 }>;
 
 
-export type GetTicketsQuery = { __typename?: 'query_root', tickets: Array<{ __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, code: string, status: Ticket_Statuses_Enum, description: string, reporter_id: any, assignee_id?: any | null }>, tickets_aggregate: { __typename?: 'tickets_aggregate', aggregate?: { __typename?: 'tickets_aggregate_fields', count: number } | null } };
+export type GetTicketsQuery = { __typename?: 'query_root', tickets: Array<{ __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter_id: any, assignee_id?: any | null }>, tickets_aggregate: { __typename?: 'tickets_aggregate', aggregate?: { __typename?: 'tickets_aggregate_fields', count: number } | null } };
 
-export type TableTicketFieldsFragment = { __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, code: string, status: Ticket_Statuses_Enum, description: string, reporter_id: any, assignee_id?: any | null };
+export type TableTicketFieldsFragment = { __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter_id: any, assignee_id?: any | null };
 
 export type GetUsersQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -2895,18 +2876,27 @@ export type GetUsersQueryVariables = Exact<{
 
 export type GetUsersQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: any, created_at: any, updated_at: any, username: string, name: string, surname: string, family: string, email: string, age: number, gender: Genders_Enum, role: User_Roles_Enum, user_gender: { __typename?: 'genders', value: string, content: string }, user_role: { __typename?: 'user_roles', value: string, content: string } }>, users_aggregate: { __typename?: 'users_aggregate', aggregate?: { __typename?: 'users_aggregate_fields', count: number } | null } };
 
-export type EnumeratorsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type EnumeratorsQuery = { __typename?: 'query_root', genders: Array<{ __typename?: 'genders', value: string, content: string }>, project_statuses: Array<{ __typename?: 'project_statuses', value: string, content: string }>, ticket_statuses: Array<{ __typename?: 'ticket_statuses', value: string, content: string }>, user_roles: Array<{ __typename?: 'user_roles', value: string, content: string }> };
-
+export const ProjectFieldsFragmentDoc = gql`
+    fragment ProjectFields on projects {
+  id
+  created_at
+  updated_at
+  status
+  description
+  label
+  owner: user {
+    id
+    name
+    family
+  }
+}
+    `;
 export const TableTicketFieldsFragmentDoc = gql`
     fragment TableTicketFields on tickets {
   id
   created_at
   updated_at
   project_id
-  code
   status
   description
   reporter_id
@@ -2916,18 +2906,7 @@ export const TableTicketFieldsFragmentDoc = gql`
 export const GetProjectsDocument = gql`
     query GetProjects($limit: Int, $offset: Int, $condition: projects_bool_exp! = {}, $orderBy: [projects_order_by!] = {created_at: desc}) {
   projects(where: $condition, limit: $limit, offset: $offset, order_by: $orderBy) {
-    id
-    created_at
-    updated_at
-    code
-    status
-    description
-    label
-    owner: user {
-      id
-      name
-      family
-    }
+    ...ProjectFields
   }
   projects_aggregate(where: $condition) {
     aggregate {
@@ -2935,13 +2914,31 @@ export const GetProjectsDocument = gql`
     }
   }
 }
-    `;
+    ${ProjectFieldsFragmentDoc}`;
 
   @Injectable({
     providedIn: 'root'
   })
   export class GetProjectsGQL extends Apollo.Query<GetProjectsQuery, GetProjectsQueryVariables> {
     document = GetProjectsDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetProjectByIdDocument = gql`
+    query GetProjectById($id: uuid) {
+  projects(where: {id: {_eq: $id}}) {
+    ...ProjectFields
+  }
+}
+    ${ProjectFieldsFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetProjectByIdGQL extends Apollo.Query<GetProjectByIdQuery, GetProjectByIdQueryVariables> {
+    document = GetProjectByIdDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
@@ -3006,37 +3003,6 @@ export const GetUsersDocument = gql`
   })
   export class GetUsersGQL extends Apollo.Query<GetUsersQuery, GetUsersQueryVariables> {
     document = GetUsersDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
-export const EnumeratorsDocument = gql`
-    query Enumerators {
-  genders {
-    value
-    content
-  }
-  project_statuses {
-    value
-    content
-  }
-  ticket_statuses {
-    value
-    content
-  }
-  user_roles {
-    value
-    content
-  }
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class EnumeratorsGQL extends Apollo.Query<EnumeratorsQuery, EnumeratorsQueryVariables> {
-    document = EnumeratorsDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

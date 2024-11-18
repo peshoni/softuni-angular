@@ -62,6 +62,13 @@ RUN `npm run hasura init graphql`
 ## Types scaffolding
 RUN `` for regeneration of types
 
+## Hasura metadata
+Run `npm run hasura metadata export` to export current connected database metadata
+Run `npm run hasura metadata apply` to apply state of metadata from the current git branch over connected database 
+hasura metadata apply
+hasura metadata reload
+npm run hasura metadata apply     --database-name="default"
+
 ## Hasura migrations
 For squash migrations use the global hasura-cli: 
 hasura migrate squash --skip-update-check --database-name="default" --delete-source --name "enumerators" --from 1730973747412
@@ -69,10 +76,9 @@ hasura migrate squash --skip-update-check --database-name="default" --delete-sou
 hasura migrate squash --skip-update-check --database-name="default" --delete-source --name "projects" --from 1730988852144
 hasura migrate squash --skip-update-check --database-name="default" --delete-source --name "users" --from 1730989449789
 
-npm run hasura metadata export
 
-hasura metadata apply
+
+
 hasura migrate apply --database-name <database-name>
-hasura metadata reload
+
 npm run hasura migrate apply     --database-name "default"
-npm run hasura metadata apply     --database-name="default"

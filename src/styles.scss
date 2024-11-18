@@ -4,7 +4,7 @@
 $primary: mat.m2-define-palette(mat.$m2-teal-palette, 400);
 $accent: mat.m2-define-palette(mat.$m2-orange-palette, 400);
 // The warn palette is optional (defaults to red).
-$warn: mat.m2-define-palette(mat.$m2-deep-orange-palette, 900);
+$warn: mat.m2-define-palette(mat.$m2-red-palette, 900);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
@@ -60,7 +60,17 @@ $max-mobile-width: 600px;
 
     .inputs-wrapper {
         display: grid;
+        row-gap: 8px;
+        column-gap: 8px;
         grid-template-columns: repeat(2, 1fr);
+
+        .full-width {
+            width: 100%;
+        }
+
+        .fit-two-grid-columns {
+            grid-column: 1 / -1;
+        }
 
         @media (max-width: $max-mobile-width) {
             grid-template-columns: 1fr;
@@ -89,9 +99,66 @@ $max-mobile-width: 600px;
             }
         }
     }
+
+   
+
 }
+
+.mat-form-field-disabled {
+    background-color: white;
+    // background-color: rgb(184, 204, 241);
+    // background-color: rgb(184, 204, 241);
+   // color: red !important;
+.mat-select-value{
+    color: blue;
+}
+   .mdc-text-field--disabled{
+    color:red
+   }
+
+    .mat-mdc-form-field-type-mat-select,
+    .mat-mdc-form-field-input-control{
+        color: black !important;
+    }
+    .mat-mdc-text-field-wrapper {
+        // background-color: green !important;
+        color: red !important;
+    }
+
+    // .mdc-text-field--disabled {
+    //     color: black !important;
+    // }
+}
+// ::ng-deep.mat-form-field-disabled {
+// 	background-color: rgb(184, 204, 241);
+// }
+// ::ng-deep.mat-select-value {
+//     color: rgba(0, 0, 0, 0.99) !important;
+// }
+// ::ng-deep.mat-input-element {
+//     color: rgba(0, 0, 0, 0.99) !important;
+// }
 
 .custom-dialog-backdrop {
     background: rgba(0, 0, 0, 0.5);
 }
+
+//#region SnackBars
+.snackbar-warn-panel .mdc-snackbar__surface {
+    background-color: mat.m2-get-color-from-palette($warn, 600) !important;
+    .mat-mdc-snack-bar-label,
+    .mdc-button__label {
+        color: mat.m2-get-color-from-palette($warn, default-contrast) !important;
+    }
+}
+
+.snackbar-success-panel .mdc-snackbar__surface {
+    background-color: mat.m2-get-color-from-palette(mat.$m2-teal-palette, 600) !important;
+    .mat-mdc-snack-bar-label,
+    .mdc-button__label {
+        color: mat.m2-get-color-from-palette(mat.$m2-teal-palette, default-contrast) !important;
+    }
+}
+// #endregion SnackBars
+
 // #endregion Common styles

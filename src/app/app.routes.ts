@@ -5,11 +5,22 @@ import { TicketsListComponent } from "./_authorized/tickets/tickets-list/tickets
 import { UsersListComponent } from "./_authorized/users/users-list/users-list.component";
 import { LandingComponent } from "./_public/landing/landing.component";
 import { ProjectDetailsComponent } from "./_authorized/projects/project-details/project-details.component";
- 
+import { UserDetailsComponent } from "./_authorized/users/user-details/user-details.component";
+import { TicketDetailsComponent } from "./_authorized/tickets/ticket-details/ticket-details.component";
+
+export enum PathSegments {
+  AUTHORIZE = 'authorize',
+  PROJECTS = 'projects',
+  TICKETS = 'tickets',
+  USERS = 'users',
+  DETAILS = 'details',
+  EMPTY = ''
+}
+
 export const routes: Routes = [
-  { path: '', redirectTo: '', pathMatch: 'full' },
+  { path: '', redirectTo:  PathSegments.PROJECTS, pathMatch: 'full' },
   {
-    path: 'authorize', // GoTo landing page of the Public Module
+    path: '', // GoTo landing page of the Public Module
     canActivateChild: [authGuardFn],
     children: [
       {
@@ -23,22 +34,30 @@ export const routes: Routes = [
     canActivateChild: [authGuardFn],
     children: [
       {
-        path: 'projects',
+        path: PathSegments.PROJECTS,
         component: ProjectsListComponent
       },
       {
-        path: 'projects/details/:id',
+        path: `${PathSegments.PROJECTS}/${PathSegments.DETAILS}/:id`,
         component: ProjectDetailsComponent
       },
       {
-        path: 'tickets',
+        path: PathSegments.TICKETS,
         component: TicketsListComponent
       },
       {
-        path: 'users',
+        path: `${PathSegments.TICKETS}/${PathSegments.DETAILS}/:id`,
+        component: TicketDetailsComponent
+      },
+      {
+        path: PathSegments.USERS,
         component: UsersListComponent
+      },
+      {
+        path: `${PathSegments.USERS}/${PathSegments.DETAILS}/:id`,
+        component: UserDetailsComponent
       }
     ]
   },
-  { path: '**', redirectTo: 'authorize', pathMatch: 'full' } // all missing paths navigates to 'authorize'
+  { path: '**', redirectTo: PathSegments.AUTHORIZE, pathMatch: 'full' } // all missing paths navigates to 'authorize'
 ];

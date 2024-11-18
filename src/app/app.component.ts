@@ -1,7 +1,6 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, inject, OnInit } from '@angular/core';
 import { map, Observable, shareReplay } from 'rxjs';
-import { EnumeratorsGQL, EnumeratorsQuery } from '../generated/graphql';
 import { AuthorizationService } from './services/authorization.service';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { HttpHeaders } from '@angular/common/http';
@@ -58,20 +57,8 @@ export class AppComponent implements OnInit {
   constructor(
     public authorizationService: AuthorizationService,
     private readonly breakpointObserver: BreakpointObserver,
-    private readonly enumeratorsGQL: EnumeratorsGQL,
     private readonly router: Router
   ) {
-
-    this.enumeratorsGQL.fetch().subscribe(({ data }) => {
-      const enums: EnumeratorsQuery = data;
-      //const g:Project_Statuses_Select_Column[] = enums.genders;
-
-      console.log(enums.genders);
-      console.log(enums.project_statuses);
-      console.log(enums.ticket_statuses);
-      console.log(enums.user_roles);
-    });
-
     this.isHandset$ = this.breakpointObserver
       .observe([Breakpoints.Handset])
       .pipe(
@@ -81,13 +68,9 @@ export class AppComponent implements OnInit {
   }
   ngOnInit(): void {
     this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        console.log(event.url)
+      if (event instanceof NavigationEnd) { 
         this.currentUrl = event.url.split('/')[1];
       }
-
     })
   }
 }
-
-

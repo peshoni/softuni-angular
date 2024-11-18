@@ -1,30 +1,27 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { MatTable } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { AfterViewInit, Component } from '@angular/core';
 import { TicketsListDataSource } from './tickets-list-datasource';
 import { addTableRowAnimation } from '../../../animations/add-row-animation'; 
 import { MaterialModule } from '../../../modules/material/material.module';
-import { GetTicketsQuery } from '../../../../generated/graphql';
+import { GetTicketsQuery, Tickets } from '../../../../generated/graphql';
 import { TableNavbarComponent } from '../../shared/table-navbar/table-navbar.component';
 import { TicketsService } from '../tickets.service';
+import { FormsService } from '../../../services/forms.service';
+import { TicketDetailsComponent } from '../ticket-details/ticket-details.component';
+import { MatDialogConfig } from '@angular/material/dialog';
+import { TableBaseComponent } from '../../shared/table-base/table-base.component';
+import { PathSegments } from '../../../app.routes';
 
 @Component({
   selector: 'app-tickets-list',
   standalone: true,
   imports: [MaterialModule, TableNavbarComponent],
-  providers: [TicketsService ],
+  providers: [TicketsService,FormsService ],
   templateUrl: './tickets-list.component.html',
   styleUrl: './tickets-list.component.scss',
   animations: [addTableRowAnimation],
 })
-export class TicketsListComponent implements AfterViewInit {
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<GetTicketsQuery['tickets']>;
+export class TicketsListComponent extends TableBaseComponent<GetTicketsQuery['tickets']> implements AfterViewInit { 
   dataSource = new TicketsListDataSource();
-
-  /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['id','actions'];
 
   ngAfterViewInit(): void {
@@ -33,7 +30,18 @@ export class TicketsListComponent implements AfterViewInit {
     this.table.dataSource = this.dataSource;
   }
 
-  onAddClick() {
-    console.log('ADD TICKET')
+  onAddClick() { // open dialog 
+    const closable = true;
+    const config: MatDialogConfig = this.formService.getDialogConfig(closable, { example: 'someData..' });
+    const dialogRef = this.dialog.open(TicketDetailsComponent, config
+    );
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+    });
+  }
+
+  showDetails(ticket: Tickets) {  
+    console.log(ticket); 
+    this.router.navigate([PathSegments.TICKETS, PathSegments.DETAILS, ticket.id]);
   }
 }

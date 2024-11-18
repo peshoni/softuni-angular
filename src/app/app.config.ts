@@ -4,7 +4,6 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { routes } from './app.routes';
 import {   provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AuthorizationService } from './services/authorization.service';
-import { EnumeratorsGQL } from '../generated/graphql';
 import { provideApollo } from 'apollo-angular';
 import { createApollo } from './app.component';
 
@@ -15,9 +14,6 @@ export const appConfig: ApplicationConfig = {
         provideRouter(routes),
         provideAnimationsAsync(),
         provideApollo(createApollo),
-        AuthorizationService,
-        EnumeratorsGQL
+        AuthorizationService
     ]
 };
-
- 

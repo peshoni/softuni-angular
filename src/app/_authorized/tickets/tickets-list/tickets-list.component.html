@@ -16,7 +16,7 @@
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item>
+          <button mat-menu-item (click)="showDetails(row)">
             <mat-icon>edit</mat-icon>
             <!-- TODO Preview or edit -->
             <span>edit</span>
