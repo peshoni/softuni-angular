@@ -27,6 +27,18 @@ query GetProjectById($id: uuid) {
   }
 }
 
+mutation InsertProject ($input :projects_insert_input!){
+  insert_projects_one(object:$input){
+    ...ProjectFields
+  }
+}
+
+mutation UpdateProjectById($id: uuid!, $input: projects_set_input!) {
+  update_projects_by_pk(pk_columns: {id: $id}, _set: $input) {
+    ...ProjectFields
+  }
+}
+
 fragment ProjectFields on projects {
   id
   created_at
@@ -38,5 +50,10 @@ fragment ProjectFields on projects {
     id
     name
     family
+  }
+  tickets_aggregate {
+    aggregate {
+      count
+    }
   }
 }

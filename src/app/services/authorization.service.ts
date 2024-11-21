@@ -1,28 +1,22 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable, signal, WritableSignal } from '@angular/core';
 import { Users } from '../../generated/graphql';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthorizationService {
-  private readonly credential: BehaviorSubject<any> = new BehaviorSubject(null);
-  $credential = this.credential.asObservable();
-
-  // TODO 
-  currentUser: Users = {
-    name: 'Name', family: 'Family', username: 'username'
-  } as Users;
+  currentUser: WritableSignal<Users> = signal<Users>({} as Users);
 
   constructor() {
-    this.setCredentials("fakeCredential")
+    let currentUser = {
+      id: "c1abdd24-1ebe-498f-a407-115ded9bd0ef",
+      username: 'username',
+      name: 'name',
+      family: 'family'
+      //name: 'Name', family: 'Family', username: 'username'
+    } as Users;
+    this.currentUser.set(currentUser);
+
   }
 
-  setCredentials(credential: any) {
-    this.credential.next(credential);
-  }
-
-  getCredential() {
-    return this.credential.getValue();
-  }
 }

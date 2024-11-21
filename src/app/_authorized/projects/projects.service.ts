@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { Exact, GetProjectByIdGQL, GetProjectByIdQuery, GetProjectsGQL, GetProjectsQuery, InputMaybe, Projects_Bool_Exp, Projects_Order_By, Scalars } from '../../../generated/graphql';
-import { QueryRef } from 'apollo-angular';
+import { Exact, GetProjectByIdGQL, GetProjectByIdQuery, GetProjectsGQL, GetProjectsQuery, InputMaybe, InsertProjectGQL, InsertProjectMutation, Projects_Bool_Exp, Projects_Insert_Input, Projects_Order_By, Projects_Set_Input, Scalars, UpdateProjectByIdGQL, UpdateProjectByIdMutation } from '../../../generated/graphql';
+import { MutationResult, QueryRef } from 'apollo-angular';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { Observable } from 'rxjs';
 
@@ -8,6 +8,8 @@ import { Observable } from 'rxjs';
 export class ProjectsService {
   private readonly getProjectsGQL: GetProjectsGQL = inject(GetProjectsGQL);
   private readonly getProjectByIdGQL: GetProjectByIdGQL = inject(GetProjectByIdGQL);
+  private readonly insertProjectGQL: InsertProjectGQL = inject(InsertProjectGQL);
+  private readonly updateProjectByIdGQL: UpdateProjectByIdGQL = inject(UpdateProjectByIdGQL);
 
   /**
    * Gets page with the projects data objects.
@@ -45,4 +47,13 @@ export class ProjectsService {
       partialRefetch: true
     });
   }
+
+  insertProject(input: Projects_Insert_Input): Observable<MutationResult<InsertProjectMutation>> {
+    return this.insertProjectGQL.mutate({ input });
+  }
+
+  updateProjectById(id: string, input: Projects_Set_Input): Observable<MutationResult<UpdateProjectByIdMutation>> {
+    return this.updateProjectByIdGQL.mutate({ id, input });
+  }
+
 }

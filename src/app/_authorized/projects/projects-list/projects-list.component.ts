@@ -1,7 +1,7 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, inject } from '@angular/core';
 import { ProjectsListDataSource } from './projects-list-datasource';
 import { addTableRowAnimation } from '../../../animations/add-row-animation';
-import { GetProjectsQuery, Projects } from '../../../../generated/graphql';
+import { ProjectFieldsFragment, Projects } from '../../../../generated/graphql';
 import { ProjectsService } from '../projects.service';
 import { MaterialModule } from '../../../modules/material/material.module';
 import { TableNavbarComponent } from '../../shared/table-navbar/table-navbar.component';
@@ -10,6 +10,7 @@ import { ProjectDetailsComponent } from '../project-details/project-details.comp
 import { FormsService } from '../../../services/forms.service';
 import { TableBaseComponent } from '../../shared/table-base/table-base.component';
 import { PathSegments } from '../../../app.routes';
+import { AuthorizationService } from '../../../services/authorization.service';
 
 @Component({
   selector: 'app-projects-list',
@@ -21,9 +22,11 @@ import { PathSegments } from '../../../app.routes';
   animations: [addTableRowAnimation],
 })
 
-export class ProjectsListComponent extends TableBaseComponent<GetProjectsQuery['projects']> implements AfterViewInit {
+export class ProjectsListComponent extends TableBaseComponent<ProjectFieldsFragment[]> implements AfterViewInit { 
+  ProjectFieldsFragment!: ProjectFieldsFragment;
   dataSource: ProjectsListDataSource = new ProjectsListDataSource();
-  displayedColumns = ['id', 'owner', 'status', 'label', 'actions'];
+  displayedColumns = ['id', 'created_at', 'updated_at', 'owner', 'status', 'label', 'tickets', 'actions'];
+ 
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
@@ -41,8 +44,12 @@ export class ProjectsListComponent extends TableBaseComponent<GetProjectsQuery['
     });
   }
 
+  castRow(item: ProjectFieldsFragment): ProjectFieldsFragment {
+    return item;
+  }
+
   showDetails(project: Projects) {
-    console.log('navigate...')
+    console.log('navigate...');
     this.router.navigate([PathSegments.PROJECTS, PathSegments.DETAILS, project.id]);
   }
 }

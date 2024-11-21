@@ -1,9 +1,9 @@
 import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
-import { map,  switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { Observable, combineLatest, merge, of } from 'rxjs';
-import { GetProjectsQuery, Order_By, Projects_Order_By } from '../../../../generated/graphql';
+import { GetProjectsQuery, Order_By, ProjectFieldsFragment, Projects_Order_By } from '../../../../generated/graphql';
 import { QueryRef } from 'apollo-angular';
 import { ProjectsService } from '../projects.service';
 import { ApolloQueryResult } from '@apollo/client/core';
@@ -14,7 +14,7 @@ import { inject, signal } from '@angular/core';
  * encapsulate all logic for fetching and manipulating the displayed data
  * (including sorting, pagination, and filtering).
  */
-export class ProjectsListDataSource extends DataSource<GetProjectsQuery['projects']> {
+export class ProjectsListDataSource extends DataSource<ProjectFieldsFragment[]> {
   private readonly projectsService: ProjectsService = inject(ProjectsService);
   elementsOnPage = signal(0);
   loading = signal(true);
@@ -34,12 +34,13 @@ export class ProjectsListDataSource extends DataSource<GetProjectsQuery['project
 
   //[ApolloQueryResult<GetProjectsQuery>  , PageEvent, Sort]  
   //Observable<ApolloQueryResult<GetProjectsQuery['projects']> | null> 
-  connect(): Observable<GetProjectsQuery['projects'] | any > {//Observable<GetProjectsQuery['projects'] >
-    console.error('CONNETCT')
+  connect(): Observable<ProjectFieldsFragment[] | any> {//Observable<GetProjectsQuery['projects'] >
+    console.error('CONNECT');
     if (this.paginator && this.sort) {
       const limit: number = this.paginator.pageSize;
       const offset: number = this.paginator.pageIndex * this.paginator.pageSize;
       const order_by: Projects_Order_By = { id: Order_By.Asc };
+
       this.queryRef = this.projectsService.getProjects(
         limit,
         offset,
@@ -54,19 +55,17 @@ export class ProjectsListDataSource extends DataSource<GetProjectsQuery['project
         // this.sort.sortChange,
       ];
       // return 
-      
-      combineLatest([this.queryRef.valueChanges,  this.paginator.page ,  this.sort.sortChange]).pipe(
-        tap(_ =>{
-          console.log(_)
-        }),
-        
 
-    )
+      // combineLatest([this.queryRef.valueChanges, this.paginator.page, this.sort.sortChange]).pipe(
+      //   tap(_ => {
+      //     console.log(_);
+      //   }), 
+      // );
 
       return merge(this.queryRef.valueChanges, this.paginator.page, this.sort.sortChange)
         .pipe(
           tap((_) => {
-            console.log('loading....')/* this.loading.next(true)*/
+            console.log('loading....');/* this.loading.next(true)*/
           }),
           switchMap((fromWhere: ApolloQueryResult<GetProjectsQuery> | PageEvent | Sort) => {
             //   console.log(fromWhere);
@@ -117,7 +116,7 @@ export class ProjectsListDataSource extends DataSource<GetProjectsQuery['project
     } else {
       //  return of([] as any as GetProjectsQuery['projects'][]);
       //throw Error('Please set the paginator and sort on the data source before connecting.');
-      return of([] as GetProjectsQuery['projects']);
+      return of([] as ProjectFieldsFragment[]);
     }
   }
 

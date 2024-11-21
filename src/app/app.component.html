@@ -1,20 +1,20 @@
-@if(authorizationService.$credential | async){
+@if(authorizationService.currentUser().id){
 <mat-toolbar color="primary">
   <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
     <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
   </button>
   <span>{{title}}</span>
+
   <div class="spacer"></div>
 
-  <div>
-    <div *ngIf="authorizationService.$credential | async">
+    <div *ngIf="authorizationService.currentUser().id"  >
       <div style="display: flex; align-items: center">
         <div style="display: block; align-items: center">
           <div style="font-size: 16px; text-align: end">
-            {{authorizationService.currentUser.username}}
+            {{authorizationService.currentUser().username}}
           </div>
           <div style="font-size: 14px; height: 20px; text-align: end">
-            ({{authorizationService.currentUser.name}} {{authorizationService.currentUser.family}})
+            ({{authorizationService.currentUser().name}} {{authorizationService.currentUser().family}})
           </div>
         </div>
         <button class="user-image" mat-icon-button [matMenuTriggerFor]="userMenu">
@@ -26,7 +26,7 @@
     <mat-menu #userMenu="matMenu">
       <button mat-menu-item>{{'logout'}}</button>
     </mat-menu>
-  </div>
+ 
 </mat-toolbar>
 
 

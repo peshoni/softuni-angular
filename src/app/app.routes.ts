@@ -18,7 +18,7 @@ export enum PathSegments {
 }
 
 export const routes: Routes = [
-  { path: '', redirectTo:  PathSegments.PROJECTS, pathMatch: 'full' },
+  { path: '', redirectTo: PathSegments.PROJECTS, pathMatch: 'full' }, // try to navigate to PROJECTS
   {
     path: '', // GoTo landing page of the Public Module
     canActivateChild: [authGuardFn],
@@ -31,7 +31,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    canActivateChild: [authGuardFn],
+    canActivateChild: [authGuardFn], // allow if user is authorized - otherwise stay to Landing component on root 
     children: [
       {
         path: PathSegments.PROJECTS,

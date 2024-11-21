@@ -6,7 +6,7 @@ import { PathSegments } from '../app.routes';
 export const authGuardFn: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> | boolean => {
   const authorizationService: AuthorizationService = inject(AuthorizationService);
   const pathSegments: string[] | undefined = state.url.split('/');
-  if (authorizationService.getCredential() && pathSegments[1]?.length > 0) { 
+  if (authorizationService.currentUser().id && pathSegments[1]?.length > 0) { 
     if (pathSegments[1] === PathSegments.AUTHORIZE) {
       return inject(Router).navigate([PathSegments.PROJECTS])
     } else {

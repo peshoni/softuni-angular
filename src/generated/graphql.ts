@@ -909,9 +909,33 @@ export type Projects = {
   label: Scalars['String']['output'];
   owner_id: Scalars['uuid']['output'];
   status: Project_Statuses_Enum;
+  /** fetch data from the table: "tickets" */
+  tickets: Array<Tickets>;
+  /** fetch aggregated fields from the table: "tickets" */
+  tickets_aggregate: Tickets_Aggregate;
   updated_at: Scalars['timestamptz']['output'];
   /** An object relationship */
   user: Users;
+};
+
+
+/** columns and relationships of "projects" */
+export type ProjectsTicketsArgs = {
+  distinct_on?: InputMaybe<Array<Tickets_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Tickets_Order_By>>;
+  where?: InputMaybe<Tickets_Bool_Exp>;
+};
+
+
+/** columns and relationships of "projects" */
+export type ProjectsTickets_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Tickets_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Tickets_Order_By>>;
+  where?: InputMaybe<Tickets_Bool_Exp>;
 };
 
 /** aggregated selection of "projects" */
@@ -947,6 +971,8 @@ export type Projects_Bool_Exp = {
   label?: InputMaybe<String_Comparison_Exp>;
   owner_id?: InputMaybe<Uuid_Comparison_Exp>;
   status?: InputMaybe<Project_Statuses_Enum_Comparison_Exp>;
+  tickets?: InputMaybe<Tickets_Bool_Exp>;
+  tickets_aggregate?: InputMaybe<Tickets_Aggregate_Bool_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   user?: InputMaybe<Users_Bool_Exp>;
 };
@@ -965,6 +991,7 @@ export type Projects_Insert_Input = {
   label?: InputMaybe<Scalars['String']['input']>;
   owner_id?: InputMaybe<Scalars['uuid']['input']>;
   status?: InputMaybe<Project_Statuses_Enum>;
+  tickets?: InputMaybe<Tickets_Arr_Rel_Insert_Input>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   user?: InputMaybe<Users_Obj_Rel_Insert_Input>;
 };
@@ -1015,6 +1042,7 @@ export type Projects_Order_By = {
   label?: InputMaybe<Order_By>;
   owner_id?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
+  tickets_aggregate?: InputMaybe<Tickets_Aggregate_Order_By>;
   updated_at?: InputMaybe<Order_By>;
   user?: InputMaybe<Users_Order_By>;
 };
@@ -2007,6 +2035,17 @@ export type Tickets_Aggregate = {
   nodes: Array<Tickets>;
 };
 
+export type Tickets_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Tickets_Aggregate_Bool_Exp_Count>;
+};
+
+export type Tickets_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Tickets_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Tickets_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
 /** aggregate fields of "tickets" */
 export type Tickets_Aggregate_Fields = {
   __typename?: 'tickets_aggregate_fields';
@@ -2020,6 +2059,20 @@ export type Tickets_Aggregate_Fields = {
 export type Tickets_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<Tickets_Select_Column>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** order by aggregate values of table "tickets" */
+export type Tickets_Aggregate_Order_By = {
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Tickets_Max_Order_By>;
+  min?: InputMaybe<Tickets_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "tickets" */
+export type Tickets_Arr_Rel_Insert_Input = {
+  data: Array<Tickets_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Tickets_On_Conflict>;
 };
 
 /** Boolean expression to filter rows from the table "tickets". All fields are combined with a logical 'AND'. */
@@ -2067,6 +2120,17 @@ export type Tickets_Max_Fields = {
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
+/** order by max() on columns of table "tickets" */
+export type Tickets_Max_Order_By = {
+  assignee_id?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  description?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  project_id?: InputMaybe<Order_By>;
+  reporter_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
 /** aggregate min on columns */
 export type Tickets_Min_Fields = {
   __typename?: 'tickets_min_fields';
@@ -2077,6 +2141,17 @@ export type Tickets_Min_Fields = {
   project_id?: Maybe<Scalars['uuid']['output']>;
   reporter_id?: Maybe<Scalars['uuid']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** order by min() on columns of table "tickets" */
+export type Tickets_Min_Order_By = {
+  assignee_id?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  description?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  project_id?: InputMaybe<Order_By>;
+  reporter_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "tickets" */
@@ -2843,16 +2918,31 @@ export type GetProjectsQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'projects', id: any, created_at: any, updated_at: any, status: Project_Statuses_Enum, description: string, label: string, owner: { __typename?: 'users', id: any, name: string, family: string } }>, projects_aggregate: { __typename?: 'projects_aggregate', aggregate?: { __typename?: 'projects_aggregate_fields', count: number } | null } };
+export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'projects', id: any, created_at: any, updated_at: any, status: Project_Statuses_Enum, description: string, label: string, owner: { __typename?: 'users', id: any, name: string, family: string }, tickets_aggregate: { __typename?: 'tickets_aggregate', aggregate?: { __typename?: 'tickets_aggregate_fields', count: number } | null } }>, projects_aggregate: { __typename?: 'projects_aggregate', aggregate?: { __typename?: 'projects_aggregate_fields', count: number } | null } };
 
 export type GetProjectByIdQueryVariables = Exact<{
   id?: InputMaybe<Scalars['uuid']['input']>;
 }>;
 
 
-export type GetProjectByIdQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'projects', id: any, created_at: any, updated_at: any, status: Project_Statuses_Enum, description: string, label: string, owner: { __typename?: 'users', id: any, name: string, family: string } }> };
+export type GetProjectByIdQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'projects', id: any, created_at: any, updated_at: any, status: Project_Statuses_Enum, description: string, label: string, owner: { __typename?: 'users', id: any, name: string, family: string }, tickets_aggregate: { __typename?: 'tickets_aggregate', aggregate?: { __typename?: 'tickets_aggregate_fields', count: number } | null } }> };
 
-export type ProjectFieldsFragment = { __typename?: 'projects', id: any, created_at: any, updated_at: any, status: Project_Statuses_Enum, description: string, label: string, owner: { __typename?: 'users', id: any, name: string, family: string } };
+export type InsertProjectMutationVariables = Exact<{
+  input: Projects_Insert_Input;
+}>;
+
+
+export type InsertProjectMutation = { __typename?: 'mutation_root', insert_projects_one?: { __typename?: 'projects', id: any, created_at: any, updated_at: any, status: Project_Statuses_Enum, description: string, label: string, owner: { __typename?: 'users', id: any, name: string, family: string }, tickets_aggregate: { __typename?: 'tickets_aggregate', aggregate?: { __typename?: 'tickets_aggregate_fields', count: number } | null } } | null };
+
+export type UpdateProjectByIdMutationVariables = Exact<{
+  id: Scalars['uuid']['input'];
+  input: Projects_Set_Input;
+}>;
+
+
+export type UpdateProjectByIdMutation = { __typename?: 'mutation_root', update_projects_by_pk?: { __typename?: 'projects', id: any, created_at: any, updated_at: any, status: Project_Statuses_Enum, description: string, label: string, owner: { __typename?: 'users', id: any, name: string, family: string }, tickets_aggregate: { __typename?: 'tickets_aggregate', aggregate?: { __typename?: 'tickets_aggregate_fields', count: number } | null } } | null };
+
+export type ProjectFieldsFragment = { __typename?: 'projects', id: any, created_at: any, updated_at: any, status: Project_Statuses_Enum, description: string, label: string, owner: { __typename?: 'users', id: any, name: string, family: string }, tickets_aggregate: { __typename?: 'tickets_aggregate', aggregate?: { __typename?: 'tickets_aggregate_fields', count: number } | null } };
 
 export type GetTicketsQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -2888,6 +2978,11 @@ export const ProjectFieldsFragmentDoc = gql`
     id
     name
     family
+  }
+  tickets_aggregate {
+    aggregate {
+      count
+    }
   }
 }
     `;
@@ -2939,6 +3034,42 @@ export const GetProjectByIdDocument = gql`
   })
   export class GetProjectByIdGQL extends Apollo.Query<GetProjectByIdQuery, GetProjectByIdQueryVariables> {
     document = GetProjectByIdDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const InsertProjectDocument = gql`
+    mutation InsertProject($input: projects_insert_input!) {
+  insert_projects_one(object: $input) {
+    ...ProjectFields
+  }
+}
+    ${ProjectFieldsFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class InsertProjectGQL extends Apollo.Mutation<InsertProjectMutation, InsertProjectMutationVariables> {
+    document = InsertProjectDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const UpdateProjectByIdDocument = gql`
+    mutation UpdateProjectById($id: uuid!, $input: projects_set_input!) {
+  update_projects_by_pk(pk_columns: {id: $id}, _set: $input) {
+    ...ProjectFields
+  }
+}
+    ${ProjectFieldsFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UpdateProjectByIdGQL extends Apollo.Mutation<UpdateProjectByIdMutation, UpdateProjectByIdMutationVariables> {
+    document = UpdateProjectByIdDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

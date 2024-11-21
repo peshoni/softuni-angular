@@ -5,3 +5,11 @@ object_relationships:
   - name: user
     using:
       foreign_key_constraint_on: owner_id
+array_relationships:
+  - name: tickets
+    using:
+      foreign_key_constraint_on:
+        column: project_id
+        table:
+          name: tickets
+          schema: public

@@ -7,16 +7,7 @@
         <!-- Inputs -->
         <mat-card-content>
             <div class="inputs-wrapper">
-
-                <!-- <mat-icon matSuffix>sentiment_very_satisfied</mat-icon> -->
-                <!-- <mat-hint>id</mat-hint>   -->
-
-                <!-- <mat-form-field class="full-width" appearance="outline">
-                    <mat-label>id</mat-label>
-                    <input matInput placeholder="Id" formControlName="id" readonly>
-                    <mat-error *ngIf="form.controls['id'].hasError('required')"> Required field </mat-error>
-                </mat-form-field> -->
-
+                
                 <mat-form-field class="full-width" appearance="outline">
                     <mat-label>status</mat-label>
                     @if(readOnly){
@@ -28,7 +19,6 @@
                     </mat-select>
                     <mat-error *ngIf="form.controls['status'].hasError('required')"> Required field </mat-error>
                     }
-
                 </mat-form-field>
 
                 <mat-form-field class="full-width" appearance="outline">
@@ -43,22 +33,6 @@
                     <mat-error *ngIf="form.controls['description'].hasError('required')"> Required field </mat-error>
                 </mat-form-field>
 
-                <!-- <mat-select #theme_selector [(value)]="defaultTheme" (selectionChange)="themeChanged(theme_selector.value)">
-                    <mat-option *ngFor="let theme of availableThemes" [value]="theme">
-                      {{ theme | themes }}
-                    </mat-option>
-                  </mat-select>
-
-                  <mat-select placeholder="State" formControlName="state">
-                    @for (state of states; track state) {
-                      <mat-option [value]="state.abbreviation">{{ state.name }}</mat-option>
-                    }
-                  </mat-select>
-                  @if (addressForm.controls['state'].hasError('required')) {
-                    <mat-error>State is <strong>required</strong></mat-error> 
-                  } -->
-
-
             </div>
         </mat-card-content>
 
@@ -68,6 +42,7 @@
                 <button type="button" mat-raised-button (click)="cancel()" [disabled]="submitted()">
                     {{isInPreviewMode ? 'Close' : 'Cancel'}}
                 </button>
+                {{submitted() }} {{ form.invalid}}
                 <button *ngIf="!isInPreviewMode" mat-raised-button color="primary" type="submit"
                     [disabled]="submitted() || form.invalid">
                     Submit

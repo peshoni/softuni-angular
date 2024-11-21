@@ -6,23 +6,32 @@ A repo for a Angular course at Softuni october 2024
 # Node 
 npm 10.9.0
 # Angular CLI
-Angular CLI: 18.2.11
+Angular CLI: 18.2.11  
+
+# Hasura CLI
+Hasura CLI: 2.36.1
+source https://www.npmjs.com/package/hasura-cli
 # Docker
 Docker version 27.3.1
 
 ## Installation
-Run  `git clone ...`
-change directory:  `cd ..`
-RUN `docker-compose up --build -d`
+Open terminal
+Run  `git clone https://github.com/peshoni/softuni-angular.git & cd softuni-angular`
+Run  `cd softuni-angular`
+Run  `npm install` to install the application
+RUN  `docker-compose up --build -d` to build the containers
+RUN  `npx hasura metadata apply` to apply metadata from project over hasura container
+RUN  `npx hasura migrate apply --database-name default` to apply migrations
 
 ## Ports for access with credentials from docker-compose file
 app port: 4200
 hasura console: 8082
 postgres: 5433 
 
+## Tech stack
+![alt text](readme-images/stack.bmp)
 
 ## Data model : ERD
-
 ![alt text](readme-images/image.png)
 
 ## Development
@@ -67,7 +76,7 @@ Run `npm run hasura metadata export` to export current connected database metada
 Run `npm run hasura metadata apply` to apply state of metadata from the current git branch over connected database 
 hasura metadata apply
 hasura metadata reload
-npm run hasura metadata apply     --database-name="default"
+npm run hasura metadata apply  --database-name="default"
 
 ## Hasura migrations
 For squash migrations use the global hasura-cli: 
@@ -75,9 +84,7 @@ hasura migrate squash --skip-update-check --database-name="default" --delete-sou
 hasura migrate squash --skip-update-check --database-name="default" --delete-source --name "users" --from 1730988457620
 hasura migrate squash --skip-update-check --database-name="default" --delete-source --name "projects" --from 1730988852144
 hasura migrate squash --skip-update-check --database-name="default" --delete-source --name "users" --from 1730989449789
-
-
-
+ 
 
 hasura migrate apply --database-name <database-name>
 
