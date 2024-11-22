@@ -9,6 +9,7 @@ import { ApolloClientOptions } from '@apollo/client/core';
 import { HttpLink } from 'apollo-angular/http';
 import { MaterialModule } from './modules/material/material.module';
 import { environment } from '../environments/environment';
+import { ShortUserDataComponent } from './_authorized/shared/short-user-data/short-user-data.component';
 
 export function createApollo(): ApolloClientOptions<any> {
   const httpLink = inject(HttpLink);
@@ -43,7 +44,8 @@ export function createApollo(): ApolloClientOptions<any> {
     RouterOutlet,
     //RouterModule,
     RouterLink,
-    MaterialModule
+    MaterialModule,
+    ShortUserDataComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

@@ -2,12 +2,12 @@ import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { map, switchMap, tap } from 'rxjs/operators';
-import { Observable, combineLatest, merge, of } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, merge, of } from 'rxjs';
 import { GetProjectsQuery, Order_By, ProjectFieldsFragment, Projects_Order_By } from '../../../../generated/graphql';
 import { QueryRef } from 'apollo-angular';
 import { ProjectsService } from '../projects.service';
 import { ApolloQueryResult } from '@apollo/client/core';
-import { inject, signal } from '@angular/core';
+import { EventEmitter, inject, signal } from '@angular/core';
 
 /**
  * Data source for the ProjectsList view. This class should
@@ -21,6 +21,7 @@ export class ProjectsListDataSource extends DataSource<ProjectFieldsFragment[]> 
   paginator?: MatPaginator;
   sort?: MatSort;
   queryRef?: QueryRef<GetProjectsQuery>;
+  forceReload: EventEmitter<true> = new EventEmitter();
 
   constructor() {
     super();
@@ -53,6 +54,7 @@ export class ProjectsListDataSource extends DataSource<ProjectFieldsFragment[]> 
         this.queryRef.valueChanges,
         //  this.paginator.page,
         // this.sort.sortChange,
+        // this.forceReload
       ];
       // return 
 
@@ -62,13 +64,13 @@ export class ProjectsListDataSource extends DataSource<ProjectFieldsFragment[]> 
       //   }), 
       // );
 
-      return merge(this.queryRef.valueChanges, this.paginator.page, this.sort.sortChange)
+      return merge(...dataMutations, this.paginator.page, this.sort.sortChange, this.forceReload)
         .pipe(
           tap((_) => {
             console.log('loading....');/* this.loading.next(true)*/
           }),
-          switchMap((fromWhere: ApolloQueryResult<GetProjectsQuery> | PageEvent | Sort) => {
-            //   console.log(fromWhere);
+          switchMap((fromWhere: ApolloQueryResult<GetProjectsQuery> | PageEvent | Sort | boolean) => {
+               console.log(fromWhere);
             let order: any = new Object({});
             if (this.sort?.active && this.sort.active.length > 0) {
               const field = this.sort.active;

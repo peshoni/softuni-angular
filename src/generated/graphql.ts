@@ -2026,6 +2026,10 @@ export type Tickets = {
   reporter_id: Scalars['uuid']['output'];
   status: Ticket_Statuses_Enum;
   updated_at: Scalars['timestamptz']['output'];
+  /** An object relationship */
+  user?: Maybe<Users>;
+  /** An object relationship */
+  userByReporterId: Users;
 };
 
 /** aggregated selection of "tickets" */
@@ -2088,6 +2092,8 @@ export type Tickets_Bool_Exp = {
   reporter_id?: InputMaybe<Uuid_Comparison_Exp>;
   status?: InputMaybe<Ticket_Statuses_Enum_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  user?: InputMaybe<Users_Bool_Exp>;
+  userByReporterId?: InputMaybe<Users_Bool_Exp>;
 };
 
 /** unique or primary key constraints on table "tickets" */
@@ -2106,6 +2112,8 @@ export type Tickets_Insert_Input = {
   reporter_id?: InputMaybe<Scalars['uuid']['input']>;
   status?: InputMaybe<Ticket_Statuses_Enum>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  user?: InputMaybe<Users_Obj_Rel_Insert_Input>;
+  userByReporterId?: InputMaybe<Users_Obj_Rel_Insert_Input>;
 };
 
 /** aggregate max on columns */
@@ -2180,6 +2188,8 @@ export type Tickets_Order_By = {
   reporter_id?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
+  user?: InputMaybe<Users_Order_By>;
+  userByReporterId?: InputMaybe<Users_Order_By>;
 };
 
 /** primary key columns input for table: tickets */
@@ -2918,21 +2928,21 @@ export type GetProjectsQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'projects', id: any, created_at: any, updated_at: any, status: Project_Statuses_Enum, description: string, label: string, owner: { __typename?: 'users', id: any, name: string, family: string }, tickets_aggregate: { __typename?: 'tickets_aggregate', aggregate?: { __typename?: 'tickets_aggregate_fields', count: number } | null } }>, projects_aggregate: { __typename?: 'projects_aggregate', aggregate?: { __typename?: 'projects_aggregate_fields', count: number } | null } };
+export type GetProjectsQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'projects', id: any, created_at: any, updated_at: any, status: Project_Statuses_Enum, description: string, label: string, owner: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, tickets_aggregate: { __typename?: 'tickets_aggregate', aggregate?: { __typename?: 'tickets_aggregate_fields', count: number } | null } }>, projects_aggregate: { __typename?: 'projects_aggregate', aggregate?: { __typename?: 'projects_aggregate_fields', count: number } | null } };
 
-export type GetProjectByIdQueryVariables = Exact<{
-  id?: InputMaybe<Scalars['uuid']['input']>;
+export type GetProjectsOwnedByQueryVariables = Exact<{
+  ownerId: Scalars['uuid']['input'];
 }>;
 
 
-export type GetProjectByIdQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'projects', id: any, created_at: any, updated_at: any, status: Project_Statuses_Enum, description: string, label: string, owner: { __typename?: 'users', id: any, name: string, family: string }, tickets_aggregate: { __typename?: 'tickets_aggregate', aggregate?: { __typename?: 'tickets_aggregate_fields', count: number } | null } }> };
+export type GetProjectsOwnedByQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'projects', id: any, created_at: any, updated_at: any, status: Project_Statuses_Enum, description: string, label: string, owner: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, tickets_aggregate: { __typename?: 'tickets_aggregate', aggregate?: { __typename?: 'tickets_aggregate_fields', count: number } | null } }> };
 
 export type InsertProjectMutationVariables = Exact<{
   input: Projects_Insert_Input;
 }>;
 
 
-export type InsertProjectMutation = { __typename?: 'mutation_root', insert_projects_one?: { __typename?: 'projects', id: any, created_at: any, updated_at: any, status: Project_Statuses_Enum, description: string, label: string, owner: { __typename?: 'users', id: any, name: string, family: string }, tickets_aggregate: { __typename?: 'tickets_aggregate', aggregate?: { __typename?: 'tickets_aggregate_fields', count: number } | null } } | null };
+export type InsertProjectMutation = { __typename?: 'mutation_root', insert_projects_one?: { __typename?: 'projects', id: any, created_at: any, updated_at: any, status: Project_Statuses_Enum, description: string, label: string, owner: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, tickets_aggregate: { __typename?: 'tickets_aggregate', aggregate?: { __typename?: 'tickets_aggregate_fields', count: number } | null } } | null };
 
 export type UpdateProjectByIdMutationVariables = Exact<{
   id: Scalars['uuid']['input'];
@@ -2940,9 +2950,16 @@ export type UpdateProjectByIdMutationVariables = Exact<{
 }>;
 
 
-export type UpdateProjectByIdMutation = { __typename?: 'mutation_root', update_projects_by_pk?: { __typename?: 'projects', id: any, created_at: any, updated_at: any, status: Project_Statuses_Enum, description: string, label: string, owner: { __typename?: 'users', id: any, name: string, family: string }, tickets_aggregate: { __typename?: 'tickets_aggregate', aggregate?: { __typename?: 'tickets_aggregate_fields', count: number } | null } } | null };
+export type UpdateProjectByIdMutation = { __typename?: 'mutation_root', update_projects_by_pk?: { __typename?: 'projects', id: any, created_at: any, updated_at: any, status: Project_Statuses_Enum, description: string, label: string, owner: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, tickets_aggregate: { __typename?: 'tickets_aggregate', aggregate?: { __typename?: 'tickets_aggregate_fields', count: number } | null } } | null };
 
-export type ProjectFieldsFragment = { __typename?: 'projects', id: any, created_at: any, updated_at: any, status: Project_Statuses_Enum, description: string, label: string, owner: { __typename?: 'users', id: any, name: string, family: string }, tickets_aggregate: { __typename?: 'tickets_aggregate', aggregate?: { __typename?: 'tickets_aggregate_fields', count: number } | null } };
+export type GetProjectByIdQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['uuid']['input']>;
+}>;
+
+
+export type GetProjectByIdQuery = { __typename?: 'query_root', projects: Array<{ __typename?: 'projects', id: any, created_at: any, updated_at: any, status: Project_Statuses_Enum, description: string, label: string, owner: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, tickets_aggregate: { __typename?: 'tickets_aggregate', aggregate?: { __typename?: 'tickets_aggregate_fields', count: number } | null } }> };
+
+export type ProjectFieldsFragment = { __typename?: 'projects', id: any, created_at: any, updated_at: any, status: Project_Statuses_Enum, description: string, label: string, owner: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, tickets_aggregate: { __typename?: 'tickets_aggregate', aggregate?: { __typename?: 'tickets_aggregate_fields', count: number } | null } };
 
 export type GetTicketsQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -2952,9 +2969,31 @@ export type GetTicketsQueryVariables = Exact<{
 }>;
 
 
-export type GetTicketsQuery = { __typename?: 'query_root', tickets: Array<{ __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter_id: any, assignee_id?: any | null }>, tickets_aggregate: { __typename?: 'tickets_aggregate', aggregate?: { __typename?: 'tickets_aggregate_fields', count: number } | null } };
+export type GetTicketsQuery = { __typename?: 'query_root', tickets: Array<{ __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, assignee?: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } | null }>, tickets_aggregate: { __typename?: 'tickets_aggregate', aggregate?: { __typename?: 'tickets_aggregate_fields', count: number } | null } };
 
-export type TableTicketFieldsFragment = { __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter_id: any, assignee_id?: any | null };
+export type InsertTicketMutationVariables = Exact<{
+  input: Tickets_Insert_Input;
+}>;
+
+
+export type InsertTicketMutation = { __typename?: 'mutation_root', insert_tickets_one?: { __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, assignee?: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } | null } | null };
+
+export type UpdateTicketMutationVariables = Exact<{
+  id: Scalars['uuid']['input'];
+  input: Tickets_Set_Input;
+}>;
+
+
+export type UpdateTicketMutation = { __typename?: 'mutation_root', update_tickets_by_pk?: { __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, assignee?: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } | null } | null };
+
+export type GetTicketByIdQueryVariables = Exact<{
+  id: Scalars['uuid']['input'];
+}>;
+
+
+export type GetTicketByIdQuery = { __typename?: 'query_root', tickets: Array<{ __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, assignee?: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } | null }> };
+
+export type TicketFieldsFragment = { __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, assignee?: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } | null };
 
 export type GetUsersQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -2966,6 +3005,43 @@ export type GetUsersQueryVariables = Exact<{
 
 export type GetUsersQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: any, created_at: any, updated_at: any, username: string, name: string, surname: string, family: string, email: string, age: number, gender: Genders_Enum, role: User_Roles_Enum, user_gender: { __typename?: 'genders', value: string, content: string }, user_role: { __typename?: 'user_roles', value: string, content: string } }>, users_aggregate: { __typename?: 'users_aggregate', aggregate?: { __typename?: 'users_aggregate_fields', count: number } | null } };
 
+export type InsertUserMutationVariables = Exact<{
+  input: Users_Insert_Input;
+}>;
+
+
+export type InsertUserMutation = { __typename?: 'mutation_root', insert_users_one?: { __typename?: 'users', id: any, created_at: any, updated_at: any, username: string, name: string, surname: string, family: string, email: string, age: number, gender: Genders_Enum, role: User_Roles_Enum, user_gender: { __typename?: 'genders', value: string, content: string }, user_role: { __typename?: 'user_roles', value: string, content: string } } | null };
+
+export type UpdateUserMutationVariables = Exact<{
+  id: Scalars['uuid']['input'];
+  input: Users_Set_Input;
+}>;
+
+
+export type UpdateUserMutation = { __typename?: 'mutation_root', update_users_by_pk?: { __typename?: 'users', id: any, created_at: any, updated_at: any, username: string, name: string, surname: string, family: string, email: string, age: number, gender: Genders_Enum, role: User_Roles_Enum, user_gender: { __typename?: 'genders', value: string, content: string }, user_role: { __typename?: 'user_roles', value: string, content: string } } | null };
+
+export type GetUserByIdQueryVariables = Exact<{
+  id: Scalars['uuid']['input'];
+}>;
+
+
+export type GetUserByIdQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: any, created_at: any, updated_at: any, username: string, name: string, surname: string, family: string, email: string, age: number, gender: Genders_Enum, role: User_Roles_Enum, user_gender: { __typename?: 'genders', value: string, content: string }, user_role: { __typename?: 'user_roles', value: string, content: string } }> };
+
+export type UserFieldsFragment = { __typename?: 'users', id: any, created_at: any, updated_at: any, username: string, name: string, surname: string, family: string, email: string, age: number, gender: Genders_Enum, role: User_Roles_Enum, user_gender: { __typename?: 'genders', value: string, content: string }, user_role: { __typename?: 'user_roles', value: string, content: string } };
+
+export type UserShortFieldsFragment = { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } };
+
+export const UserShortFieldsFragmentDoc = gql`
+    fragment UserShortFields on users {
+  id
+  name
+  family
+  user_role {
+    value
+    content
+  }
+}
+    `;
 export const ProjectFieldsFragmentDoc = gql`
     fragment ProjectFields on projects {
   id
@@ -2975,9 +3051,7 @@ export const ProjectFieldsFragmentDoc = gql`
   description
   label
   owner: user {
-    id
-    name
-    family
+    ...UserShortFields
   }
   tickets_aggregate {
     aggregate {
@@ -2985,17 +3059,44 @@ export const ProjectFieldsFragmentDoc = gql`
     }
   }
 }
-    `;
-export const TableTicketFieldsFragmentDoc = gql`
-    fragment TableTicketFields on tickets {
+    ${UserShortFieldsFragmentDoc}`;
+export const TicketFieldsFragmentDoc = gql`
+    fragment TicketFields on tickets {
   id
   created_at
   updated_at
   project_id
   status
   description
-  reporter_id
-  assignee_id
+  reporter: userByReporterId {
+    ...UserShortFields
+  }
+  assignee: user {
+    ...UserShortFields
+  }
+}
+    ${UserShortFieldsFragmentDoc}`;
+export const UserFieldsFragmentDoc = gql`
+    fragment UserFields on users {
+  id
+  created_at
+  updated_at
+  username
+  name
+  surname
+  family
+  email
+  age
+  gender
+  user_gender: genderByGender {
+    value
+    content
+  }
+  role
+  user_role {
+    value
+    content
+  }
 }
     `;
 export const GetProjectsDocument = gql`
@@ -3021,9 +3122,9 @@ export const GetProjectsDocument = gql`
       super(apollo);
     }
   }
-export const GetProjectByIdDocument = gql`
-    query GetProjectById($id: uuid) {
-  projects(where: {id: {_eq: $id}}) {
+export const GetProjectsOwnedByDocument = gql`
+    query GetProjectsOwnedBy($ownerId: uuid!) {
+  projects(where: {owner_id: {_eq: $ownerId}}) {
     ...ProjectFields
   }
 }
@@ -3032,8 +3133,8 @@ export const GetProjectByIdDocument = gql`
   @Injectable({
     providedIn: 'root'
   })
-  export class GetProjectByIdGQL extends Apollo.Query<GetProjectByIdQuery, GetProjectByIdQueryVariables> {
-    document = GetProjectByIdDocument;
+  export class GetProjectsOwnedByGQL extends Apollo.Query<GetProjectsOwnedByQuery, GetProjectsOwnedByQueryVariables> {
+    document = GetProjectsOwnedByDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
@@ -3075,10 +3176,28 @@ export const UpdateProjectByIdDocument = gql`
       super(apollo);
     }
   }
+export const GetProjectByIdDocument = gql`
+    query GetProjectById($id: uuid) {
+  projects(where: {id: {_eq: $id}}) {
+    ...ProjectFields
+  }
+}
+    ${ProjectFieldsFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetProjectByIdGQL extends Apollo.Query<GetProjectByIdQuery, GetProjectByIdQueryVariables> {
+    document = GetProjectByIdDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
 export const GetTicketsDocument = gql`
     query GetTickets($limit: Int, $offset: Int, $condition: tickets_bool_exp! = {}, $orderBy: [tickets_order_by!] = {created_at: desc}) {
   tickets(where: $condition, limit: $limit, offset: $offset, order_by: $orderBy) {
-    ...TableTicketFields
+    ...TicketFields
   }
   tickets_aggregate(where: $condition) {
     aggregate {
@@ -3086,7 +3205,7 @@ export const GetTicketsDocument = gql`
     }
   }
 }
-    ${TableTicketFieldsFragmentDoc}`;
+    ${TicketFieldsFragmentDoc}`;
 
   @Injectable({
     providedIn: 'root'
@@ -3098,28 +3217,64 @@ export const GetTicketsDocument = gql`
       super(apollo);
     }
   }
+export const InsertTicketDocument = gql`
+    mutation InsertTicket($input: tickets_insert_input!) {
+  insert_tickets_one(object: $input) {
+    ...TicketFields
+  }
+}
+    ${TicketFieldsFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class InsertTicketGQL extends Apollo.Mutation<InsertTicketMutation, InsertTicketMutationVariables> {
+    document = InsertTicketDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const UpdateTicketDocument = gql`
+    mutation UpdateTicket($id: uuid!, $input: tickets_set_input!) {
+  update_tickets_by_pk(pk_columns: {id: $id}, _set: $input) {
+    ...TicketFields
+  }
+}
+    ${TicketFieldsFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UpdateTicketGQL extends Apollo.Mutation<UpdateTicketMutation, UpdateTicketMutationVariables> {
+    document = UpdateTicketDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetTicketByIdDocument = gql`
+    query GetTicketById($id: uuid!) {
+  tickets(where: {id: {_eq: $id}}) {
+    ...TicketFields
+  }
+}
+    ${TicketFieldsFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetTicketByIdGQL extends Apollo.Query<GetTicketByIdQuery, GetTicketByIdQueryVariables> {
+    document = GetTicketByIdDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
 export const GetUsersDocument = gql`
     query GetUsers($limit: Int, $offset: Int, $condition: users_bool_exp! = {}, $orderBy: [users_order_by!] = {created_at: desc}) {
   users(where: $condition, limit: $limit, offset: $offset, order_by: $orderBy) {
-    id
-    created_at
-    updated_at
-    username
-    name
-    surname
-    family
-    email
-    age
-    gender
-    user_gender: genderByGender {
-      value
-      content
-    }
-    role
-    user_role {
-      value
-      content
-    }
+    ...UserFields
   }
   users_aggregate(where: $condition) {
     aggregate {
@@ -3127,13 +3282,67 @@ export const GetUsersDocument = gql`
     }
   }
 }
-    `;
+    ${UserFieldsFragmentDoc}`;
 
   @Injectable({
     providedIn: 'root'
   })
   export class GetUsersGQL extends Apollo.Query<GetUsersQuery, GetUsersQueryVariables> {
     document = GetUsersDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const InsertUserDocument = gql`
+    mutation InsertUser($input: users_insert_input!) {
+  insert_users_one(object: $input) {
+    ...UserFields
+  }
+}
+    ${UserFieldsFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class InsertUserGQL extends Apollo.Mutation<InsertUserMutation, InsertUserMutationVariables> {
+    document = InsertUserDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const UpdateUserDocument = gql`
+    mutation UpdateUser($id: uuid!, $input: users_set_input!) {
+  update_users_by_pk(pk_columns: {id: $id}, _set: $input) {
+    ...UserFields
+  }
+}
+    ${UserFieldsFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UpdateUserGQL extends Apollo.Mutation<UpdateUserMutation, UpdateUserMutationVariables> {
+    document = UpdateUserDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetUserByIdDocument = gql`
+    query GetUserById($id: uuid!) {
+  users(where: {id: {_eq: $id}}) {
+    ...UserFields
+  }
+}
+    ${UserFieldsFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetUserByIdGQL extends Apollo.Query<GetUserByIdQuery, GetUserByIdQueryVariables> {
+    document = GetUserByIdDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

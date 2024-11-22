@@ -18,6 +18,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatInputModule } from '@angular/material/input';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const materialModules = [
   CommonModule,
@@ -47,7 +48,8 @@ const materialModules = [
   MatSelectModule,
   MatOptionModule,
 
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatTooltipModule
 ];
 @NgModule({
   imports: [...materialModules

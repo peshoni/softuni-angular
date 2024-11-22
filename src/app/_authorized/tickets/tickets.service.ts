@@ -1,9 +1,15 @@
 import { inject, Injectable } from '@angular/core';
-import { GetTicketsGQL, Tickets_Bool_Exp, Tickets_Order_By } from '../../../generated/graphql';
+import { GetTicketByIdGQL, GetTicketByIdQuery, GetTicketsGQL, InsertTicketGQL, InsertTicketMutation, Tickets_Bool_Exp, Tickets_Insert_Input, Tickets_Order_By, Tickets_Set_Input, UpdateProjectByIdMutation, UpdateTicketGQL } from '../../../generated/graphql';
+import { ApolloQueryResult } from '@apollo/client/core';
+import { MutationResult } from 'apollo-angular';
+import { Observable } from 'rxjs';
 
-@Injectable( )
+@Injectable()
 export class TicketsService {
   private readonly getTicketsGQL: GetTicketsGQL = inject(GetTicketsGQL);
+  private readonly getTicketByIdGQL: GetTicketByIdGQL = inject(GetTicketByIdGQL);
+  private readonly insertTicketGQL: InsertTicketGQL = inject(InsertTicketGQL);
+  private readonly updateTicketGQL: UpdateTicketGQL = inject(UpdateTicketGQL);
 
   /**
    * Gets page with the tickets data objects.
@@ -23,5 +29,21 @@ export class TicketsService {
         pollInterval: 5 * 1000,
       }
     );
+  } 
+
+  getTicketById(id: string): Observable<ApolloQueryResult<GetTicketByIdQuery>> {
+    return this.getTicketByIdGQL.fetch({ id }, {
+      fetchPolicy: 'cache-first',
+      errorPolicy: 'all',
+      partialRefetch: true
+    });
+  }
+
+  insertTicket(input: Tickets_Insert_Input): Observable<MutationResult<InsertTicketMutation>> {
+    return this.insertTicketGQL.mutate({ input });
+  }
+
+  updateTicketById(id: string, input: Tickets_Set_Input): Observable<MutationResult<UpdateProjectByIdMutation>> {
+    return this.updateTicketGQL.mutate({ id, input });
   }
 }

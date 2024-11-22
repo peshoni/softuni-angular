@@ -28,7 +28,7 @@
                 </mat-form-field>
 
                 <mat-form-field class="fit-two-grid-columns" appearance="outline">
-                    <textarea matInput placeholder="description" formControlName="description"
+                    <textarea matInput placeholder="description" formControlName="description" rows="6"
                         [readonly]="readOnly"></textarea>
                     <mat-error *ngIf="form.controls['description'].hasError('required')"> Required field </mat-error>
                 </mat-form-field>

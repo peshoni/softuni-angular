@@ -2,6 +2,10 @@ $toolbarHeight: 80px;
 
 mat-toolbar {
     height: $toolbarHeight;
+
+    .user-wrapper{
+        display: flex; align-items: center;
+    }
 }
 
 .mat-toolbar.mat-primary {
@@ -24,19 +28,18 @@ mat-sidenav {
     mat-sidenav {
         top: $toolbarHeight !important;
 
-        .selected{ 
-            background: rgba(lightgray, .5) ;
+        .selected {
+            background: rgba(lightgray, 0.5);
         }
     }
 
-    mat-list-item { 
-
+    mat-list-item {
         .menu-row {
             padding: 0 8px;
             display: flex;
             gap: 10px;
         }
-    } 
+    }
 
     mat-sidenav-content {
         padding: 8px;

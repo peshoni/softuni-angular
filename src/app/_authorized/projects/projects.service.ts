@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Exact, GetProjectByIdGQL, GetProjectByIdQuery, GetProjectsGQL, GetProjectsQuery, InputMaybe, InsertProjectGQL, InsertProjectMutation, Projects_Bool_Exp, Projects_Insert_Input, Projects_Order_By, Projects_Set_Input, Scalars, UpdateProjectByIdGQL, UpdateProjectByIdMutation } from '../../../generated/graphql';
+import { Exact, GetProjectByIdGQL, GetProjectByIdQuery, GetProjectsGQL, GetProjectsOwnedByGQL, GetProjectsQuery, InputMaybe, InsertProjectGQL, InsertProjectMutation, Projects_Bool_Exp, Projects_Insert_Input, Projects_Order_By, Projects_Set_Input, Scalars, UpdateProjectByIdGQL, UpdateProjectByIdMutation } from '../../../generated/graphql';
 import { MutationResult, QueryRef } from 'apollo-angular';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { Observable } from 'rxjs';
@@ -10,7 +10,7 @@ export class ProjectsService {
   private readonly getProjectByIdGQL: GetProjectByIdGQL = inject(GetProjectByIdGQL);
   private readonly insertProjectGQL: InsertProjectGQL = inject(InsertProjectGQL);
   private readonly updateProjectByIdGQL: UpdateProjectByIdGQL = inject(UpdateProjectByIdGQL);
-
+  private readonly getProjectsOwnedByGQL: GetProjectsOwnedByGQL = inject(GetProjectsOwnedByGQL);
   /**
    * Gets page with the projects data objects.
    * @param limit page size
@@ -56,4 +56,11 @@ export class ProjectsService {
     return this.updateProjectByIdGQL.mutate({ id, input });
   }
 
+  getProjectsOwnedById(ownerId: string): Observable<ApolloQueryResult<GetProjectByIdQuery>> {
+    return this.getProjectsOwnedByGQL.fetch({ ownerId }, {
+      fetchPolicy: 'network-only',
+      errorPolicy: 'all',
+      partialRefetch: true
+    });
+  }
 }

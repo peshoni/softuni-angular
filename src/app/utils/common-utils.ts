@@ -1,6 +1,6 @@
 import { MatSnackBarConfig } from "@angular/material/snack-bar";
 
-export class CommonUtils {
+export class Util {
     static getSnackbarConfig<T>(type: SnackbarTypes): MatSnackBarConfig<T> {
         const config: MatSnackBarConfig<T> = {};
         config.horizontalPosition = 'center';

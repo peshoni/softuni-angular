@@ -2,7 +2,7 @@ import { AfterViewInit, Component } from '@angular/core';
 import { UsersListDataSource } from './users-list-datasource';
 import { addTableRowAnimation } from '../../../animations/add-row-animation';
 import { MaterialModule } from '../../../modules/material/material.module';
-import { GetUsersQuery, Users } from '../../../../generated/graphql';
+import { GetUsersQuery, UserFieldsFragment, Users } from '../../../../generated/graphql';
 import { TableNavbarComponent } from '../../shared/table-navbar/table-navbar.component';
 import { FormsService } from '../../../services/forms.service';
 import { MatDialogConfig } from '@angular/material/dialog';
@@ -27,6 +27,8 @@ export class UsersListComponent extends TableBaseComponent<GetUsersQuery['users'
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;
+
+    console.log(this.currentUserId);
   }
 
   onAddClick() { // open dialog 
@@ -39,7 +41,10 @@ export class UsersListComponent extends TableBaseComponent<GetUsersQuery['users'
     });
   }
 
-  showDetails(user: Users) {  //open page
+  cast(item: UserFieldsFragment): UserFieldsFragment {
+    return item;
+  }
+  showDetails(user: UserFieldsFragment) {  //open page
     console.log(user);
     this.router.navigate([PathSegments.USERS, PathSegments.DETAILS, user.id]);
   }

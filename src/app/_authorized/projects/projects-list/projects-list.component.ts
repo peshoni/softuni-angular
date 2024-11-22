@@ -10,23 +10,24 @@ import { ProjectDetailsComponent } from '../project-details/project-details.comp
 import { FormsService } from '../../../services/forms.service';
 import { TableBaseComponent } from '../../shared/table-base/table-base.component';
 import { PathSegments } from '../../../app.routes';
-import { AuthorizationService } from '../../../services/authorization.service';
+import { ShortUserDataComponent } from '../../shared/short-user-data/short-user-data.component';
 
 @Component({
   selector: 'app-projects-list',
   standalone: true,
-  imports: [MaterialModule, TableNavbarComponent],
+  imports: [MaterialModule, TableNavbarComponent, ShortUserDataComponent],
   providers: [ProjectsService, FormsService],
   templateUrl: './projects-list.component.html',
   styleUrl: './projects-list.component.scss',
   animations: [addTableRowAnimation],
 })
 
-export class ProjectsListComponent extends TableBaseComponent<ProjectFieldsFragment[]> implements AfterViewInit { 
+export class ProjectsListComponent extends TableBaseComponent<ProjectFieldsFragment[]> implements AfterViewInit {
   ProjectFieldsFragment!: ProjectFieldsFragment;
   dataSource: ProjectsListDataSource = new ProjectsListDataSource();
-  displayedColumns = ['id', 'created_at', 'updated_at', 'owner', 'status', 'label', 'tickets', 'actions'];
- 
+  displayedColumns = ['id', 'owner', 'created_at', 'updated_at', 'status', 'label', 'tickets', 'actions'];
+
+  matTooltip="Info about the action"
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
@@ -44,12 +45,11 @@ export class ProjectsListComponent extends TableBaseComponent<ProjectFieldsFragm
     });
   }
 
-  castRow(item: ProjectFieldsFragment): ProjectFieldsFragment {
+  cast(item: ProjectFieldsFragment): ProjectFieldsFragment {
     return item;
   }
 
-  showDetails(project: Projects) {
-    console.log('navigate...');
+  showDetails(project: ProjectFieldsFragment) {
     this.router.navigate([PathSegments.PROJECTS, PathSegments.DETAILS, project.id]);
   }
 }

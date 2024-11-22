@@ -10,9 +10,8 @@ query GetTickets(
     offset: $offset
     order_by: $orderBy
   ) {
-    ...TableTicketFields
+    ...TicketFields
   }
-
   tickets_aggregate(where: $condition) {
     aggregate {
       count
@@ -20,13 +19,35 @@ query GetTickets(
   }
 }
 
-fragment TableTicketFields on tickets {
+mutation InsertTicket($input: tickets_insert_input!) {
+  insert_tickets_one(object: $input) {
+    ...TicketFields
+  }
+}
+
+mutation UpdateTicket($id: uuid!, $input: tickets_set_input!) {
+  update_tickets_by_pk(pk_columns: { id: $id }, _set: $input) {
+    ...TicketFields
+  }
+}
+
+query GetTicketById($id: uuid!) {
+  tickets(where: { id: { _eq: $id } }) {
+    ...TicketFields
+  }
+}
+
+fragment TicketFields on tickets {
   id
   created_at
   updated_at
   project_id
   status
   description
-  reporter_id
-  assignee_id
+  reporter: userByReporterId {
+    ...UserShortFields
+  }
+  assignee: user {
+    ...UserShortFields
+  }
 }

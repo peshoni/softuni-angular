@@ -6,7 +6,26 @@
 
         <!-- Inputs -->
         <mat-card-content>
-            <div class="inputs-wrapper">
+            <div class="inputs-wrapper" *ngIf="">
+                <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>status</mat-label>
+                    @if(readOnly){
+                    <input matInput placeholder="Status" formControlName="status" [readonly]="readOnly">
+                    } @else {
+                    <mat-select formControlName="status" placeholder="status">
+                        <mat-option *ngFor="let status of statuses | keyvalue" [value]="status.value">{{ status.value }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form.controls['status'].hasError('required')"> Required field </mat-error>
+                    }
+                </mat-form-field>
+ 
+
+                <mat-form-field class="fit-two-grid-columns" appearance="outline">
+                    <textarea matInput placeholder="description" formControlName="description" rows="6"
+                        [readonly]="readOnly"></textarea>
+                    <mat-error *ngIf="form.controls['description'].hasError('required')"> Required field </mat-error>
+                </mat-form-field>
             </div>
         </mat-card-content>
 

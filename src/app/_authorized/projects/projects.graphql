@@ -21,20 +21,26 @@ query GetProjects(
   }
 }
 
-query GetProjectById($id: uuid) {
-  projects(where: { id: { _eq: $id } }) {
+query GetProjectsOwnedBy($ownerId: uuid!) {
+  projects(where: { owner_id: { _eq: $ownerId } }) {
     ...ProjectFields
   }
 }
 
-mutation InsertProject ($input :projects_insert_input!){
-  insert_projects_one(object:$input){
+mutation InsertProject($input: projects_insert_input!) {
+  insert_projects_one(object: $input) {
     ...ProjectFields
   }
 }
 
 mutation UpdateProjectById($id: uuid!, $input: projects_set_input!) {
-  update_projects_by_pk(pk_columns: {id: $id}, _set: $input) {
+  update_projects_by_pk(pk_columns: { id: $id }, _set: $input) {
+    ...ProjectFields
+  }
+}
+
+query GetProjectById($id: uuid) {
+  projects(where: { id: { _eq: $id } }) {
     ...ProjectFields
   }
 }
@@ -47,9 +53,7 @@ fragment ProjectFields on projects {
   description
   label
   owner: user {
-    id
-    name
-    family
+    ...UserShortFields
   }
   tickets_aggregate {
     aggregate {

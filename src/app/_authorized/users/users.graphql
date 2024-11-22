@@ -1,29 +1,65 @@
-query GetUsers($limit: Int, $offset: Int, $condition: users_bool_exp! = {}, $orderBy: [users_order_by!] = {created_at: desc}) {
+query GetUsers(
+  $limit: Int
+  $offset: Int
+  $condition: users_bool_exp! = {}
+  $orderBy: [users_order_by!] = { created_at: desc }
+) {
   users(where: $condition, limit: $limit, offset: $offset, order_by: $orderBy) {
-    id
-    created_at
-    updated_at
-    username
-    # password
-    name
-    surname
-    family
-    email
-    age
-    gender
-    user_gender: genderByGender {
-      value
-      content
-    }
-    role
-    user_role {
-      value
-      content
-    }
+    ...UserFields
   }
   users_aggregate(where: $condition) {
     aggregate {
       count
     }
+  }
+}
+
+mutation InsertUser($input: users_insert_input!) {
+  insert_users_one(object: $input) {
+    ...UserFields
+  }
+}
+
+mutation UpdateUser($id: uuid!, $input: users_set_input!) {
+  update_users_by_pk(pk_columns: { id: $id }, _set: $input) {
+    ...UserFields
+  }
+}
+
+query GetUserById($id: uuid!) {
+  users(where: { id: { _eq: $id } }) {
+    ...UserFields
+  }
+}
+
+fragment UserFields on users {
+  id
+  created_at
+  updated_at
+  username
+  name
+  surname
+  family
+  email
+  age
+  gender
+  user_gender: genderByGender {
+    value
+    content
+  }
+  role
+  user_role {
+    value
+    content
+  }
+}
+
+fragment UserShortFields on users {
+  id
+  name
+  family
+  user_role {
+    value
+    content
   }
 }

@@ -4,7 +4,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { Observable, merge, of } from 'rxjs';
 import { inject, signal } from '@angular/core';
-import { GetTicketsQuery, GetUsersQuery, Order_By, Tickets_Order_By } from '../../../../generated/graphql';
+import { GetTicketsQuery,  Order_By, Tickets_Order_By } from '../../../../generated/graphql';
 import { TicketsService } from '../tickets.service';
 import { QueryRef } from 'apollo-angular';
 import { ApolloQueryResult } from '@apollo/client/core';

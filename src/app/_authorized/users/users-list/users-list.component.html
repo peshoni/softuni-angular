@@ -27,17 +27,17 @@
     <!-- Actions Column -->
     <ng-container matColumnDef="actions" stickyEnd>
       <th *matHeaderCellDef mat-header-cell>more</th>
-      <td *matCellDef="let row" mat-cell>
+      <td *matCellDef="let row" mat-cell> 
         <button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" mat-icon-button>
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
           <button mat-menu-item (click)="showDetails(row)">
-            <mat-icon>edit</mat-icon>
-            <!-- TODO Preview or edit -->
-            <span>edit</span>
+            <!-- TODO ADD ROLE CHECK --> 
+            <mat-icon>{{currentUserId === cast(row).id ? 'edit':'preview'}} </mat-icon>
+            <span> {{currentUserId === cast(row).id ? 'edit':'preview'}}</span>
           </button>
-          <button mat-menu-item>
+          <button *ngIf="currentUserId === cast(row).id" mat-menu-item>
             <mat-icon>delete</mat-icon>
             <span>delete</span>
           </button>

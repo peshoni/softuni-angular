@@ -8,40 +8,36 @@ import { ApolloQueryResult } from '@apollo/client/core';
 import { GetProjectByIdQuery, Project_Statuses_Enum, Projects_Insert_Input, Projects_Set_Input } from '../../../../generated/graphql';
 import { MatSnackBarConfig, MatSnackBarDismiss } from '@angular/material/snack-bar';
 import { PathSegments } from '../../../app.routes';
-import { CommonUtils, SnackbarTypes } from '../../../utils/common-utils';
+import { Util, SnackbarTypes } from '../../../utils/common-utils';
 import { FormsService } from '../../../services/forms.service';
 
 @Component({
   selector: 'app-project-details',
   standalone: true,
   imports: [ReactiveFormsModule, MaterialModule, MatDialogModule],
-  providers: [ProjectsService ],
+  providers: [ProjectsService],
   templateUrl: './project-details.component.html',
   styleUrl: './project-details.component.scss'
 })
 export class ProjectDetailsComponent extends DetailsBaseComponent<ProjectDetailsComponent> implements OnInit {
   private readonly projectsService: ProjectsService = inject(ProjectsService);
-  private readonly formsService: FormsService = inject(FormsService); 
-  statuses = Project_Statuses_Enum;
-  readOnly = false; 
-
+  private readonly formsService: FormsService = inject(FormsService);
+  statuses = Project_Statuses_Enum; 
 
   ngOnInit(): void {
-
     this.form = this.formBuilder.group({
       status: [null, Validators.required],
       label: [null, Validators.required],
       description: [null, Validators.required],
     });
-    
+
     this.title = this.isCreateMode ? 'Add project details' : 'Project details';
     if (this.isCreateMode) {
-
-
+      this.currentObjectId = undefined;
     } else {
       this.projectsService.getProjectById(this.paramId).subscribe((response: ApolloQueryResult<GetProjectByIdQuery>) => {
         if (response.error || response.errors) {
-          const config: MatSnackBarConfig<any> = CommonUtils.getSnackbarConfig(SnackbarTypes.WARN);
+          const config: MatSnackBarConfig<any> = Util.getSnackbarConfig(SnackbarTypes.WARN);
           const ref = this.matSnackBar.open('Resource wasn\'t found.', '', config);
 
           ref.afterDismissed().subscribe((dismiss: MatSnackBarDismiss) => {
@@ -49,20 +45,9 @@ export class ProjectDetailsComponent extends DetailsBaseComponent<ProjectDetails
           });
         } else {
           const project = response.data.projects[0];
-
-    
+          this.currentObjectId = project.id;
           this.isInPreviewMode = !this.isCreateMode && (this.currentUserId !== project.owner.id);
-
-          if (this.currentUserId === project.owner.id) { 
-            this.readOnly = false;
-          } else { 
-            this.readOnly = true;
-            //   this.form.disable();
-            //  this.formsService.disableAllFromControlsRecursively(this.form)  
-          }
-
-          console.log('hydrate form..');
-          console.log(project);
+          this.readOnly = this.currentUserId === project.owner.id;
           this.form.patchValue(project);
         }
       });
@@ -72,12 +57,11 @@ export class ProjectDetailsComponent extends DetailsBaseComponent<ProjectDetails
   cancel() {
     if (this.dialogRef) {
       this.dialogRef.close({ status: false });
-    }
-    else {
-      // do nothing .. 
+    } else {
       this.router.navigate([PathSegments.PROJECTS]);
     }
   }
+
   confirm() {
     this.formsService.validateFormGroupControlsRecursively(this.form);
     if (this.form.invalid) {
@@ -88,7 +72,7 @@ export class ProjectDetailsComponent extends DetailsBaseComponent<ProjectDetails
     console.log(formValue);
 
     if (this.isCreateMode) {
-      delete formValue.id;
+      // delete formValue.id;
       const insertInput: Projects_Insert_Input = formValue;
       insertInput.owner_id = this.currentUserId;
       console.log(insertInput);
@@ -101,8 +85,10 @@ export class ProjectDetailsComponent extends DetailsBaseComponent<ProjectDetails
         }
       );
     } else {
+
       const setInput: Projects_Set_Input = formValue;
-      this.projectsService.updateProjectById(formValue.id, setInput).subscribe(
+
+      this.projectsService.updateProjectById(this.currentObjectId!, setInput).subscribe(
         ({ data, errors }) => {
           console.log(errors);
           console.log(data);
@@ -117,22 +103,12 @@ export class ProjectDetailsComponent extends DetailsBaseComponent<ProjectDetails
 
   }
 
-  private close(){
-    if (this.dialogRef) {
-      // user id "62dd11ed-34a8-4635-bd24-4b1cf4f4ab46"
-      // insert and close
-     this.dialogRef.close({ status: true });
-      // const insert:Projects_Insert_Input = { 
-      //   label: '',
-      //   owner_id : '', // this user
-      //   status: '',
-      //   description: '', 
-      // }
-
+  private close() {
+    if (this.dialogRef) { 
+      this.dialogRef.close({ status: true }); 
     } else {
       this.submitted.set(true);
-
-       this.router.navigate([PathSegments.PROJECTS]);
+      this.router.navigate([PathSegments.PROJECTS]);
     }
   }
 }
