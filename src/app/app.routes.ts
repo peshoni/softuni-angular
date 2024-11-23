@@ -20,7 +20,7 @@ export enum PathSegments {
 export const routes: Routes = [
   { path: '', redirectTo: PathSegments.PROJECTS, pathMatch: 'full' }, // try to navigate to PROJECTS
   {
-    path: '', // GoTo landing page of the Public Module
+    path: '', // GoTo landing page of the Public area
     canActivateChild: [authGuardFn],
     children: [
       {

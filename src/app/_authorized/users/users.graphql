@@ -32,6 +32,12 @@ query GetUserById($id: uuid!) {
   }
 }
 
+query Login ($username:String!, $password:String!){
+  users(where:{_and:[{username:{_eq:$username}} ,{password:{_eq:$password}}] }){
+    ...UserFields
+  }
+}
+
 fragment UserFields on users {
   id
   created_at
@@ -63,3 +69,9 @@ fragment UserShortFields on users {
     content
   }
 }
+
+# mutation InsertMultipleUSers($users: [users_insert_input!]!) {
+#   insert_users(objects:$users){
+#     affected_rows
+#   }
+# }

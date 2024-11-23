@@ -3027,6 +3027,14 @@ export type GetUserByIdQueryVariables = Exact<{
 
 export type GetUserByIdQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: any, created_at: any, updated_at: any, username: string, name: string, surname: string, family: string, email: string, age: number, gender: Genders_Enum, role: User_Roles_Enum, user_gender: { __typename?: 'genders', value: string, content: string }, user_role: { __typename?: 'user_roles', value: string, content: string } }> };
 
+export type LoginQueryVariables = Exact<{
+  username: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+}>;
+
+
+export type LoginQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: any, created_at: any, updated_at: any, username: string, name: string, surname: string, family: string, email: string, age: number, gender: Genders_Enum, role: User_Roles_Enum, user_gender: { __typename?: 'genders', value: string, content: string }, user_role: { __typename?: 'user_roles', value: string, content: string } }> };
+
 export type UserFieldsFragment = { __typename?: 'users', id: any, created_at: any, updated_at: any, username: string, name: string, surname: string, family: string, email: string, age: number, gender: Genders_Enum, role: User_Roles_Enum, user_gender: { __typename?: 'genders', value: string, content: string }, user_role: { __typename?: 'user_roles', value: string, content: string } };
 
 export type UserShortFieldsFragment = { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } };
@@ -3343,6 +3351,26 @@ export const GetUserByIdDocument = gql`
   })
   export class GetUserByIdGQL extends Apollo.Query<GetUserByIdQuery, GetUserByIdQueryVariables> {
     document = GetUserByIdDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const LoginDocument = gql`
+    query Login($username: String!, $password: String!) {
+  users(
+    where: {_and: [{username: {_eq: $username}}, {password: {_eq: $password}}]}
+  ) {
+    ...UserFields
+  }
+}
+    ${UserFieldsFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class LoginGQL extends Apollo.Query<LoginQuery, LoginQueryVariables> {
+    document = LoginDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

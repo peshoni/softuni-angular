@@ -6,15 +6,14 @@ import { PathSegments } from '../app.routes';
 export const authGuardFn: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> | boolean => {
   const authorizationService: AuthorizationService = inject(AuthorizationService);
   const pathSegments: string[] | undefined = state.url.split('/');
-  if (authorizationService.currentUser().id && pathSegments[1]?.length > 0) { 
+  console.log(pathSegments)
+  if (authorizationService.currentUser().id && pathSegments[1]?.length > 0) {
     if (pathSegments[1] === PathSegments.AUTHORIZE) {
-      return inject(Router).navigate([PathSegments.PROJECTS])
+      return inject(Router).navigate([PathSegments.PROJECTS]);
     } else {
       return true;
     }
   } else {
-    console.log('auth..')
-    //inject(Router).navigate([PathSegments.AUTHORIZE]);
-    return false;
+    return false; // Go to _authorize scope.
   }
 };

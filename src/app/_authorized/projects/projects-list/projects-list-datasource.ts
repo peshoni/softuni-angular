@@ -35,8 +35,7 @@ export class ProjectsListDataSource extends DataSource<ProjectFieldsFragment[]> 
 
   //[ApolloQueryResult<GetProjectsQuery>  , PageEvent, Sort]  
   //Observable<ApolloQueryResult<GetProjectsQuery['projects']> | null> 
-  connect(): Observable<ProjectFieldsFragment[] | any> {//Observable<GetProjectsQuery['projects'] >
-    console.error('CONNECT');
+  connect(): Observable<ProjectFieldsFragment[] | any> {//Observable<GetProjectsQuery['projects'] > 
     if (this.paginator && this.sort) {
       const limit: number = this.paginator.pageSize;
       const offset: number = this.paginator.pageIndex * this.paginator.pageSize;
@@ -67,10 +66,10 @@ export class ProjectsListDataSource extends DataSource<ProjectFieldsFragment[]> 
       return merge(...dataMutations, this.paginator.page, this.sort.sortChange, this.forceReload)
         .pipe(
           tap((_) => {
-            console.log('loading....');/* this.loading.next(true)*/
+            this.loading.set(true);
           }),
           switchMap((fromWhere: ApolloQueryResult<GetProjectsQuery> | PageEvent | Sort | boolean) => {
-               console.log(fromWhere);
+            console.log(fromWhere);
             let order: any = new Object({});
             if (this.sort?.active && this.sort.active.length > 0) {
               const field = this.sort.active;
@@ -92,7 +91,6 @@ export class ProjectsListDataSource extends DataSource<ProjectFieldsFragment[]> 
             }
           }),
           map((response) => {
-            console.log(response.data);
             this.loading.set(response.loading);
             if (response.errors) {
               console.log(response.errors);
@@ -102,14 +100,11 @@ export class ProjectsListDataSource extends DataSource<ProjectFieldsFragment[]> 
               if (errorMessage.includes('query_root')) {
                 console.log('query_root');
               }
-              // this.counter.next(0);
               console.log(errorMessage);
-              //this.currentPageData.next([]);
-              // throw Error(errorMessage);
               return [];
             }
             this.elementsOnPage.set(response.data.projects_aggregate.aggregate?.count ?? 0);
-            return response.data.projects;// as GetProjectsQuery['projects'];
+            return response.data.projects;
           }
           )
         );

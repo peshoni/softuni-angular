@@ -11,11 +11,12 @@ import { FormsService } from '../../../services/forms.service';
 import { TableBaseComponent } from '../../shared/table-base/table-base.component';
 import { PathSegments } from '../../../app.routes';
 import { ShortUserDataComponent } from '../../shared/short-user-data/short-user-data.component';
+import { IdShrinkPipe } from '../../../pipes/id-shrink.pipe';
 
 @Component({
   selector: 'app-projects-list',
   standalone: true,
-  imports: [MaterialModule, TableNavbarComponent, ShortUserDataComponent],
+  imports: [MaterialModule, TableNavbarComponent, ShortUserDataComponent,IdShrinkPipe],
   providers: [ProjectsService, FormsService],
   templateUrl: './projects-list.component.html',
   styleUrl: './projects-list.component.scss',

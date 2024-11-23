@@ -21,7 +21,6 @@ export class DetailsBaseComponent<T> {
   protected readonly formBuilder: FormBuilder = inject(FormBuilder);
   protected isCreateMode: boolean = false;
   protected isInPreviewMode: boolean = false;
-  protected readOnly: boolean = false; 
   protected currentObjectId: string | undefined;
 
   submitted = signal(false);

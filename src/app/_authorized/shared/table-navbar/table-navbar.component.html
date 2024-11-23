@@ -2,7 +2,7 @@
     <div class="table-navbar-label">
         <span>{{label}}</span>
     </div>
-    <button mat-mini-fab aria-label="Example icon button with a delete icon" (click)="addButtonClicked.emit()"
+    <button *ngIf="allowedAddOperation" mat-mini-fab aria-label="Example icon button with a delete icon" (click)="allowedAddOperation && addButtonClicked.emit()"
         matTooltip="Info about the action">
         <mat-icon>add</mat-icon>
     </button>

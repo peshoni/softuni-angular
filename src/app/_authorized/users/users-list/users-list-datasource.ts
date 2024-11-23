@@ -67,10 +67,9 @@ export class UsersListDataSource extends DataSource<GetUsersQuery['users']> {
             console.log('loading....')/* this.loading.next(true)*/
           }),
           switchMap((fromWhere: ApolloQueryResult<GetUsersQuery> | PageEvent | Sort) => {
-              console.log(fromWhere);
+            console.log(fromWhere);
             let order: any = new Object({});
             if (this.sort?.active && this.sort.active.length > 0) {
-              const field = this.sort.active;
               this.sort.direction.indexOf('sc') !== -1
                 ? (order[this.sort.active] = this.sort.direction)
                 : (order = {});
@@ -88,21 +87,14 @@ export class UsersListDataSource extends DataSource<GetUsersQuery['users']> {
               return this.queryRef?.valueChanges ?? of();
             }
           }),
-          map((response) => {
-            console.log(response.data);
+          map((response: ApolloQueryResult<GetUsersQuery>) => { 
             this.loading.set(response.loading);
-            if (response.errors) {
-              console.log(response.errors);
-              console.log(response.data);
-              const errorMessage = response.errors[0].message;
-              console.log(errorMessage);
+            if ( response.errors) { 
+              const errorMessage = response.errors[0].message; 
               if (errorMessage.includes('query_root')) {
                 console.log('query_root');
-              }
-              // this.counter.next(0);
-              console.log(errorMessage);
-              //this.currentPageData.next([]);
-              // throw Error(errorMessage);
+              } 
+              console.log(errorMessage); 
               return [];
             }
             this.elementsOnPage.set(response.data.users_aggregate.aggregate?.count ?? 0);

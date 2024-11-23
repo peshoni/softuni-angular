@@ -7,6 +7,10 @@
     white-space: nowrap;
     overflow: hidden;
   }
+  .mat-column-updated_at,
+  .mat-column-created_at {
+    width: 80px;
+  }
 
   .mat-column-actions {
     width: 80px 

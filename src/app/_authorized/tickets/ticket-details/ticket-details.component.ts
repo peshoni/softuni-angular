@@ -4,7 +4,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MaterialModule } from '../../../modules/material/material.module';
 import { ProjectDetailsComponent } from '../../projects/project-details/project-details.component';
 import { DetailsBaseComponent } from '../../shared/details-base/details-base.component';
-import { GetTicketByIdQuery, Ticket_Statuses_Enum, Tickets_Insert_Input, Tickets_Set_Input } from '../../../../generated/graphql';
+import { GetTicketByIdQuery, Ticket_Statuses_Enum, TicketFieldsFragment, Tickets_Insert_Input, Tickets_Set_Input } from '../../../../generated/graphql';
 import { TicketsService } from '../tickets.service';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { MatSnackBarConfig, MatSnackBarDismiss } from '@angular/material/snack-bar';
@@ -12,12 +12,13 @@ import { SnackbarTypes, Util } from '../../../utils/common-utils';
 import { PathSegments } from '../../../app.routes';
 import { FormsService } from '../../../services/forms.service';
 import { ProjectsService } from '../../projects/projects.service';
+import { ShortUserDataComponent } from '../../shared/short-user-data/short-user-data.component';
 
 @Component({
   selector: 'app-ticket-details',
   standalone: true,
-  imports: [ReactiveFormsModule, MaterialModule, MatDialogModule],
-  providers: [TicketsService,ProjectsService],
+  imports: [ReactiveFormsModule, MaterialModule, MatDialogModule, ShortUserDataComponent],
+  providers: [TicketsService, ProjectsService],
   templateUrl: './ticket-details.component.html',
   styleUrl: './ticket-details.component.scss'
 })
@@ -26,10 +27,11 @@ export class TicketDetailsComponent extends DetailsBaseComponent<ProjectDetailsC
   private readonly projectsService: ProjectsService = inject(ProjectsService);
   private readonly formsService: FormsService = inject(FormsService);
   statuses = Ticket_Statuses_Enum;
+  ticket: TicketFieldsFragment | undefined;
 
   ngOnInit(): void {
     this.title = this.isCreateMode ? 'Add ticket details' : 'Ticket details';
-    
+
     this.form = this.formBuilder.group({
       status: [null, Validators.required],
       description: [null, Validators.required],
@@ -40,15 +42,15 @@ export class TicketDetailsComponent extends DetailsBaseComponent<ProjectDetailsC
       this.currentObjectId = undefined;
 
       this.projectsService.getProjectsOwnedById(this.currentUserId!).subscribe(
-        (data)=>{
+        (data) => {
           console.log(data)
 
           // HERE...
         }
       )
 
-
     } else {
+
       this.ticketsService.getTicketById(this.paramId).subscribe((response: ApolloQueryResult<GetTicketByIdQuery>) => {
         if (response.error || response.errors) {
           const config: MatSnackBarConfig<any> = Util.getSnackbarConfig(SnackbarTypes.WARN);
@@ -57,11 +59,10 @@ export class TicketDetailsComponent extends DetailsBaseComponent<ProjectDetailsC
             this.router.navigate([PathSegments.TICKETS]);
           });
         } else {
-          const project = response.data.tickets[0];
-          this.currentObjectId = project.id;
-          this.isInPreviewMode = !this.isCreateMode && (this.currentUserId !== project.reporter.id);
-          this.readOnly = this.currentUserId === project.reporter.id;
-          this.form.patchValue(project);
+          this.ticket = response.data.tickets[0];
+          this.currentObjectId = this.ticket.id;
+          this.isInPreviewMode = !this.isCreateMode && (this.currentUserId !== this.ticket.reporter.id);
+          this.form.patchValue(this.ticket);
         }
       });
     }

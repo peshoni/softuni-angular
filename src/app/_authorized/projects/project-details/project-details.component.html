@@ -3,15 +3,17 @@
         <mat-card-header>
             <mat-card-title>{{ title }}</mat-card-title>
         </mat-card-header>
-
+        <mat-divider></mat-divider>
         <!-- Inputs -->
         <mat-card-content>
+            <div *ngIf="project" class="user-details-wrapper">
+                Owner: <app-short-user-data *ngIf="project" [class]="'edit-form'" [user]="project.owner"></app-short-user-data>
+            </div>
             <div class="inputs-wrapper">
-                
                 <mat-form-field class="full-width" appearance="outline">
                     <mat-label>status</mat-label>
-                    @if(readOnly){
-                    <input matInput placeholder="Status" formControlName="status" [readonly]="readOnly">
+                    @if(isInPreviewMode){
+                    <input matInput placeholder="Status" formControlName="status" [readonly]="isInPreviewMode">
                     } @else {
                     <mat-select formControlName="status" placeholder="status">
                         <mat-option *ngFor="let status of statuses | keyvalue" [value]="status.value">{{ status.value }}
@@ -23,26 +25,25 @@
 
                 <mat-form-field class="full-width" appearance="outline">
                     <mat-label>label</mat-label>
-                    <input matInput placeholder="Label" formControlName="label" [readonly]="readOnly">
+                    <input matInput placeholder="Label" formControlName="label" [readonly]="isInPreviewMode">
                     <mat-error *ngIf="form.controls['label'].hasError('required')"> Required field </mat-error>
                 </mat-form-field>
 
                 <mat-form-field class="fit-two-grid-columns" appearance="outline">
                     <textarea matInput placeholder="description" formControlName="description" rows="6"
-                        [readonly]="readOnly"></textarea>
+                        [readonly]="isInPreviewMode"></textarea>
                     <mat-error *ngIf="form.controls['description'].hasError('required')"> Required field </mat-error>
                 </mat-form-field>
 
             </div>
         </mat-card-content>
-
+        <mat-divider></mat-divider>
         <!-- Actions -->
         <mat-card-actions>
             <div class="form-actions">
                 <button type="button" mat-raised-button (click)="cancel()" [disabled]="submitted()">
                     {{isInPreviewMode ? 'Close' : 'Cancel'}}
                 </button>
-                {{submitted() }} {{ form.invalid}}
                 <button *ngIf="!isInPreviewMode" mat-raised-button color="primary" type="submit"
                     [disabled]="submitted() || form.invalid">
                     Submit

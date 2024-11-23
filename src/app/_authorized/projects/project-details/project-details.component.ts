@@ -5,16 +5,17 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { DetailsBaseComponent } from '../../shared/details-base/details-base.component';
 import { ProjectsService } from '../projects.service';
 import { ApolloQueryResult } from '@apollo/client/core';
-import { GetProjectByIdQuery, Project_Statuses_Enum, Projects_Insert_Input, Projects_Set_Input } from '../../../../generated/graphql';
+import { GetProjectByIdQuery, Project_Statuses_Enum, ProjectFieldsFragment, Projects_Insert_Input, Projects_Set_Input } from '../../../../generated/graphql';
 import { MatSnackBarConfig, MatSnackBarDismiss } from '@angular/material/snack-bar';
 import { PathSegments } from '../../../app.routes';
 import { Util, SnackbarTypes } from '../../../utils/common-utils';
 import { FormsService } from '../../../services/forms.service';
+import { ShortUserDataComponent } from '../../shared/short-user-data/short-user-data.component';
 
 @Component({
   selector: 'app-project-details',
   standalone: true,
-  imports: [ReactiveFormsModule, MaterialModule, MatDialogModule],
+  imports: [ReactiveFormsModule, MaterialModule, MatDialogModule, ShortUserDataComponent],
   providers: [ProjectsService],
   templateUrl: './project-details.component.html',
   styleUrl: './project-details.component.scss'
@@ -22,7 +23,8 @@ import { FormsService } from '../../../services/forms.service';
 export class ProjectDetailsComponent extends DetailsBaseComponent<ProjectDetailsComponent> implements OnInit {
   private readonly projectsService: ProjectsService = inject(ProjectsService);
   private readonly formsService: FormsService = inject(FormsService);
-  statuses = Project_Statuses_Enum; 
+  statuses = Project_Statuses_Enum;
+  project: ProjectFieldsFragment | undefined;
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -44,11 +46,10 @@ export class ProjectDetailsComponent extends DetailsBaseComponent<ProjectDetails
             this.router.navigate([PathSegments.PROJECTS]);
           });
         } else {
-          const project = response.data.projects[0];
-          this.currentObjectId = project.id;
-          this.isInPreviewMode = !this.isCreateMode && (this.currentUserId !== project.owner.id);
-          this.readOnly = this.currentUserId === project.owner.id;
-          this.form.patchValue(project);
+          this.project = response.data.projects[0];
+          this.currentObjectId = this.project.id;
+          this.isInPreviewMode = !this.isCreateMode && (this.currentUserId !== this.project.owner.id);
+          this.form.patchValue(this.project);
         }
       });
     }
@@ -104,8 +105,8 @@ export class ProjectDetailsComponent extends DetailsBaseComponent<ProjectDetails
   }
 
   private close() {
-    if (this.dialogRef) { 
-      this.dialogRef.close({ status: true }); 
+    if (this.dialogRef) {
+      this.dialogRef.close({ status: true });
     } else {
       this.submitted.set(true);
       this.router.navigate([PathSegments.PROJECTS]);

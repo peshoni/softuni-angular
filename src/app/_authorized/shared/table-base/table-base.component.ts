@@ -5,7 +5,7 @@ import { FormsService } from '../../../services/forms.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
-import { AuthorizationService } from '../../../services/authorization.service';
+import { AuthorizationService } from '../../../services/authorization.service'; 
 
 /**
  * Parent table component with common requisites for the lists of data.
@@ -26,7 +26,7 @@ export class TableBaseComponent<T> {
   @ViewChild(MatTable) table!: MatTable<T>;
 
   public currentUserId: string | undefined;
-  
+
   constructor() {
     effect(() => {
       this.currentUserId = this.authorizationService.currentUser().id;

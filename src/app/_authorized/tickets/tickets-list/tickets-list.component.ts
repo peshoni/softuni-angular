@@ -11,11 +11,12 @@ import { MatDialogConfig } from '@angular/material/dialog';
 import { TableBaseComponent } from '../../shared/table-base/table-base.component';
 import { PathSegments } from '../../../app.routes';
 import { ShortUserDataComponent } from "../../shared/short-user-data/short-user-data.component";
+import { IdShrinkPipe } from '../../../pipes/id-shrink.pipe';
 
 @Component({
   selector: 'app-tickets-list',
   standalone: true,
-  imports: [MaterialModule, TableNavbarComponent, ShortUserDataComponent],
+  imports: [MaterialModule, TableNavbarComponent, ShortUserDataComponent, IdShrinkPipe],
   providers: [TicketsService, FormsService],
   templateUrl: './tickets-list.component.html',
   styleUrl: './tickets-list.component.scss',

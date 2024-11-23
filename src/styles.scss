@@ -1,7 +1,7 @@
 @use "@angular/material" as mat;
 @include mat.core();
 
-$primary: mat.m2-define-palette(mat.$m2-teal-palette, 400);
+$primary: mat.m2-define-palette(mat.$m2-indigo-palette, 400);
 $accent: mat.m2-define-palette(mat.$m2-orange-palette, 400);
 // The warn palette is optional (defaults to red).
 $warn: mat.m2-define-palette(mat.$m2-red-palette, 900);
@@ -59,6 +59,8 @@ $max-mobile-width: 600px;
     }
 
     .inputs-wrapper {
+        margin: 16px 0;
+        padding-bottom: 16px;
         display: grid;
         row-gap: 8px;
         column-gap: 8px;
@@ -99,25 +101,22 @@ $max-mobile-width: 600px;
             }
         }
     }
-
-   
-
 }
 
 .mat-form-field-disabled {
     background-color: white;
     // background-color: rgb(184, 204, 241);
     // background-color: rgb(184, 204, 241);
-   // color: red !important;
-.mat-select-value{
-    color: blue;
-}
-   .mdc-text-field--disabled{
-    color:red
-   }
+    // color: red !important;
+    .mat-select-value {
+        color: blue;
+    }
+    .mdc-text-field--disabled {
+        color: red;
+    }
 
     .mat-mdc-form-field-type-mat-select,
-    .mat-mdc-form-field-input-control{
+    .mat-mdc-form-field-input-control {
         color: black !important;
     }
     .mat-mdc-text-field-wrapper {
