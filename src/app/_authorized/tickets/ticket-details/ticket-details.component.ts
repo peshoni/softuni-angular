@@ -9,10 +9,10 @@ import { TicketsService } from '../tickets.service';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { MatSnackBarConfig, MatSnackBarDismiss } from '@angular/material/snack-bar';
 import { SnackbarTypes, Util } from '../../../utils/common-utils';
-import { PathSegments } from '../../../app.routes';
-import { FormsService } from '../../../services/forms.service';
+import { PathSegments } from '../../../app.routes'; 
 import { ProjectsService } from '../../projects/projects.service';
 import { ShortUserDataComponent } from '../../shared/short-user-data/short-user-data.component';
+import { FormsUtil } from '../../../utils/forms-util';
 
 @Component({
   selector: 'app-ticket-details',
@@ -24,8 +24,7 @@ import { ShortUserDataComponent } from '../../shared/short-user-data/short-user-
 })
 export class TicketDetailsComponent extends DetailsBaseComponent<ProjectDetailsComponent> implements OnInit {
   private readonly ticketsService: TicketsService = inject(TicketsService);
-  private readonly projectsService: ProjectsService = inject(ProjectsService);
-  private readonly formsService: FormsService = inject(FormsService);
+  private readonly projectsService: ProjectsService = inject(ProjectsService); 
   statuses = Ticket_Statuses_Enum;
   ticket: TicketFieldsFragment | undefined;
 
@@ -77,7 +76,7 @@ export class TicketDetailsComponent extends DetailsBaseComponent<ProjectDetailsC
   }
 
   confirm() {
-    this.formsService.validateFormGroupControlsRecursively(this.form);
+    FormsUtil.validateFormGroupControlsRecursively(this.form);
     if (this.form.invalid) {
       return;
     }

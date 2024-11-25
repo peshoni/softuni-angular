@@ -13,7 +13,7 @@ import { Path } from '@apollo/client/core';
   styleUrl: './table-navbar.component.scss'
 })
 export class TableNavbarComponent {
-  private authorizationService: AuthorizationService = inject(AuthorizationService);
+  private readonly authorizationService: AuthorizationService = inject(AuthorizationService);
 
   @Input() label!: string;
   @Input() isLoading: boolean = false;
@@ -27,26 +27,29 @@ export class TableNavbarComponent {
     }
     effect(() => {
       const context: PathSegments = this.label.toLowerCase() as PathSegments;
-      const userFragment: UserShortFieldsFragment = this.authorizationService.currentUser();
-      switch (userFragment.user_role.value) {
-        case User_Roles_Enum.Administrator:
-          if (context === PathSegments.PROJECTS) { 
-            this.allowedAddOperation = true;
-          }
-          break;
-        case User_Roles_Enum.Reporter:
-          if (context === PathSegments.PROJECTS) { 
-            this.allowedAddOperation = true;
-          }
-          break;
-        case User_Roles_Enum.Assignee:
-          if (context === PathSegments.PROJECTS) {
+      const userFragment: UserShortFieldsFragment | undefined = this.authorizationService.currentUser();
+      if(userFragment ){
+        
+        switch (userFragment.user_role.value) {
+          case User_Roles_Enum.Administrator:
+            if (context === PathSegments.PROJECTS) { 
+              this.allowedAddOperation = true;
+            }
+            break;
+          case User_Roles_Enum.Reporter:
+            if (context === PathSegments.PROJECTS) { 
+              this.allowedAddOperation = true;
+            }
+            break;
+          case User_Roles_Enum.Assignee:
+            if (context === PathSegments.PROJECTS) {
+              this.allowedAddOperation = false;
+            }
+            break;
+          default:
             this.allowedAddOperation = false;
-          }
-          break;
-        default:
-          this.allowedAddOperation = false;
-          break;
+            break;
+        }
       }
     })
   }

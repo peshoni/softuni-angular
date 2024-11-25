@@ -1,7 +1,9 @@
 import { inject, Injectable, signal, WritableSignal } from '@angular/core';
-import { LoginGQL, UserShortFieldsFragment } from '../../generated/graphql';
+import { LoginGQL, LoginQuery, UserShortFieldsFragment } from '../../generated/graphql';
 import { Router } from '@angular/router';
 import { PathSegments } from '../app.routes';
+import { ApolloQueryResult } from '@apollo/client/core';
+import { firstValueFrom, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,31 +11,20 @@ import { PathSegments } from '../app.routes';
 export class AuthorizationService {
   private readonly router: Router = inject(Router);
   private readonly loginGQL: LoginGQL = inject(LoginGQL);
-  currentUser: WritableSignal<UserShortFieldsFragment> = signal<UserShortFieldsFragment>({} as UserShortFieldsFragment);
+  currentUser: WritableSignal<UserShortFieldsFragment | undefined> = signal(undefined);
 
-  constructor() {
-
-    // this.login('admin', 'admin'); // admin
-    // this.login('krum0', 'krum0');  // reporter 
-    this.login('kristina1', 'kristina1');   //assignee
+  login(username: string, password: string): Observable<ApolloQueryResult<LoginQuery>> {
+    return this.loginGQL.fetch({ username, password })
   }
 
-  login(username: string, password: string) {
-    this.loginGQL.fetch({ username, password }).subscribe(
-      (response) => {
-        this.currentUser.set(response.data.users[0]);
-        const lastUrl = sessionStorage.getItem('lastUrl') ?? '';
-        if (lastUrl.length > 0) {
-          this.router.navigateByUrl(lastUrl); // will be checked in component if any
-        } else {
-          this.router.navigate([PathSegments.PROJECTS])
-        }
-      }
-    )
+  loginAsPromise(username: string, password: string): Promise<ApolloQueryResult<LoginQuery>> {
+    return firstValueFrom(this.loginGQL.fetch({ username, password }));
   }
 
   logout() {
-    this.currentUser.set({} as UserShortFieldsFragment);
+    this.currentUser.set(undefined);
+    sessionStorage.removeItem('lastUrl');
+    this.router.navigate([PathSegments.LOGIN]);
   }
 
 }

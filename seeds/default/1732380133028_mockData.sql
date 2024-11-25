@@ -1,7 +1,5 @@
 
 INSERT INTO public.users (id,created_at,updated_at,username,"password",name,surname,"family",email,age,gender,"role") VALUES
-	 ('62dd11ed-34a8-4635-bd24-4b1cf4f4ab46'::uuid,'2024-11-14 18:27:36.367271+02','2024-11-23 17:24:41.740154+02','admin','admin','Petar','Ivanov','Ivanov','test@abc.bg',44,'male','administrator');
-INSERT INTO public.users (id,created_at,updated_at,username,"password",name,surname,"family",email,age,gender,"role") VALUES
 	 ('62dd11ed-34a8-4635-bd24-4b1cf4f4ab46'::uuid,'2024-11-14 18:27:36.367271+02','2024-11-23 17:24:41.740154+02','admin','admin','Petar','Ivanov','Ivanov','test@abc.bg',44,'male','administrator'),
 	 ('12903f54-fb0e-48c8-b991-916796f3a125'::uuid,'2024-11-23 18:17:52.633503+02','2024-11-23 18:17:52.633503+02','krum0','krum0','Krum','Varadinov','Vladimirov','krum0@tickets.com',38,'male','reporter'),
 	 ('263512d9-b09c-417f-84b4-1f8fee5e8a79'::uuid,'2024-11-23 18:17:52.633503+02','2024-11-23 18:17:52.633503+02','kristina1','kristina1','Kristina','Petrovа','Pavlovа','kristina1@tickets.com',37,'female','assignee'),

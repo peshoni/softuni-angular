@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ProjectDetailsComponent } from '../../projects/project-details/project-details.component';
 import { MaterialModule } from '../../../modules/material/material.module';
 import { DetailsBaseComponent } from '../../shared/details-base/details-base.component';
+import { PathSegments } from '../../../app.routes';
 
 @Component({
   selector: 'app-user-details',
@@ -18,8 +19,8 @@ export class UserDetailsComponent extends DetailsBaseComponent<ProjectDetailsCom
     this.title = this.isCreateMode ? 'Add user details' : 'User details';
 
     this.form = this.formBuilder.group({
-      //declare inputs here..
-      alabala: []
+      username: [null, Validators.required],
+      password: [null, Validators.required]
     });
   }
 
@@ -35,7 +36,7 @@ export class UserDetailsComponent extends DetailsBaseComponent<ProjectDetailsCom
     if (this.dialogRef) {
       this.dialogRef.close({ status: true });
     } else {
-      this.router.navigate(['users']);
+      this.router.navigate([PathSegments.USERS]);
     }
   }
 }

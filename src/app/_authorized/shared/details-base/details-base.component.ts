@@ -37,7 +37,7 @@ export class DetailsBaseComponent<T> {
     this.isCreateMode = isNullOrUndefined(this.paramId) && data;
 
     effect(() => {
-      this.currentUserId = this.authorizationService.currentUser().id;
+      this.currentUserId = this.authorizationService.currentUser()?.id;
     })
 
   }

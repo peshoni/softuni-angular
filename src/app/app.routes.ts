@@ -1,15 +1,16 @@
 import { Routes } from "@angular/router";
-import { authGuardFn } from "./guards/auth.guard";
+import { authorizationGuardFn } from "./guards/auth.guard";
 import { ProjectsListComponent } from "./_authorized/projects/projects-list/projects-list.component";
 import { TicketsListComponent } from "./_authorized/tickets/tickets-list/tickets-list.component";
 import { UsersListComponent } from "./_authorized/users/users-list/users-list.component";
-import { LandingComponent } from "./_public/landing/landing.component";
 import { ProjectDetailsComponent } from "./_authorized/projects/project-details/project-details.component";
 import { UserDetailsComponent } from "./_authorized/users/user-details/user-details.component";
 import { TicketDetailsComponent } from "./_authorized/tickets/ticket-details/ticket-details.component";
+import { LoginComponent } from "./_public/login/login.component";
 
 export enum PathSegments {
-  AUTHORIZE = 'authorize',
+  LOGIN = 'login',
+  REGISTER = 'register',
   PROJECTS = 'projects',
   TICKETS = 'tickets',
   USERS = 'users',
@@ -20,18 +21,16 @@ export enum PathSegments {
 export const routes: Routes = [
   { path: '', redirectTo: PathSegments.PROJECTS, pathMatch: 'full' }, // try to navigate to PROJECTS
   {
-    path: '', // GoTo landing page of the Public area
-    canActivateChild: [authGuardFn],
-    children: [
-      {
-        path: '',
-        component: LandingComponent
-      }
-    ]
+    path: PathSegments.LOGIN,
+    component: LoginComponent
+  },
+  {
+    path: PathSegments.REGISTER,
+    component: UserDetailsComponent
   },
   {
     path: '',
-    canActivateChild: [authGuardFn], // allow if user is authorized - otherwise stay to Landing component on root 
+    canActivateChild: [authorizationGuardFn],
     children: [
       {
         path: PathSegments.PROJECTS,
@@ -59,5 +58,5 @@ export const routes: Routes = [
       }
     ]
   },
-  { path: '**', redirectTo: PathSegments.AUTHORIZE, pathMatch: 'full' } // all missing paths navigates to 'authorize'
+  { path: '**', redirectTo: '', pathMatch: 'full' } // all missing paths navigates to 'authorize'
 ];

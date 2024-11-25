@@ -7,17 +7,17 @@ import { MaterialModule } from '../../../modules/material/material.module';
 import { TableNavbarComponent } from '../../shared/table-navbar/table-navbar.component';
 import { MatDialogConfig } from '@angular/material/dialog';
 import { ProjectDetailsComponent } from '../project-details/project-details.component';
-import { FormsService } from '../../../services/forms.service';
 import { TableBaseComponent } from '../../shared/table-base/table-base.component';
 import { PathSegments } from '../../../app.routes';
 import { ShortUserDataComponent } from '../../shared/short-user-data/short-user-data.component';
 import { IdShrinkPipe } from '../../../pipes/id-shrink.pipe';
+import { FormsUtil } from '../../../utils/forms-util';
 
 @Component({
   selector: 'app-projects-list',
   standalone: true,
-  imports: [MaterialModule, TableNavbarComponent, ShortUserDataComponent,IdShrinkPipe],
-  providers: [ProjectsService, FormsService],
+  imports: [MaterialModule, TableNavbarComponent, ShortUserDataComponent, IdShrinkPipe],
+  providers: [ProjectsService],
   templateUrl: './projects-list.component.html',
   styleUrl: './projects-list.component.scss',
   animations: [addTableRowAnimation],
@@ -28,7 +28,7 @@ export class ProjectsListComponent extends TableBaseComponent<ProjectFieldsFragm
   dataSource: ProjectsListDataSource = new ProjectsListDataSource();
   displayedColumns = ['id', 'owner', 'created_at', 'updated_at', 'status', 'label', 'tickets', 'actions'];
 
-  matTooltip="Info about the action"
+  matTooltip = "Info about the action"
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
@@ -38,7 +38,7 @@ export class ProjectsListComponent extends TableBaseComponent<ProjectFieldsFragm
 
   onAddClick() { // open dialog 
     const closable = true;
-    const config: MatDialogConfig = this.formService.getDialogConfig(closable, { example: 'someData..' });
+    const config: MatDialogConfig = FormsUtil.getDialogConfig(closable, { example: 'someData..' });
     const dialogRef = this.dialog.open(ProjectDetailsComponent, config
     );
     dialogRef.afterClosed().subscribe((result) => {

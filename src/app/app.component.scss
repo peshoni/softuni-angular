@@ -3,8 +3,9 @@ $toolbarHeight: 80px;
 mat-toolbar {
     height: $toolbarHeight;
 
-    .user-wrapper{
-        display: flex; align-items: center;
+    .user-wrapper {
+        display: flex;
+        align-items: center;
     }
 }
 
@@ -46,4 +47,10 @@ mat-sidenav {
     }
 }
 
- 
+.outlet-wrapper {
+    height: calc(100% - 160px);
+    display: flex;
+    justify-content: center;
+    padding-top: 80px;
+    background-color: aliceblue;
+}

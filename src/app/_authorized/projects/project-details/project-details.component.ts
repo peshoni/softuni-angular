@@ -9,8 +9,8 @@ import { GetProjectByIdQuery, Project_Statuses_Enum, ProjectFieldsFragment, Proj
 import { MatSnackBarConfig, MatSnackBarDismiss } from '@angular/material/snack-bar';
 import { PathSegments } from '../../../app.routes';
 import { Util, SnackbarTypes } from '../../../utils/common-utils';
-import { FormsService } from '../../../services/forms.service';
 import { ShortUserDataComponent } from '../../shared/short-user-data/short-user-data.component';
+import { FormsUtil } from '../../../utils/forms-util';
 
 @Component({
   selector: 'app-project-details',
@@ -22,7 +22,6 @@ import { ShortUserDataComponent } from '../../shared/short-user-data/short-user-
 })
 export class ProjectDetailsComponent extends DetailsBaseComponent<ProjectDetailsComponent> implements OnInit {
   private readonly projectsService: ProjectsService = inject(ProjectsService);
-  private readonly formsService: FormsService = inject(FormsService);
   statuses = Project_Statuses_Enum;
   project: ProjectFieldsFragment | undefined;
 
@@ -64,7 +63,7 @@ export class ProjectDetailsComponent extends DetailsBaseComponent<ProjectDetails
   }
 
   confirm() {
-    this.formsService.validateFormGroupControlsRecursively(this.form);
+    FormsUtil.validateFormGroupControlsRecursively(this.form);
     if (this.form.invalid) {
       return;
     }

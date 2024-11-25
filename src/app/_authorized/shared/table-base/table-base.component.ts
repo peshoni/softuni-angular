@@ -1,11 +1,10 @@
 import { Component, effect, inject, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { FormsService } from '../../../services/forms.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
-import { AuthorizationService } from '../../../services/authorization.service'; 
+import { AuthorizationService } from '../../../services/authorization.service';
 
 /**
  * Parent table component with common requisites for the lists of data.
@@ -18,7 +17,6 @@ import { AuthorizationService } from '../../../services/authorization.service';
 })
 export class TableBaseComponent<T> {
   protected authorizationService: AuthorizationService = inject(AuthorizationService);
-  protected formService: FormsService = inject(FormsService);
   protected readonly router: Router = inject(Router);
   protected readonly dialog: MatDialog = inject(MatDialog);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -29,7 +27,7 @@ export class TableBaseComponent<T> {
 
   constructor() {
     effect(() => {
-      this.currentUserId = this.authorizationService.currentUser().id;
+      this.currentUserId = this.authorizationService.currentUser()?.id;
     })
   }
 }

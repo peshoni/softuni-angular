@@ -1,13 +1,12 @@
-<form [formGroup]="form" novalidate (ngSubmit)="confirm()" class="dialog-container">
-    <mat-card>
+<form [formGroup]="form" novalidate (ngSubmit)="submit()" class="dialog-container">
+    <mat-card class="mat-elevation-z4 login-wrapper">
         <mat-card-header>
             <mat-card-title>{{ title }}</mat-card-title>
         </mat-card-header>
-
         <mat-divider></mat-divider>
         <!-- Inputs -->
         <mat-card-content>
-            <div class="inputs-wrapper">
+            <div class="inputs-wrapper"> 
                 <mat-form-field class="full-width" appearance="outline">
                     <mat-label>username</mat-label>
                     <input matInput placeholder="username" formControlName="username">
@@ -19,18 +18,18 @@
                     <input matInput placeholder="password" formControlName="password">
                     <mat-error *ngIf="form.controls['password'].hasError('required')"> Required field </mat-error>
                 </mat-form-field>
+
             </div>
         </mat-card-content>
-
         <mat-divider></mat-divider>
         <!-- Actions -->
         <mat-card-actions>
             <div class="form-actions">
-                <button type="button" mat-raised-button (click)="cancel()" [disabled]="submitted()">
-                    Cancel
+                <button type="button" mat-raised-button routerLink="/register">
+                    register
                 </button>
                 <button mat-raised-button color="primary" type="submit" [disabled]="submitted() || form.invalid">
-                    Submit
+                    Login
                 </button>
             </div>
         </mat-card-actions>
