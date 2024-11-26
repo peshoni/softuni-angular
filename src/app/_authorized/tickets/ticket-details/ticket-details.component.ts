@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MaterialModule } from '../../../modules/material/material.module';
+import { MaterialModule } from '../../../modules/material.module';
 import { ProjectDetailsComponent } from '../../projects/project-details/project-details.component';
 import { DetailsBaseComponent } from '../../shared/details-base/details-base.component';
 import { GetTicketByIdQuery, Ticket_Statuses_Enum, TicketFieldsFragment, Tickets_Insert_Input, Tickets_Set_Input } from '../../../../generated/graphql';

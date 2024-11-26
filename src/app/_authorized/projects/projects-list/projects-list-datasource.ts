@@ -18,13 +18,26 @@ export class ProjectsListDataSource extends DataSource<ProjectFieldsFragment[]> 
   private readonly projectsService: ProjectsService = inject(ProjectsService);
   elementsOnPage = signal(0);
   loading = signal(true);
-  paginator?: MatPaginator;
-  sort?: MatSort;
-  queryRef?: QueryRef<GetProjectsQuery>;
+  paginator!: MatPaginator;
+  sort!: MatSort;
+  queryRef!: QueryRef<GetProjectsQuery>;
   forceReload: EventEmitter<true> = new EventEmitter();
 
   constructor() {
-    super();
+    super(); 
+  }
+
+  initQueryRef(){
+    const limit: number = this.paginator.pageSize;
+    const offset: number = this.paginator.pageIndex * this.paginator.pageSize;
+    const order_by: Projects_Order_By = { id: Order_By.Asc };
+
+    this.queryRef = this.projectsService.getProjects(
+      limit,
+      offset,
+      {},
+      order_by
+    );
   }
 
   /**
@@ -37,16 +50,16 @@ export class ProjectsListDataSource extends DataSource<ProjectFieldsFragment[]> 
   //Observable<ApolloQueryResult<GetProjectsQuery['projects']> | null> 
   connect(): Observable<ProjectFieldsFragment[] | any> {//Observable<GetProjectsQuery['projects'] > 
     if (this.paginator && this.sort) {
-      const limit: number = this.paginator.pageSize;
-      const offset: number = this.paginator.pageIndex * this.paginator.pageSize;
-      const order_by: Projects_Order_By = { id: Order_By.Asc };
+      // const limit: number = this.paginator.pageSize;
+      // const offset: number = this.paginator.pageIndex * this.paginator.pageSize;
+      // const order_by: Projects_Order_By = { id: Order_By.Asc };
 
-      this.queryRef = this.projectsService.getProjects(
-        limit,
-        offset,
-        {},
-        order_by
-      );
+      // this.queryRef = this.projectsService.getProjects(
+      //   limit,
+      //   offset,
+      //   {},
+      //   order_by
+      // );
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
       const dataMutations = [
@@ -61,7 +74,7 @@ export class ProjectsListDataSource extends DataSource<ProjectFieldsFragment[]> 
       //   tap(_ => {
       //     console.log(_);
       //   }), 
-      // );
+      // ); 
 
       return merge(...dataMutations, this.paginator.page, this.sort.sortChange, this.forceReload)
         .pipe(
@@ -93,10 +106,10 @@ export class ProjectsListDataSource extends DataSource<ProjectFieldsFragment[]> 
           map((response) => {
             this.loading.set(response.loading);
             if (response.errors) {
-              console.log(response.errors);
-              console.log(response.data);
+              // console.log(response.errors);
+              // console.log(response.data);
               const errorMessage = response.errors[0].message;
-              console.log(errorMessage);
+              // console.log(errorMessage);
               if (errorMessage.includes('query_root')) {
                 console.log('query_root');
               }

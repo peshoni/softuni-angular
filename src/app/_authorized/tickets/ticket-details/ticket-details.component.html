@@ -21,8 +21,8 @@
                         <mat-option *ngFor="let status of statuses | keyvalue" [value]="status.value">{{ status.value }}
                         </mat-option>
                     </mat-select>
-                    <mat-error *ngIf="form.controls['status'].hasError('required')"> Required field </mat-error>
                     }
+                    <mat-error *ngIf="form.controls['status'].hasError('required')"> Required field </mat-error>
                 </mat-form-field>
 
                 <mat-form-field class="fit-two-grid-columns" appearance="outline">

@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { isNullOrUndefined } from 'is-what';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthorizationService } from '../../../services/authorization.service';
+import { User_Roles, User_Roles_Enum } from '../../../../generated/graphql';
 
 @Component({
   selector: 'app-details-base',
@@ -16,6 +17,7 @@ import { AuthorizationService } from '../../../services/authorization.service';
 export class DetailsBaseComponent<T> {
   private readonly authorizationService: AuthorizationService = inject(AuthorizationService);
   protected currentUserId: string | undefined;
+  protected currentUserRole: User_Roles_Enum | undefined;
   protected readonly paramId: string;
   protected readonly router: Router = inject(Router);
   protected readonly formBuilder: FormBuilder = inject(FormBuilder);
@@ -29,7 +31,7 @@ export class DetailsBaseComponent<T> {
   title: string = '';
 
   constructor(
-    protected matSnackBar: MatSnackBar, private readonly activatedRoute: ActivatedRoute,
+    protected matSnackBar: MatSnackBar, protected readonly activatedRoute: ActivatedRoute,
     @Optional() @Inject(MAT_DIALOG_DATA) data: any,
     @Optional() public dialogRef: MatDialogRef<T>) {
 
@@ -38,7 +40,8 @@ export class DetailsBaseComponent<T> {
 
     effect(() => {
       this.currentUserId = this.authorizationService.currentUser()?.id;
-    })
+      this.currentUserRole = this.authorizationService.currentUser()?.user_role.value as User_Roles_Enum;
+    });
 
   }
 }

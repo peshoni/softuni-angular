@@ -1,7 +1,7 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { TicketsListDataSource } from './tickets-list-datasource';
 import { addTableRowAnimation } from '../../../animations/add-row-animation';
-import { MaterialModule } from '../../../modules/material/material.module';
+import { MaterialModule } from '../../../modules/material.module';
 import { GetTicketsQuery, TicketFieldsFragment } from '../../../../generated/graphql';
 import { TableNavbarComponent } from '../../shared/table-navbar/table-navbar.component';
 import { TicketsService } from '../tickets.service';

@@ -1,7 +1,7 @@
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TicketsListComponent } from './tickets-list.component';
-import { MaterialModule } from '../../../modules/material/material.module';
+import { MaterialModule } from '../../../modules/material.module';
 
 describe('TicketsListComponent', () => {
   let component: TicketsListComponent;

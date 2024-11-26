@@ -8,6 +8,25 @@
         <!-- Inputs -->
         <mat-card-content>
             <div class="inputs-wrapper">
+
+                <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>name</mat-label>
+                    <input matInput placeholder="name" formControlName="name">
+                    <mat-error *ngIf="form.controls['name'].hasError('required')"> Required field </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>surname</mat-label>
+                    <input matInput placeholder="surname" formControlName="surname">
+                    <mat-error *ngIf="form.controls['surname'].hasError('required')"> Required field </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>family</mat-label>
+                    <input matInput placeholder="family" formControlName="family">
+                    <mat-error *ngIf="form.controls['family'].hasError('required')"> Required field </mat-error>
+                </mat-form-field>
+
                 <mat-form-field class="full-width" appearance="outline">
                     <mat-label>username</mat-label>
                     <input matInput placeholder="username" formControlName="username">
@@ -15,10 +34,48 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width" appearance="outline">
-                    <mat-label>password</mat-label>
-                    <input matInput placeholder="password" formControlName="password">
-                    <mat-error *ngIf="form.controls['password'].hasError('required')"> Required field </mat-error>
+                    <mat-label>email</mat-label>
+                    <input matInput placeholder="email" formControlName="email">
+                    <mat-error *ngIf="form.controls['email'].hasError('required')"> Required field </mat-error>
                 </mat-form-field>
+
+                <div></div>
+
+                <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>role</mat-label>
+                    @if(isInPreviewMode){
+                    <input matInput placeholder="role" formControlName="role" [readonly]="isInPreviewMode">
+                    } @else {
+                    <mat-select formControlName="role" placeholder="role">
+                        <mat-option *ngFor="let role of roles | keyvalue" [value]="role.value">{{ role.value }}
+                        </mat-option>
+                    </mat-select>
+                    }
+                    <mat-error *ngIf="form.controls['role'].touched && form.controls['role'].hasError('required')">
+                        Required field </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>gender</mat-label>
+                    @if(isInPreviewMode){
+                    <input matInput placeholder="gender" formControlName="gender" [readonly]="isInPreviewMode">
+                    } @else {
+                    <!-- {{form.controls['role'].touched}} -->
+                    <mat-select formControlName="gender" placeholder="gender">
+                        <mat-option *ngFor="let gender of genders | keyvalue" [value]="gender.value">{{ gender.value }}
+                        </mat-option>
+                    </mat-select>
+                    }
+                    <mat-error *ngIf="form.controls['gender'].touched && form.controls['gender'].hasError('required')">
+                        Required field </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>age</mat-label>
+                    <input matInput placeholder="age" formControlName="age">
+                    <mat-error *ngIf="form.controls['age'].hasError('required')"> Required field </mat-error>
+                </mat-form-field>
+
             </div>
         </mat-card-content>
 

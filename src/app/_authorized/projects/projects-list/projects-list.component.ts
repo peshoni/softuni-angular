@@ -3,7 +3,7 @@ import { ProjectsListDataSource } from './projects-list-datasource';
 import { addTableRowAnimation } from '../../../animations/add-row-animation';
 import { ProjectFieldsFragment, Projects } from '../../../../generated/graphql';
 import { ProjectsService } from '../projects.service';
-import { MaterialModule } from '../../../modules/material/material.module';
+import { MaterialModule } from '../../../modules/material.module';
 import { TableNavbarComponent } from '../../shared/table-navbar/table-navbar.component';
 import { MatDialogConfig } from '@angular/material/dialog';
 import { ProjectDetailsComponent } from '../project-details/project-details.component';
@@ -33,6 +33,7 @@ export class ProjectsListComponent extends TableBaseComponent<ProjectFieldsFragm
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+    this.dataSource.initQueryRef();
     this.table.dataSource = this.dataSource;
   }
 

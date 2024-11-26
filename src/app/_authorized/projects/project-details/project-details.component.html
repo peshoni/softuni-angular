@@ -7,7 +7,8 @@
         <!-- Inputs -->
         <mat-card-content>
             <div *ngIf="project" class="user-details-wrapper">
-                Owner: <app-short-user-data *ngIf="project" [class]="'edit-form'" [user]="project.owner"></app-short-user-data>
+                Owner: <app-short-user-data *ngIf="project" [class]="'edit-form'"
+                    [user]="project.owner"></app-short-user-data>
             </div>
             <div class="inputs-wrapper">
                 <mat-form-field class="full-width" appearance="outline">
@@ -19,8 +20,8 @@
                         <mat-option *ngFor="let status of statuses | keyvalue" [value]="status.value">{{ status.value }}
                         </mat-option>
                     </mat-select>
-                    <mat-error *ngIf="form.controls['status'].hasError('required')"> Required field </mat-error>
                     }
+                    <mat-error *ngIf="form.controls['status'].hasError('required')"> Required field </mat-error>
                 </mat-form-field>
 
                 <mat-form-field class="full-width" appearance="outline">

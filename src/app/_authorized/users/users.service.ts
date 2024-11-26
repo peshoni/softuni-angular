@@ -1,11 +1,17 @@
 import { inject, Injectable } from '@angular/core';
-import { GetUsersGQL, Users_Bool_Exp, Users_Order_By} from '../../../generated/graphql';
+import { GetUserByIdGQL, GetUserByIdQuery, GetUsersGQL, InsertUserGQL, InsertUserMutation, UpdateUserGQL, UpdateUserMutation, Users_Bool_Exp, Users_Insert_Input, Users_Order_By, Users_Set_Input } from '../../../generated/graphql';
+import { ApolloQueryResult } from '@apollo/client/core';
+import { MutationResult } from 'apollo-angular';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService {
   private readonly getUsersGQL: GetUsersGQL = inject(GetUsersGQL);
+  private readonly getUserByIdGQL: GetUserByIdGQL = inject(GetUserByIdGQL);
+  private readonly insertUserGQL: InsertUserGQL = inject(InsertUserGQL);
+  private readonly updateUserGQL: UpdateUserGQL = inject(UpdateUserGQL);
 
   /**
    * Gets page with the users data objects.
@@ -15,7 +21,7 @@ export class UsersService {
    * @param orderBy { @see Tickets_Order_By }
    * @returns Reference of the current Apollo-angular QueryRef instance
    */
-  getUsers(limit: number, offset: number, condition: Users_Bool_Exp, orderBy: Users_Order_By)   {
+  getUsers(limit: number, offset: number, condition: Users_Bool_Exp, orderBy: Users_Order_By) {
     return this.getUsersGQL.watch(
       { limit, offset, condition, orderBy },
       {
@@ -25,5 +31,21 @@ export class UsersService {
         pollInterval: 5 * 1000,
       }
     );
+  }
+
+  getUserById(id: string): Observable<ApolloQueryResult<GetUserByIdQuery>> {
+    return this.getUserByIdGQL.fetch({ id }, {
+      fetchPolicy: 'cache-first',
+      errorPolicy: 'all',
+      partialRefetch: true
+    });
+  }
+
+  insertUser(input: Users_Insert_Input): Observable<MutationResult<InsertUserMutation>> {
+    return this.insertUserGQL.mutate({ input });
+  }
+
+  updateUserById(id: string, input: Users_Set_Input): Observable<MutationResult<UpdateUserMutation>> {
+    return this.updateUserGQL.mutate({ id, input });
   }
 }

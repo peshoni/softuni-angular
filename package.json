@@ -7,8 +7,6 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "hasura": "hasura --project hasura --skip-update-check",
-    "hasura:console": "npm run hasura console",
     "generate-types": "graphql-codegen --config codegen.js",
     "watch-types": "graphql-codegen --config codegen.js --watch"
   },

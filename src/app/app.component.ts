@@ -7,7 +7,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { InMemoryCache } from '@apollo/client/cache';
 import { ApolloClientOptions } from '@apollo/client/core';
 import { HttpLink } from 'apollo-angular/http';
-import { MaterialModule } from './modules/material/material.module';
+import { MaterialModule } from './modules/material.module';
 import { environment } from '../environments/environment';
 import { ShortUserDataComponent } from './_authorized/shared/short-user-data/short-user-data.component';
 

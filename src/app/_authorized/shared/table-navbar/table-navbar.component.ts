@@ -1,5 +1,5 @@
 import { Component, effect, EventEmitter, inject, Input, Output } from '@angular/core';
-import { MaterialModule } from '../../../modules/material/material.module';
+import { MaterialModule } from '../../../modules/material.module';
 import { AuthorizationService } from '../../../services/authorization.service';
 import { User_Roles_Enum, UserShortFieldsFragment } from '../../../../generated/graphql';
 import { PathSegments } from '../../../app.routes';

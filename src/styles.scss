@@ -64,7 +64,7 @@ $max-mobile-width: 600px;
         display: grid;
         row-gap: 8px;
         column-gap: 8px;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
 
         .full-width {
             width: 100%;

@@ -1,32 +1,50 @@
-# SoftuniTicketsApp
+# Application for the managing data for Users/Projects/Tickets
 
-A repo for a Angular course at Softuni october 2024
+Repo for the exam task for the Angular course, Softuni October 2024
 
-## Environment requirements
-# Node 
-npm 10.9.0
-# Angular CLI
-Angular CLI: 18.2.11  
+## Environment requirements:
 
-# Hasura CLI
-Hasura CLI: 2.36.1
-source https://www.npmjs.com/package/hasura-cli
-# Docker
-Docker version 27.3.1
+- Node: 22.9.0
+- Angular CLI: 18.2.11
+- Package Manager: npm 10.9.0
+- Docker version: 27.3.1
 
 ## Installation
-Open terminal
-Run  `git clone https://github.com/peshoni/softuni-angular.git & cd softuni-angular`
-Run  `cd softuni-angular`
-Run  `npm install` to install the application
-RUN  `docker-compose up --build -d` to build the containers
-RUN  `npx hasura metadata apply` to apply metadata from project over hasura container
-RUN  `npx hasura migrate apply --database-name default` to apply migrations
 
-## Ports for access with credentials from docker-compose file
-app port: 4200
-hasura console: 8082
-postgres: 5433 
+```bash
+# clone repo
+git clone https://github.com/peshoni/softuni-angular.git
+
+# move to project directory
+cd softuni-angular
+
+# Install application
+npm install
+
+# Build the images and run as containers
+docker-compose up --build -d
+
+# Check containers:
+docker container ls
+
+# Applies metadata over Hasura and Postgres
+npx hasura metadata apply
+
+# Applies migrations over the Postgres
+npx hasura migrate apply --database-name default
+
+# Hydrates database with a mock data (.sql files from the /seeds/default/ folder)
+npx hasura seeds apply --database-name default
+``` 
+
+## Exposed containers:  
+
+1. Angular application : localhost:4200
+2. Hasura console:       localhost:8082
+3. Postgres:             localhost:5433 
+```bash
+docker container ls
+```
 
 ## Tech stack
 ![alt text](readme-images/stack.bmp)
@@ -35,17 +53,19 @@ postgres: 5433
 ![alt text](readme-images/image.png)
 
 ## Development
-
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.5.
 
 ## Development server
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
 ## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-Run `ng generate @angular/material:table authorized/tickets/tickets-list` to generate angular table component with schematics. 
-ng generate @angular/material:address-form ....
+```bash
+ng generate directive|pipe|service|class|guard|interface|enum|module
+# Generate a table component with Angular Schematics
+ng generate @angular/material:table path/component-name
+# Generate an address form component with Angular Schematics:
+ng generate @angular/material:address-form path/component-name
+```
 
 ## Build
 
@@ -84,7 +104,6 @@ hasura migrate squash --skip-update-check --database-name="default" --delete-sou
 hasura migrate squash --skip-update-check --database-name="default" --delete-source --name "users" --from 1730988457620
 hasura migrate squash --skip-update-check --database-name="default" --delete-source --name "projects" --from 1730988852144
 hasura migrate squash --skip-update-check --database-name="default" --delete-source --name "users" --from 1730989449789
- 
 
 hasura migrate apply --database-name <database-name>
 

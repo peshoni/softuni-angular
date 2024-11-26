@@ -19,7 +19,7 @@ export enum PathSegments {
 }
 
 export const routes: Routes = [
-  { path: '', redirectTo: PathSegments.PROJECTS, pathMatch: 'full' }, // try to navigate to PROJECTS
+  { path: '', redirectTo: PathSegments.LOGIN, pathMatch: 'full' }, // try to navigate to PROJECTS
   {
     path: PathSegments.LOGIN,
     component: LoginComponent

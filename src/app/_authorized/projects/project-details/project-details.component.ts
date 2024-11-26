@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
-import { MaterialModule } from '../../../modules/material/material.module';
+import { MaterialModule } from '../../../modules/material.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DetailsBaseComponent } from '../../shared/details-base/details-base.component';
 import { ProjectsService } from '../projects.service';

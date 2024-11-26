@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MaterialModule } from '../../modules/material/material.module';
+import { MaterialModule } from '../../modules/material.module';
 import { Router, RouterLink } from '@angular/router';
 import { AuthorizationService } from '../../services/authorization.service';
 

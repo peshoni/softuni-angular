@@ -8,3 +8,11 @@ object_relationships:
   - name: userByReporterId
     using:
       foreign_key_constraint_on: reporter_id
+array_relationships:
+  - name: ticket_logs
+    using:
+      foreign_key_constraint_on:
+        column: ticket_id
+        table:
+          name: ticket_logs
+          schema: public

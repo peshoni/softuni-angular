@@ -1145,9 +1145,9 @@ export type Query_Root = {
   projects_aggregate: Projects_Aggregate;
   /** fetch data from the table: "projects" using primary key columns */
   projects_by_pk?: Maybe<Projects>;
-  /** fetch data from the table: "ticket_logs" */
+  /** An array relationship */
   ticket_logs: Array<Ticket_Logs>;
-  /** fetch aggregated fields from the table: "ticket_logs" */
+  /** An aggregate relationship */
   ticket_logs_aggregate: Ticket_Logs_Aggregate;
   /** fetch data from the table: "ticket_logs" using primary key columns */
   ticket_logs_by_pk?: Maybe<Ticket_Logs>;
@@ -1387,9 +1387,9 @@ export type Subscription_Root = {
   projects_by_pk?: Maybe<Projects>;
   /** fetch data from the table in a streaming manner: "projects" */
   projects_stream: Array<Projects>;
-  /** fetch data from the table: "ticket_logs" */
+  /** An array relationship */
   ticket_logs: Array<Ticket_Logs>;
-  /** fetch aggregated fields from the table: "ticket_logs" */
+  /** An aggregate relationship */
   ticket_logs_aggregate: Ticket_Logs_Aggregate;
   /** fetch data from the table: "ticket_logs" using primary key columns */
   ticket_logs_by_pk?: Maybe<Ticket_Logs>;
@@ -1676,8 +1676,12 @@ export type Ticket_Logs = {
   deleted: Scalars['Boolean']['output'];
   description: Scalars['String']['output'];
   id: Scalars['uuid']['output'];
+  /** An object relationship */
+  ticket: Tickets;
   ticket_id: Scalars['uuid']['output'];
   updated_at: Scalars['timestamptz']['output'];
+  /** An object relationship */
+  user: Users;
   user_id: Scalars['uuid']['output'];
 };
 
@@ -1686,6 +1690,33 @@ export type Ticket_Logs_Aggregate = {
   __typename?: 'ticket_logs_aggregate';
   aggregate?: Maybe<Ticket_Logs_Aggregate_Fields>;
   nodes: Array<Ticket_Logs>;
+};
+
+export type Ticket_Logs_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<Ticket_Logs_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<Ticket_Logs_Aggregate_Bool_Exp_Bool_Or>;
+  count?: InputMaybe<Ticket_Logs_Aggregate_Bool_Exp_Count>;
+};
+
+export type Ticket_Logs_Aggregate_Bool_Exp_Bool_And = {
+  arguments: Ticket_Logs_Select_Column_Ticket_Logs_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Ticket_Logs_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Ticket_Logs_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: Ticket_Logs_Select_Column_Ticket_Logs_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Ticket_Logs_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Ticket_Logs_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Ticket_Logs_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Ticket_Logs_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "ticket_logs" */
@@ -1703,6 +1734,20 @@ export type Ticket_Logs_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+/** order by aggregate values of table "ticket_logs" */
+export type Ticket_Logs_Aggregate_Order_By = {
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Ticket_Logs_Max_Order_By>;
+  min?: InputMaybe<Ticket_Logs_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "ticket_logs" */
+export type Ticket_Logs_Arr_Rel_Insert_Input = {
+  data: Array<Ticket_Logs_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Ticket_Logs_On_Conflict>;
+};
+
 /** Boolean expression to filter rows from the table "ticket_logs". All fields are combined with a logical 'AND'. */
 export type Ticket_Logs_Bool_Exp = {
   _and?: InputMaybe<Array<Ticket_Logs_Bool_Exp>>;
@@ -1712,8 +1757,10 @@ export type Ticket_Logs_Bool_Exp = {
   deleted?: InputMaybe<Boolean_Comparison_Exp>;
   description?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  ticket?: InputMaybe<Tickets_Bool_Exp>;
   ticket_id?: InputMaybe<Uuid_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  user?: InputMaybe<Users_Bool_Exp>;
   user_id?: InputMaybe<Uuid_Comparison_Exp>;
 };
 
@@ -1729,8 +1776,10 @@ export type Ticket_Logs_Insert_Input = {
   deleted?: InputMaybe<Scalars['Boolean']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  ticket?: InputMaybe<Tickets_Obj_Rel_Insert_Input>;
   ticket_id?: InputMaybe<Scalars['uuid']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  user?: InputMaybe<Users_Obj_Rel_Insert_Input>;
   user_id?: InputMaybe<Scalars['uuid']['input']>;
 };
 
@@ -1745,6 +1794,16 @@ export type Ticket_Logs_Max_Fields = {
   user_id?: Maybe<Scalars['uuid']['output']>;
 };
 
+/** order by max() on columns of table "ticket_logs" */
+export type Ticket_Logs_Max_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  description?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  ticket_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
 /** aggregate min on columns */
 export type Ticket_Logs_Min_Fields = {
   __typename?: 'ticket_logs_min_fields';
@@ -1754,6 +1813,16 @@ export type Ticket_Logs_Min_Fields = {
   ticket_id?: Maybe<Scalars['uuid']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   user_id?: Maybe<Scalars['uuid']['output']>;
+};
+
+/** order by min() on columns of table "ticket_logs" */
+export type Ticket_Logs_Min_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  description?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  ticket_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "ticket_logs" */
@@ -1778,8 +1847,10 @@ export type Ticket_Logs_Order_By = {
   deleted?: InputMaybe<Order_By>;
   description?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  ticket?: InputMaybe<Tickets_Order_By>;
   ticket_id?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
+  user?: InputMaybe<Users_Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
 
@@ -1804,6 +1875,18 @@ export enum Ticket_Logs_Select_Column {
   UpdatedAt = 'updated_at',
   /** column name */
   UserId = 'user_id'
+}
+
+/** select "ticket_logs_aggregate_bool_exp_bool_and_arguments_columns" columns of table "ticket_logs" */
+export enum Ticket_Logs_Select_Column_Ticket_Logs_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
+  /** column name */
+  Deleted = 'deleted'
+}
+
+/** select "ticket_logs_aggregate_bool_exp_bool_or_arguments_columns" columns of table "ticket_logs" */
+export enum Ticket_Logs_Select_Column_Ticket_Logs_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
+  /** column name */
+  Deleted = 'deleted'
 }
 
 /** input type for updating data in table "ticket_logs" */
@@ -2025,11 +2108,35 @@ export type Tickets = {
   project_id: Scalars['uuid']['output'];
   reporter_id: Scalars['uuid']['output'];
   status: Ticket_Statuses_Enum;
+  /** An array relationship */
+  ticket_logs: Array<Ticket_Logs>;
+  /** An aggregate relationship */
+  ticket_logs_aggregate: Ticket_Logs_Aggregate;
   updated_at: Scalars['timestamptz']['output'];
   /** An object relationship */
   user?: Maybe<Users>;
   /** An object relationship */
   userByReporterId: Users;
+};
+
+
+/** columns and relationships of "tickets" */
+export type TicketsTicket_LogsArgs = {
+  distinct_on?: InputMaybe<Array<Ticket_Logs_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Ticket_Logs_Order_By>>;
+  where?: InputMaybe<Ticket_Logs_Bool_Exp>;
+};
+
+
+/** columns and relationships of "tickets" */
+export type TicketsTicket_Logs_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Ticket_Logs_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Ticket_Logs_Order_By>>;
+  where?: InputMaybe<Ticket_Logs_Bool_Exp>;
 };
 
 /** aggregated selection of "tickets" */
@@ -2091,6 +2198,8 @@ export type Tickets_Bool_Exp = {
   project_id?: InputMaybe<Uuid_Comparison_Exp>;
   reporter_id?: InputMaybe<Uuid_Comparison_Exp>;
   status?: InputMaybe<Ticket_Statuses_Enum_Comparison_Exp>;
+  ticket_logs?: InputMaybe<Ticket_Logs_Bool_Exp>;
+  ticket_logs_aggregate?: InputMaybe<Ticket_Logs_Aggregate_Bool_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   user?: InputMaybe<Users_Bool_Exp>;
   userByReporterId?: InputMaybe<Users_Bool_Exp>;
@@ -2111,6 +2220,7 @@ export type Tickets_Insert_Input = {
   project_id?: InputMaybe<Scalars['uuid']['input']>;
   reporter_id?: InputMaybe<Scalars['uuid']['input']>;
   status?: InputMaybe<Ticket_Statuses_Enum>;
+  ticket_logs?: InputMaybe<Ticket_Logs_Arr_Rel_Insert_Input>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   user?: InputMaybe<Users_Obj_Rel_Insert_Input>;
   userByReporterId?: InputMaybe<Users_Obj_Rel_Insert_Input>;
@@ -2171,6 +2281,13 @@ export type Tickets_Mutation_Response = {
   returning: Array<Tickets>;
 };
 
+/** input type for inserting object relation for remote table "tickets" */
+export type Tickets_Obj_Rel_Insert_Input = {
+  data: Tickets_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Tickets_On_Conflict>;
+};
+
 /** on_conflict condition type for table "tickets" */
 export type Tickets_On_Conflict = {
   constraint: Tickets_Constraint;
@@ -2187,6 +2304,7 @@ export type Tickets_Order_By = {
   project_id?: InputMaybe<Order_By>;
   reporter_id?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
+  ticket_logs_aggregate?: InputMaybe<Ticket_Logs_Aggregate_Order_By>;
   updated_at?: InputMaybe<Order_By>;
   user?: InputMaybe<Users_Order_By>;
   userByReporterId?: InputMaybe<Users_Order_By>;

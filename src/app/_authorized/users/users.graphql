@@ -70,8 +70,17 @@ fragment UserShortFields on users {
   }
 }
 
+#  For the users generator
 # mutation InsertMultipleUSers($users: [users_insert_input!]!) {
 #   insert_users(objects:$users){
 #     affected_rows
 #   }
+# } 
+# mutation InsertMultipleProjects($projects: [projects_insert_input!]!) {
+#   insert_projects(objects: $projects) {
+#     affected_rows
+#   }
 # }
+#   // private que: InsertMultipleUSersGQL = inject(InsertMultipleUSersGQL);
+  # // private que: InsertMultipleProjectsGQL = inject(InsertMultipleProjectsGQL);
+
