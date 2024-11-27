@@ -1,42 +1,13 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { map, Observable, shareReplay } from 'rxjs';
 import { AuthorizationService } from './services/authorization.service';
 import { NavigationEnd, NavigationStart, Router, RouterLink, RouterOutlet } from '@angular/router';
-import { HttpHeaders } from '@angular/common/http';
-import { InMemoryCache } from '@apollo/client/cache';
-import { ApolloClientOptions } from '@apollo/client/core';
-import { HttpLink } from 'apollo-angular/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MaterialModule } from './modules/material.module';
-import { environment } from '../environments/environment';
 import { ShortUserDataComponent } from './_authorized/shared/short-user-data/short-user-data.component';
+import { authInterceptor } from './interceptors/auth.interceptor';
 
-export function createApollo(): ApolloClientOptions<any> {
-  const httpLink = inject(HttpLink);
-
-  const headers = new HttpHeaders({
-    'Accept': 'charset=utf-8',
-    'x-hasura-admin-secret': 'softuniAngularAdminSecret'
-  });
-
-  return {
-    link: httpLink.create({
-      uri: environment.hasuraUrl,
-      headers,
-      withCredentials: false
-    }),
-    cache: new InMemoryCache(),
-    defaultOptions: {
-      watchQuery: {
-        fetchPolicy: 'cache-and-network',
-      },
-      query: {
-        fetchPolicy: 'network-only',
-        errorPolicy: 'all',
-      },
-    }
-  };
-}
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -46,6 +17,13 @@ export function createApollo(): ApolloClientOptions<any> {
     RouterLink,
     MaterialModule,
     ShortUserDataComponent
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useExisting: authInterceptor,
+      multi: true
+    }
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -75,7 +53,7 @@ export class AppComponent implements OnInit {
       } else if (event instanceof NavigationEnd) {
         this.currentUrl = event.url.split('/')[1];
       }
-    })
+    });
   }
 
   logout() {

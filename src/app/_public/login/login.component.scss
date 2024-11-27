@@ -1,16 +1,12 @@
-
-
-.login-wrapper{
-    //margin: 100px auto;
-   
+.login-wrapper {
     width: 500px;
 
     .inputs-wrapper {
         margin: 16px 0;
-        padding-bottom: 16px;
+        padding-bottom: 0;
         display: grid;
         row-gap: 8px;
         column-gap: 8px;
-        grid-template-columns: 1fr; 
+        grid-template-columns: 1fr;
     }
 }

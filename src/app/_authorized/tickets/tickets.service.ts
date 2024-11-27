@@ -26,10 +26,10 @@ export class TicketsService {
         fetchPolicy: 'network-only',
         partialRefetch: true,
         errorPolicy: 'all',
-        pollInterval: 5 * 1000,
+        pollInterval: 20 * 1000,
       }
     );
-  } 
+  }
 
   getTicketById(id: string): Observable<ApolloQueryResult<GetTicketByIdQuery>> {
     return this.getTicketByIdGQL.fetch({ id }, {

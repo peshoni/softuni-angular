@@ -29,34 +29,34 @@ export const routes: Routes = [
     component: UserDetailsComponent
   },
   {
-    path: '',
-    canActivateChild: [authorizationGuardFn],
-    children: [
-      {
-        path: PathSegments.PROJECTS,
-        component: ProjectsListComponent
-      },
-      {
-        path: `${PathSegments.PROJECTS}/${PathSegments.DETAILS}/:id`,
-        component: ProjectDetailsComponent
-      },
-      {
-        path: PathSegments.TICKETS,
-        component: TicketsListComponent
-      },
-      {
-        path: `${PathSegments.TICKETS}/${PathSegments.DETAILS}/:id`,
-        component: TicketDetailsComponent
-      },
-      {
-        path: PathSegments.USERS,
-        component: UsersListComponent
-      },
-      {
-        path: `${PathSegments.USERS}/${PathSegments.DETAILS}/:id`,
-        component: UserDetailsComponent
-      }
-    ]
+    path: PathSegments.PROJECTS,
+    canActivate: [authorizationGuardFn],
+    component: ProjectsListComponent
+  },
+  {
+    path: `${PathSegments.PROJECTS}/${PathSegments.DETAILS}/:id`,
+    canActivate: [authorizationGuardFn],
+    component: ProjectDetailsComponent
+  },
+  {
+    path: PathSegments.TICKETS,
+    canActivate: [authorizationGuardFn],
+    component: TicketsListComponent
+  },
+  {
+    path: `${PathSegments.TICKETS}/${PathSegments.DETAILS}/:id`,
+    canActivate: [authorizationGuardFn],
+    component: TicketDetailsComponent
+  },
+  {
+    path: PathSegments.USERS,
+    canActivate: [authorizationGuardFn],
+    component: UsersListComponent
+  },
+  {
+    path: `${PathSegments.USERS}/${PathSegments.DETAILS}/:id`,
+    canActivate: [authorizationGuardFn],
+    component: UserDetailsComponent
   },
   { path: '**', redirectTo: '', pathMatch: 'full' } // all missing paths navigates to 'authorize'
 ];

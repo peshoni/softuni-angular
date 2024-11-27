@@ -28,7 +28,7 @@ export class UsersService {
         fetchPolicy: 'network-only',
         partialRefetch: true,
         errorPolicy: 'all',
-        pollInterval: 5 * 1000,
+        pollInterval: 20 * 1000,
       }
     );
   }
