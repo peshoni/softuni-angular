@@ -2,8 +2,7 @@ import { Component, effect, EventEmitter, inject, Input, Output } from '@angular
 import { MaterialModule } from '../../../modules/material.module';
 import { AuthorizationService } from '../../../services/authorization.service';
 import { User_Roles_Enum, UserShortFieldsFragment } from '../../../../generated/graphql';
-import { PathSegments } from '../../../app.routes';
-import { Path } from '@apollo/client/core';
+import { PathSegments } from '../../../app.routes'; 
 
 @Component({
   selector: 'app-table-navbar',
@@ -17,8 +16,8 @@ export class TableNavbarComponent {
 
   @Input() label!: string;
   @Input() isLoading: boolean = false;
-
   @Output() addButtonClicked = new EventEmitter<any>();
+  
   allowedAddOperation: boolean = false;
 
   constructor() {

@@ -3,33 +3,36 @@ import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MaterialModule } from '../../../modules/material.module';
 import { ProjectDetailsComponent } from '../../projects/project-details/project-details.component';
-import { DetailsBaseComponent } from '../../shared/details-base/details-base.component';
+import { DetailsBaseComponent } from '../../shared/abstract/details-base.component';
 import { GetTicketByIdQuery, Ticket_Statuses_Enum, TicketFieldsFragment, Tickets_Insert_Input, Tickets_Set_Input } from '../../../../generated/graphql';
 import { TicketsService } from '../tickets.service';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { MatSnackBarConfig, MatSnackBarDismiss } from '@angular/material/snack-bar';
 import { SnackbarTypes, Util } from '../../../utils/common-utils';
-import { PathSegments } from '../../../app.routes'; 
+import { PathSegments } from '../../../app.routes';
 import { ProjectsService } from '../../projects/projects.service';
 import { ShortUserDataComponent } from '../../shared/short-user-data/short-user-data.component';
 import { FormsUtil } from '../../../utils/forms-util';
+import { NgFor, NgIf } from '@angular/common';
+import { TicketLogDetailsComponent } from '../ticket-log-details/ticket-log-details.component';
 
 @Component({
   selector: 'app-ticket-details',
   standalone: true,
-  imports: [ReactiveFormsModule, MaterialModule, MatDialogModule, ShortUserDataComponent],
+  imports: [ReactiveFormsModule, MaterialModule, MatDialogModule, ShortUserDataComponent, NgIf, NgFor, TicketLogDetailsComponent],
   providers: [TicketsService, ProjectsService],
   templateUrl: './ticket-details.component.html',
   styleUrl: './ticket-details.component.scss'
 })
 export class TicketDetailsComponent extends DetailsBaseComponent<ProjectDetailsComponent> implements OnInit {
   private readonly ticketsService: TicketsService = inject(TicketsService);
-  private readonly projectsService: ProjectsService = inject(ProjectsService); 
+  private readonly projectsService: ProjectsService = inject(ProjectsService);
   statuses = Ticket_Statuses_Enum;
   ticket: TicketFieldsFragment | undefined;
 
   ngOnInit(): void {
     this.title = this.isCreateMode ? 'Add ticket details' : 'Ticket details';
+    this.parentSegment = PathSegments.TICKETS;
 
     this.form = this.formBuilder.group({
       status: [null, Validators.required],
@@ -42,11 +45,11 @@ export class TicketDetailsComponent extends DetailsBaseComponent<ProjectDetailsC
 
       this.projectsService.getProjectsOwnedById(this.currentUserId!).subscribe(
         (data) => {
-          console.log(data)
+          console.log(data);
 
           // HERE...
         }
-      )
+      );
 
     } else {
 
@@ -59,19 +62,12 @@ export class TicketDetailsComponent extends DetailsBaseComponent<ProjectDetailsC
           });
         } else {
           this.ticket = response.data.tickets[0];
+          console.log(this.ticket.logs);
           this.currentObjectId = this.ticket.id;
           this.isInPreviewMode = !this.isCreateMode && (this.currentUserId !== this.ticket.reporter.id);
           this.form.patchValue(this.ticket);
         }
       });
-    }
-  }
-
-  cancel() {
-    if (this.dialogRef) {
-      this.dialogRef.close({ status: false });
-    } else {
-      this.router.navigate([PathSegments.TICKETS]);
     }
   }
 
@@ -90,7 +86,6 @@ export class TicketDetailsComponent extends DetailsBaseComponent<ProjectDetailsC
       this.ticketsService.insertTicket(insertInput).subscribe(
         ({ data, errors }) => {
           console.log(errors);
-
           this.close();
         }
       );
@@ -100,22 +95,12 @@ export class TicketDetailsComponent extends DetailsBaseComponent<ProjectDetailsC
         ({ data, errors }) => {
           console.log(errors);
           if (errors) {
-
           } else {
             this.close();
           }
         }
       );
       // invoke close
-    }
-  }
-
-  private close() {
-    if (this.dialogRef) {
-      this.dialogRef.close({ status: true });
-    } else {
-      this.submitted.set(true);
-      this.router.navigate([PathSegments.TICKETS]);
     }
   }
 }

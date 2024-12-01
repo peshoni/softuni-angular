@@ -14,7 +14,7 @@ export class AuthorizationService {
   currentUser: WritableSignal<UserShortFieldsFragment | undefined> = signal(undefined);
 
   login(username: string, password: string): Observable<ApolloQueryResult<LoginQuery>> {
-    return this.loginGQL.fetch({ username, password })
+    return this.loginGQL.fetch({ username, password });
   }
 
   loginAsPromise(username: string, password: string): Promise<ApolloQueryResult<LoginQuery>> {
@@ -23,8 +23,7 @@ export class AuthorizationService {
 
   logout() {
     this.currentUser.set(undefined);
-    sessionStorage.removeItem('lastUrl');
+    //clear storage data..
     this.router.navigate([PathSegments.LOGIN]);
   }
-
 }

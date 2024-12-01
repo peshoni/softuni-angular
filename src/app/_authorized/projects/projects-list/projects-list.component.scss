@@ -5,6 +5,14 @@
     width: 50px !important;
   }
 
+  tr {
+    &.own-project {
+      background-color: rgb(221, 234, 250);
+      width: 4px;
+      margin-right: 4px;
+    }
+  }
+
   .mat-column-actions {
     width: 80px;
   }

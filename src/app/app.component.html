@@ -18,6 +18,7 @@
 
   <mat-menu #userMenu="matMenu">
     <button mat-menu-item (click)="logout()">{{'logout'}}</button>
+    <button mat-menu-item (click)="editMyProfile()">{{'my profile'}}</button>
   </mat-menu>
 
 </mat-toolbar>
@@ -27,21 +28,23 @@
     [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
     <mat-nav-list>
       <mat-list-item routerLink="/projects" [ngClass]="{ selected: currentUrl === 'projects'}">
-        <div class="menu-row"> <mat-icon color="primary">
+        <div class="menu-row">
+          <mat-icon color="primary">
             <span class="material-symbols-outlined"> work </span>
-            3
           </mat-icon>
           <div> {{ 'projects' }} </div>
         </div>
       </mat-list-item>
       <mat-list-item routerLink="/tickets" [ngClass]="{ selected: currentUrl === 'tickets'}">
-        <div class="menu-row"> <mat-icon color="primary">
+        <div class="menu-row">
+          <mat-icon color="primary">
             <span class="material-symbols-outlined"> task </span>
           </mat-icon>
           <div> {{ 'tickets' }} </div>
         </div>
       </mat-list-item>
-      <mat-list-item routerLink="/users" [ngClass]="{ selected: currentUrl === 'users'}">
+      <mat-list-item *ngIf="authorizationService.currentUser()?.user_role?.value === roles.Administrator"
+        routerLink="/users" [ngClass]="{ selected: currentUrl === 'users'}">
         <div class="menu-row">
           <mat-icon color="primary">
             <span class="material-symbols-outlined"> groups </span>

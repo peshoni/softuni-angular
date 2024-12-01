@@ -3087,14 +3087,14 @@ export type GetTicketsQueryVariables = Exact<{
 }>;
 
 
-export type GetTicketsQuery = { __typename?: 'query_root', tickets: Array<{ __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, assignee?: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } | null }>, tickets_aggregate: { __typename?: 'tickets_aggregate', aggregate?: { __typename?: 'tickets_aggregate_fields', count: number } | null } };
+export type GetTicketsQuery = { __typename?: 'query_root', tickets: Array<{ __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, assignee?: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } | null, logs: Array<{ __typename?: 'ticket_logs', id: any, created_at: any, updated_at: any, deleted: boolean, description: string, ticket_id: any, user: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } }> }>, tickets_aggregate: { __typename?: 'tickets_aggregate', aggregate?: { __typename?: 'tickets_aggregate_fields', count: number } | null } };
 
 export type InsertTicketMutationVariables = Exact<{
   input: Tickets_Insert_Input;
 }>;
 
 
-export type InsertTicketMutation = { __typename?: 'mutation_root', insert_tickets_one?: { __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, assignee?: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } | null } | null };
+export type InsertTicketMutation = { __typename?: 'mutation_root', insert_tickets_one?: { __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, assignee?: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } | null, logs: Array<{ __typename?: 'ticket_logs', id: any, created_at: any, updated_at: any, deleted: boolean, description: string, ticket_id: any, user: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } }> } | null };
 
 export type UpdateTicketMutationVariables = Exact<{
   id: Scalars['uuid']['input'];
@@ -3102,16 +3102,18 @@ export type UpdateTicketMutationVariables = Exact<{
 }>;
 
 
-export type UpdateTicketMutation = { __typename?: 'mutation_root', update_tickets_by_pk?: { __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, assignee?: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } | null } | null };
+export type UpdateTicketMutation = { __typename?: 'mutation_root', update_tickets_by_pk?: { __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, assignee?: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } | null, logs: Array<{ __typename?: 'ticket_logs', id: any, created_at: any, updated_at: any, deleted: boolean, description: string, ticket_id: any, user: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } }> } | null };
 
 export type GetTicketByIdQueryVariables = Exact<{
   id: Scalars['uuid']['input'];
 }>;
 
 
-export type GetTicketByIdQuery = { __typename?: 'query_root', tickets: Array<{ __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, assignee?: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } | null }> };
+export type GetTicketByIdQuery = { __typename?: 'query_root', tickets: Array<{ __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, assignee?: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } | null, logs: Array<{ __typename?: 'ticket_logs', id: any, created_at: any, updated_at: any, deleted: boolean, description: string, ticket_id: any, user: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } }> }> };
 
-export type TicketFieldsFragment = { __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, assignee?: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } | null };
+export type TicketFieldsFragment = { __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, assignee?: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } | null, logs: Array<{ __typename?: 'ticket_logs', id: any, created_at: any, updated_at: any, deleted: boolean, description: string, ticket_id: any, user: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } }> };
+
+export type TicketLogFragment = { __typename?: 'ticket_logs', id: any, created_at: any, updated_at: any, deleted: boolean, description: string, ticket_id: any, user: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } };
 
 export type GetUsersQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -3186,6 +3188,19 @@ export const ProjectFieldsFragmentDoc = gql`
   }
 }
     ${UserShortFieldsFragmentDoc}`;
+export const TicketLogFragmentDoc = gql`
+    fragment TicketLog on ticket_logs {
+  id
+  created_at
+  updated_at
+  deleted
+  description
+  ticket_id
+  user {
+    ...UserShortFields
+  }
+}
+    ${UserShortFieldsFragmentDoc}`;
 export const TicketFieldsFragmentDoc = gql`
     fragment TicketFields on tickets {
   id
@@ -3200,8 +3215,12 @@ export const TicketFieldsFragmentDoc = gql`
   assignee: user {
     ...UserShortFields
   }
+  logs: ticket_logs {
+    ...TicketLog
+  }
 }
-    ${UserShortFieldsFragmentDoc}`;
+    ${UserShortFieldsFragmentDoc}
+${TicketLogFragmentDoc}`;
 export const UserFieldsFragmentDoc = gql`
     fragment UserFields on users {
   id

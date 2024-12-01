@@ -1,29 +1,39 @@
-import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { Observable, merge, of } from 'rxjs';
-import { inject, signal } from '@angular/core';
-import { GetTicketsQuery,  Order_By, Tickets_Order_By } from '../../../../generated/graphql';
+import { inject } from '@angular/core';
+import { GetTicketsQuery, Order_By, TicketFieldsFragment, Tickets_Bool_Exp, Tickets_Order_By } from '../../../../generated/graphql';
 import { TicketsService } from '../tickets.service';
-import { QueryRef } from 'apollo-angular';
 import { ApolloQueryResult } from '@apollo/client/core';
+import { CustomDataSource } from '../../shared/abstract/datasource';
 
 /**
  * Data source for the TicketsList view. This class should
  * encapsulate all logic for fetching and manipulating the displayed data
  * (including sorting, pagination, and filtering).
  */
-export class TicketsListDataSource extends DataSource<GetTicketsQuery['tickets']> {
+export class TicketsListDataSource extends CustomDataSource<TicketFieldsFragment, GetTicketsQuery> {
   private readonly ticketsService: TicketsService = inject(TicketsService);
-  elementsOnPage = signal(0);
-  loading = signal(true);
-  paginator?: MatPaginator;
-  sort?: MatSort;
-  queryRef?: QueryRef<GetTicketsQuery>;
+  private order_by: Tickets_Order_By = { created_at: Order_By.Asc };
+  private condition: Tickets_Bool_Exp = {}; // attach filter logic here
 
-  constructor() {
-    super();
+  setPaginatorAndSort(paginator: MatPaginator, sort: MatSort) {
+    this.paginator = paginator;
+    this.sort = sort;
+    this.initQueryRef();
+  }
+
+  initQueryRef() {
+    const limit: number = this.paginator.pageSize;
+    const offset: number = this.paginator.pageIndex * this.paginator.pageSize;  
+
+    this.queryRef = this.ticketsService.getTickets(
+      limit,
+      offset,
+      this.condition,
+      this.order_by
+    );
   }
 
   /**
@@ -31,19 +41,9 @@ export class TicketsListDataSource extends DataSource<GetTicketsQuery['tickets']
    * the returned stream emits new items.
    * @returns A stream of the items to be rendered.
    */
-  connect(): Observable<GetTicketsQuery['tickets'] | any> {
+  connect(): Observable<TicketFieldsFragment[]> {
     if (this.paginator && this.sort) {
-      // Combine everything that affects the rendered data into one update
-      // stream for the data-table to consume.
-      const limit: number = this.paginator.pageSize;
-      const offset: number = this.paginator.pageIndex * this.paginator.pageSize;
-      const order_by: Tickets_Order_By = { id: Order_By.Asc };
-      this.queryRef = this.ticketsService.getTickets(
-        limit,
-        offset,
-        {},
-        order_by
-      );
+
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
       const dataMutations = [
@@ -51,23 +51,15 @@ export class TicketsListDataSource extends DataSource<GetTicketsQuery['tickets']
         //  this.paginator.page,
         // this.sort.sortChange,
       ];
-      // return 
 
-      // combineLatest([this.queryRef.valueChanges, this.paginator.page, this.sort.sortChange]).pipe(
-      //   tap(_ => {
-      //     console.log(_)
-      //   }),
-
-
-      // )
 
       return merge(this.queryRef.valueChanges, this.paginator.page, this.sort.sortChange)
         .pipe(
           tap((_) => {
-            console.log('loading....')/* this.loading.next(true)*/
+            console.log('loading....');/* this.loading.next(true)*/
           }),
-          switchMap(( fromWhere: ApolloQueryResult<GetTicketsQuery> | PageEvent | Sort) => {
-               console.log(fromWhere);
+          switchMap((fromWhere: ApolloQueryResult<GetTicketsQuery> | PageEvent | Sort) => {
+            console.log(fromWhere);
             let order: any = new Object({});
             if (this.sort?.active && this.sort.active.length > 0) {
               const field = this.sort.active;
@@ -88,8 +80,8 @@ export class TicketsListDataSource extends DataSource<GetTicketsQuery['tickets']
               return this.queryRef?.valueChanges ?? of();
             }
           }),
-          map((response:ApolloQueryResult<GetTicketsQuery>) => {
-            console.log(response.data); 
+          map((response: ApolloQueryResult<GetTicketsQuery>) => {
+            console.log(response.data);
             this.loading.set(response.loading);
             if (response.errors) {
               console.log(response.errors);
@@ -106,7 +98,7 @@ export class TicketsListDataSource extends DataSource<GetTicketsQuery['tickets']
               return [];
             }
 
-            this.elementsOnPage.set(response.data.tickets_aggregate.aggregate?.count ?? 0);
+            this.aggregateCount.set(response.data.tickets_aggregate.aggregate?.count ?? 0);
             return response.data.tickets;// as GetProjectsQuery['projects'];
           }
           )

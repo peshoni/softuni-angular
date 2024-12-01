@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '../../../modules/material.module';
 import { MatDialogModule } from '@angular/material/dialog';
-import { DetailsBaseComponent } from '../../shared/details-base/details-base.component';
+import { DetailsBaseComponent } from '../../shared/abstract/details-base.component';
 import { ProjectsService } from '../projects.service';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { GetProjectByIdQuery, Project_Statuses_Enum, ProjectFieldsFragment, Projects_Insert_Input, Projects_Set_Input } from '../../../../generated/graphql';
@@ -26,13 +26,15 @@ export class ProjectDetailsComponent extends DetailsBaseComponent<ProjectDetails
   project: ProjectFieldsFragment | undefined;
 
   ngOnInit(): void {
+    this.parentSegment = PathSegments.PROJECTS;
+    this.title = this.isCreateMode ? 'Add project details' : 'Project details';
+
     this.form = this.formBuilder.group({
       status: [null, Validators.required],
       label: [null, Validators.required],
       description: [null, Validators.required],
     });
 
-    this.title = this.isCreateMode ? 'Add project details' : 'Project details';
     if (this.isCreateMode) {
       this.currentObjectId = undefined;
     } else {
@@ -51,14 +53,6 @@ export class ProjectDetailsComponent extends DetailsBaseComponent<ProjectDetails
           this.form.patchValue(this.project);
         }
       });
-    }
-  }
-
-  cancel() {
-    if (this.dialogRef) {
-      this.dialogRef.close({ status: false });
-    } else {
-      this.router.navigate([PathSegments.PROJECTS]);
     }
   }
 
@@ -98,17 +92,6 @@ export class ProjectDetailsComponent extends DetailsBaseComponent<ProjectDetails
         }
       );
       // invoke close
-    }
-
-
-  }
-
-  private close() {
-    if (this.dialogRef) {
-      this.dialogRef.close({ status: true });
-    } else {
-      this.submitted.set(true);
-      this.router.navigate([PathSegments.PROJECTS]);
     }
   }
 }

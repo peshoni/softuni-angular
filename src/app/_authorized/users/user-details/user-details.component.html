@@ -47,7 +47,7 @@
                     <input matInput placeholder="role" formControlName="role" [readonly]="isInPreviewMode">
                     } @else {
                     <mat-select formControlName="role" placeholder="role">
-                        <mat-option *ngFor="let role of roles | keyvalue" [value]="role.value">{{ role.value }}
+                        <mat-option *ngFor="let role of allowedRoles | keyvalue" [value]="role.value">{{ role.value }}
                         </mat-option>
                     </mat-select>
                     }

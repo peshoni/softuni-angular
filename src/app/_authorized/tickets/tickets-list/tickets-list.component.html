@@ -24,6 +24,12 @@
       </td>
     </ng-container>
 
+    <!-- updated_at Column -->
+    <ng-container matColumnDef="updated_at">
+      <th mat-header-cell *matHeaderCellDef sticky>updated_at</th>
+      <td mat-cell *matCellDef="let row">{{cast(row).updated_at | appElapsedTime}}</td>
+    </ng-container>
+
     <!-- Actions Column -->
     <ng-container matColumnDef="actions" stickyEnd>
       <th *matHeaderCellDef mat-header-cell>more</th>
@@ -45,15 +51,16 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row [@addTableRowAnimation]="" *matRowDef="let row; columns: displayedColumns"></tr>
+    <tr mat-row [@addTableRowAnimation]="" *matRowDef="let row; columns: displayedColumns"
+      [ngClass]="{'assigned-ticket' : cast(row).assignee?.id === currentUserId}"></tr>
 
     <tr #noDataRow *matNoDataRow class="mat-row no-data-row">
       <td colspan="20" style="text-align: center">{{ 'no-records-found' }}</td>
     </tr>
   </table>
 
-  <mat-paginator #paginator [ngClass]="{ hiddenElement: dataSource.elementsOnPage() === 0 }"
-    [length]="dataSource.elementsOnPage()" [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 20]"
+  <mat-paginator #paginator [ngClass]="{ hiddenElement: dataSource.aggregateCount() === 0 }"
+    [length]="dataSource.aggregateCount()" [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 20]"
     aria-label="Select page">
   </mat-paginator>
 </div>

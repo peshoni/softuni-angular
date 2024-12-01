@@ -1,0 +1,11 @@
+<div class="wrapper">
+    <div>
+        <app-short-user-data *ngIf="log.user.id === ticketReporterId" [user]="log.user"
+            [class]="'logs'"></app-short-user-data>
+    </div>
+    <textarea autoHeight>{{log.description}}</textarea>
+    <div class="right">
+        <app-short-user-data *ngIf="log.user.id !== ticketReporterId" [user]="log.user"
+            [class]="'logs'"></app-short-user-data>
+    </div>
+</div>

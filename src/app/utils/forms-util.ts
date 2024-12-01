@@ -13,7 +13,7 @@ export class FormsUtil {
       closeOnNavigation: true,
       panelClass: 'custom-dialog-container', // see main.scss
       backdropClass: closable ? 'custom-dialog-backdrop' : '', // see main.scss
-      data,//: { example: 'someData..' },
+      data,
       autoFocus: false,
     };
     return config;

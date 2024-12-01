@@ -1,29 +1,39 @@
-import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { map, switchMap, tap } from 'rxjs/operators';
-import { Observable, merge, combineLatest, of } from 'rxjs';
-import { inject, signal } from '@angular/core';
-import { GetUsersQuery, Order_By, Users, Users_Order_By } from '../../../../generated/graphql';
+import { Observable, merge, of } from 'rxjs';
+import { inject } from '@angular/core';
+import { GetUsersQuery, Order_By, UserFieldsFragment, Users_Bool_Exp, Users_Order_By } from '../../../../generated/graphql';
 import { UsersService } from '../users.service';
-import { QueryRef } from 'apollo-angular';
 import { ApolloQueryResult } from '@apollo/client/core';
+import { CustomDataSource } from '../../shared/abstract/datasource';
 
 /**
  * Data source for the UsersList view. This class should
  * encapsulate all logic for fetching and manipulating the displayed data
  * (including sorting, pagination, and filtering).
  */
-export class UsersListDataSource extends DataSource<GetUsersQuery['users']> {
+export class UsersListDataSource extends CustomDataSource<UserFieldsFragment, GetUsersQuery> {
   private readonly usersService: UsersService = inject(UsersService);
-  elementsOnPage = signal(0);
-  loading = signal(true);
-  paginator?: MatPaginator;
-  sort?: MatSort;
-  queryRef?: QueryRef<GetUsersQuery>;
+  private order_by: Users_Order_By = { created_at: Order_By.Asc };
+  private condition: Users_Bool_Exp = {}; // attach filter logic here
 
-  constructor() {
-    super();
+  setPaginatorAndSort(paginator: MatPaginator, sort: MatSort) {
+    this.paginator = paginator;
+    this.sort = sort;
+    this.initQueryRef();
+  }
+
+  initQueryRef() {
+    const limit: number = this.paginator.pageSize;
+    const offset: number = this.paginator.pageIndex * this.paginator.pageSize;
+
+    this.queryRef = this.usersService.getUsers(
+      limit,
+      offset,
+      this.condition,
+      this.order_by
+    );
   }
 
   /**
@@ -31,40 +41,18 @@ export class UsersListDataSource extends DataSource<GetUsersQuery['users']> {
    * the returned stream emits new items.
    * @returns A stream of the items to be rendered.
    */
-  connect(): Observable<Users[] | any> {
+  connect(): Observable<UserFieldsFragment[]> {
     if (this.paginator && this.sort) {
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
-      const limit: number = this.paginator.pageSize;
-      const offset: number = this.paginator.pageIndex * this.paginator.pageSize;
-      const order_by: Users_Order_By = { id: Order_By.Asc };
-      this.queryRef = this.usersService.getUsers(
-        limit,
-        offset,
-        {},
-        order_by
-      );
-      // Combine everything that affects the rendered data into one update
-      // stream for the data-table to consume.
       const dataMutations = [
-        this.queryRef.valueChanges,
-        //  this.paginator.page,
-        // this.sort.sortChange,
+        this.queryRef.valueChanges 
       ];
-      // return 
 
-      combineLatest([this.queryRef.valueChanges, this.paginator.page, this.sort.sortChange]).pipe(
-        tap(_ => {
-          console.log(_)
-        }),
-
-
-      )
-
-      return merge(this.queryRef.valueChanges, this.paginator.page, this.sort.sortChange)
+      return merge(...dataMutations, this.paginator.page, this.sort.sortChange)
         .pipe(
           tap((_) => {
-            console.log('loading....')/* this.loading.next(true)*/
+            console.log('loading....');/* this.loading.next(true)*/
           }),
           switchMap((fromWhere: ApolloQueryResult<GetUsersQuery> | PageEvent | Sort) => {
             console.log(fromWhere);
@@ -87,18 +75,18 @@ export class UsersListDataSource extends DataSource<GetUsersQuery['users']> {
               return this.queryRef?.valueChanges ?? of();
             }
           }),
-          map((response: ApolloQueryResult<GetUsersQuery>) => { 
+          map((response: ApolloQueryResult<GetUsersQuery>) => {
             this.loading.set(response.loading);
-            if ( response.errors) { 
-              const errorMessage = response.errors[0].message; 
+            if (response.errors) {
+              const errorMessage = response.errors[0].message;
               if (errorMessage.includes('query_root')) {
                 console.log('query_root');
-              } 
-              console.log(errorMessage); 
+              }
+              console.log(errorMessage);
               return [];
             }
-            this.elementsOnPage.set(response.data.users_aggregate.aggregate?.count ?? 0);
-            return response.data.users;// as GetProjectsQuery['projects'];
+            this.aggregateCount.set(response.data.users_aggregate.aggregate?.count ?? 0);
+            return response.data.users;
           }
           )
         );

@@ -50,4 +50,19 @@ fragment TicketFields on tickets {
   assignee: user {
     ...UserShortFields
   }
+  logs: ticket_logs {
+    ...TicketLog
+  }
+}
+
+fragment TicketLog on ticket_logs {
+  id
+  created_at
+  updated_at
+  deleted
+  description
+  ticket_id
+  user {
+    ...UserShortFields
+  }
 }

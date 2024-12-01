@@ -3,7 +3,7 @@ import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ProjectDetailsComponent } from '../../projects/project-details/project-details.component';
 import { MaterialModule } from '../../../modules/material.module';
-import { DetailsBaseComponent } from '../../shared/details-base/details-base.component';
+import { DetailsBaseComponent } from '../../shared/abstract/details-base.component';
 import { PathSegments } from '../../../app.routes';
 import { UsersService } from '../users.service';
 import { Genders_Enum, GetUserByIdQuery, User_Roles_Enum, UserFieldsFragment } from '../../../../generated/graphql';
@@ -20,12 +20,13 @@ import { Util, SnackbarTypes } from '../../../utils/common-utils';
 })
 export class UserDetailsComponent extends DetailsBaseComponent<ProjectDetailsComponent> implements OnInit {
   private readonly usersService: UsersService = inject(UsersService);
-  roles = User_Roles_Enum;
+  allowedRoles = [User_Roles_Enum.Reporter, User_Roles_Enum.Assignee];// add `Admin` for the admin :-)
   genders = Genders_Enum;
   user: UserFieldsFragment | undefined;
   isRegistration: boolean = false;
 
   ngOnInit(): void {
+    this.parentSegment = PathSegments.PROJECTS;
     const routeBaseSegment = this.activatedRoute.snapshot.url[0].path;
     if (routeBaseSegment === PathSegments.REGISTER) {
       this.isRegistration = true;
@@ -35,28 +36,27 @@ export class UserDetailsComponent extends DetailsBaseComponent<ProjectDetailsCom
       this.title = this.isCreateMode ? 'Add user details' : 'User details';
     }
 
+
+    this.form = this.formBuilder.group({
+      name: [null, Validators.required],
+      surname: [null, Validators.required],
+      family: [null, Validators.required],
+
+      username: [null, Validators.required],
+      email: [null, Validators.required],
+      role: [null, Validators.required],
+      gender: [null, Validators.required],
+      age: [null, Validators.required]
+      // family: [null, Validators.required], 
+      // password: [null, Validators.required]
+    });
+
     if (this.isCreateMode) {
       this.currentObjectId = undefined;
-      console.log('HEREEE');
-      this.form = this.formBuilder.group({
-        name: [null, Validators.required],
-        surname: [null, Validators.required],
-        family: [null, Validators.required],
 
-        username: [null, Validators.required],
-        email: [null, Validators.required],
-        role: [null, Validators.required],
-        gender: [null, Validators.required],
-        age: [null, Validators.required]
-
-        // family: [null, Validators.required],
-
-        //,
-        // password: [null, Validators.required]
-      });
       // this.form.controls['role'].removeValidators(Validators.required);// .setErrors(null);
       // this.form.controls['gender'].removeValidators(Validators.required);;
-       console.log(this.form.invalid)
+      console.log(this.form.invalid);
       // this.form.updateValueAndValidity();
       // console.log(this.form.controls['role'])
     } else {
@@ -76,40 +76,16 @@ export class UserDetailsComponent extends DetailsBaseComponent<ProjectDetailsCom
           console.log(this.user);
           // age          :           30
           // created_at          :           "2024-11-23T16:17:52.633503+00:00"  
-          // updated_at          :           "2024-11-23T16:17:52.633503+00:00"
-
+          // updated_at          :           "2024-11-23T16:17:52.633503+00:00" 
           //            :           "kristina15"
           this.form.patchValue(this.user);
         }
       });
     }
 
-    this.form = this.formBuilder.group({
-      name: [null, Validators.required],
-      surname: [null, Validators.required],
-      family: [null, Validators.required],
 
-      username: [null, Validators.required],
-      email: [null, Validators.required],
-      role: [null, Validators.required],
-      gender: [null, Validators.required],
-      age: [null, Validators.required]
-
-      // family: [null, Validators.required],
-
-      //,
-      // password: [null, Validators.required]
-    });
   }
 
-  cancel() {
-    if (this.dialogRef) {
-      this.dialogRef.close({ status: false });
-    }
-    else {
-      // do nothing .. this.router.navigate(['projects']);
-    }
-  }
   confirm() {
     if (this.dialogRef) {
       this.dialogRef.close({ status: true });

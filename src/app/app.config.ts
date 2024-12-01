@@ -45,7 +45,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideApollo(createApollo),
     {
-      //Handles all errors and determines which is for logging.
+      //Handles all errors and applies some business logic.
       provide: ErrorHandler,
       useClass: GlobalErrorHandler,
     }

@@ -2,6 +2,7 @@
     display: grid;
     font-size: 16px;
     line-height: 20px;
+    width: fit-content;
 
     .names {
         font-weight: 500;
@@ -19,5 +20,10 @@
     &.edit-form {
         display: flex;
         margin: 16px 0;
+    }
+
+    &.logs {
+        font-size: 12px;
+        line-height: 16px;
     }
 }

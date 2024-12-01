@@ -31,6 +31,16 @@
                     <mat-error *ngIf="form.controls['description'].hasError('required')"> Required field </mat-error>
                 </mat-form-field>
             </div>
+
+            <mat-divider></mat-divider>
+            <div *ngIf="ticket?.logs" class="logs-wrapper">
+                <div *ngFor="let log of ticket?.logs">
+                    <app-ticket-log-details [log]="log"
+                        [ticketReporterId]="ticket?.reporter?.id"></app-ticket-log-details>
+                </div>
+            </div>
+
+
         </mat-card-content>
 
         <mat-divider></mat-divider>

@@ -1,0 +1,18 @@
+.wrapper {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 4fr 1fr;
+
+    app-short-user-data {
+        padding: 4px;
+    }
+
+    textarea {
+        resize: vertical;
+    }
+}
+
+.right {
+    display: flex;
+    justify-content: flex-end;
+}

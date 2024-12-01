@@ -1,43 +1,39 @@
-import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { Observable, from, merge, of } from 'rxjs';
 import { GetProjectsQuery, Order_By, ProjectFieldsFragment, Projects_Bool_Exp, Projects_Order_By } from '../../../../generated/graphql';
-import { QueryRef } from 'apollo-angular';
 import { ProjectsService } from '../projects.service';
 import { ApolloQueryResult } from '@apollo/client/core';
-import { EventEmitter, inject, signal } from '@angular/core';
+import { EventEmitter, inject } from '@angular/core';
+import { CustomDataSource } from '../../shared/abstract/datasource';
 
 /**
  * Data source for the ProjectsList view. This class should
  * encapsulate all logic for fetching and manipulating the displayed data
  * (including sorting, pagination, and filtering).
  */
-export class ProjectsListDataSource extends DataSource<ProjectFieldsFragment[]> {
+export class ProjectsListDataSource extends CustomDataSource<ProjectFieldsFragment, GetProjectsQuery> {
   private readonly projectsService: ProjectsService = inject(ProjectsService);
-  elementsOnPage = signal(0);
-  loading = signal(true);
-  paginator!: MatPaginator;
-  sort!: MatSort;
-  queryRef!: QueryRef<GetProjectsQuery>;
+  private readonly order_by: Projects_Order_By = { created_at: Order_By.Asc };
+  private readonly condition: Projects_Bool_Exp = {}; // attach filter logic here
   forceReload: EventEmitter<true> = new EventEmitter();
 
-  constructor() {
-    super();
+  setPaginatorAndSort(paginator: MatPaginator, sort: MatSort) {
+    this.paginator = paginator;
+    this.sort = sort;
+    this.initQueryRef();
   }
 
   initQueryRef() {
     const limit: number = this.paginator.pageSize;
     const offset: number = this.paginator.pageIndex * this.paginator.pageSize;
-    const order_by: Projects_Order_By = { id: Order_By.Asc };
-    const condition: Projects_Bool_Exp = {};// {status:{_eq:Project_Statuses_Enum.Open}};
 
     this.queryRef = this.projectsService.getProjects(
       limit,
       offset,
-      condition,
-      order_by
+      this.condition,
+      this.order_by
     );
   }
 
@@ -49,7 +45,7 @@ export class ProjectsListDataSource extends DataSource<ProjectFieldsFragment[]> 
 
   //[ApolloQueryResult<GetProjectsQuery>  , PageEvent, Sort]  
   //Observable<ApolloQueryResult<GetProjectsQuery['projects']> | null> 
-  connect(): Observable<ProjectFieldsFragment[] | any> {//Observable<GetProjectsQuery['projects'] > 
+  connect(): Observable<ProjectFieldsFragment[]> {//Observable<GetProjectsQuery['projects'] > 
     if (this.paginator && this.sort) {
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
@@ -59,10 +55,6 @@ export class ProjectsListDataSource extends DataSource<ProjectFieldsFragment[]> 
         //  this.sort.sortChange,
         // this.forceReload
       ];
-      // return 
-
-
-      console.log('CONNECT...');
 
       return merge(...dataMutations, this.paginator.page, this.sort.sortChange, this.forceReload)
         .pipe(
@@ -103,20 +95,17 @@ export class ProjectsListDataSource extends DataSource<ProjectFieldsFragment[]> 
                 console.log('query_root');
               }
               console.log(errorMessage);
-              return [] as ProjectFieldsFragment[];
+              return [];
             }
-            this.elementsOnPage.set(response.data.projects_aggregate.aggregate?.count ?? 0);
-            return response.data.projects as ProjectFieldsFragment[];
+            this.aggregateCount.set(response.data.projects_aggregate.aggregate?.count ?? 0);
+            return response.data.projects;
           }
-          ),
-          map((e) => e) //:Observable<ProjectFieldsFragment[]
+          )
         );
 
 
     } else {
-      //  return of([] as any as GetProjectsQuery['projects'][]);
-      //throw Error('Please set the paginator and sort on the data source before connecting.');
-      return of([] as ProjectFieldsFragment[]);
+      throw Error('Please set the paginator and sort on the data source before connecting.');
     }
   }
 

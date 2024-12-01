@@ -3,7 +3,7 @@ import { tap } from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (request, next) => {
 
-  const clonedRequest = request.clone({ setHeaders: { 'x-hasura-admin-secret': 'softuniAngularAdminSecret9' } });
+  const clonedRequest = request.clone({ setHeaders: { 'x-hasura-admin-secret': 'softuniAngularAdminSecret' } });
 
   return next(clonedRequest).pipe(
     tap(((httpEvent: HttpEvent<any>) => {
