@@ -1,16 +1,16 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '../../../modules/material.module';
-import { MatDialogModule } from '@angular/material/dialog';
-import { DetailsBaseComponent } from '../../shared/abstract/details-base.component';
+import { MatDialogModule } from '@angular/material/dialog'; 
 import { ProjectsService } from '../projects.service';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { GetProjectByIdQuery, Project_Statuses_Enum, ProjectFieldsFragment, Projects_Insert_Input, Projects_Set_Input } from '../../../../generated/graphql';
 import { MatSnackBarConfig, MatSnackBarDismiss } from '@angular/material/snack-bar';
 import { PathSegments } from '../../../app.routes';
-import { Util, SnackbarTypes } from '../../../utils/common-utils';
-import { ShortUserDataComponent } from '../../shared/short-user-data/short-user-data.component';
+import { Util, SnackbarTypes } from '../../../utils/common-utils'; 
 import { FormsUtil } from '../../../utils/forms-util';
+import { ShortUserDataComponent } from '../../core/short-user-data/short-user-data.component';
+import { DetailsBaseComponent } from '../../core/abstract-classes/details-base.component';
 
 @Component({
   selector: 'app-project-details',

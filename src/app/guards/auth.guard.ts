@@ -15,7 +15,7 @@ export const authorizationGuardFn: CanActivateFn = (route: ActivatedRouteSnapsho
   // this.login('admin', 'admin'); // admin 
   // this.login('krum20', 'krum20');  // reporter 
   // this.login('ivan4', 'ivan4');   //assignee  
-  return authorizationService.loginAsPromise('ivan4', 'ivan4').then(
+  return authorizationService.loginAsPromise('admin', 'admin').then(
     (result: ApolloQueryResult<LoginQuery>) => {
       if (result.errors) {
         const message: string = result.errors[0]?.message;

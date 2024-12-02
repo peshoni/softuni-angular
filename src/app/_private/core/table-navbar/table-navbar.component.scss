@@ -1,0 +1,18 @@
+.table-navbar-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 4px;
+    gap: 8px;
+
+    .filters-wrapper {
+        display: inherit;
+        gap: inherit;
+        width: 100%;
+        column-gap: 8px;
+    }
+
+    button {
+        margin: 8px;
+    }
+}

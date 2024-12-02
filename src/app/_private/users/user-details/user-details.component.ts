@@ -2,14 +2,14 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ProjectDetailsComponent } from '../../projects/project-details/project-details.component';
-import { MaterialModule } from '../../../modules/material.module';
-import { DetailsBaseComponent } from '../../shared/abstract/details-base.component';
+import { MaterialModule } from '../../../modules/material.module'; 
 import { PathSegments } from '../../../app.routes';
 import { UsersService } from '../users.service';
 import { Genders_Enum, GetUserByIdQuery, User_Roles_Enum, UserFieldsFragment } from '../../../../generated/graphql';
 import { MatSnackBarConfig, MatSnackBarDismiss } from '@angular/material/snack-bar';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { Util, SnackbarTypes } from '../../../utils/common-utils';
+import { DetailsBaseComponent } from '../../core/abstract-classes/details-base.component';
 
 @Component({
   selector: 'app-user-details',

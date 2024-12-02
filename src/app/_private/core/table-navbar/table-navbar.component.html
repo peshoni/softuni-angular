@@ -1,10 +1,13 @@
 <div class="mat-elevation-z2 table-navbar-wrapper">
-    <div class="table-navbar-label">
-        <span>{{label}}</span>
+
+    <div class="filters-wrapper">
+        <ng-content></ng-content>
     </div>
-    <button *ngIf="allowedAddOperation" mat-mini-fab aria-label="Example icon button with a delete icon"
+
+    <button *ngIf="allowedAddOperation" mat-mini-fab aria-label="Icon button with a add icon"
         (click)="allowedAddOperation && addButtonClicked.emit()" matTooltip="Add data">
         <mat-icon>add</mat-icon>
     </button>
+
 </div>
 <mat-progress-bar *ngIf="isLoading" mode="indeterminate" color="accent"></mat-progress-bar>

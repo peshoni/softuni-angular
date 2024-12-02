@@ -1,12 +1,13 @@
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { map, switchMap, tap } from 'rxjs/operators';
-import { Observable, from, merge, of } from 'rxjs';
-import { GetProjectsQuery, Order_By, ProjectFieldsFragment, Projects_Bool_Exp, Projects_Order_By } from '../../../../generated/graphql';
+import { BehaviorSubject, Observable, from, merge, of } from 'rxjs';
+import { GetProjectsQuery, Order_By, Project_Statuses_Enum, ProjectFieldsFragment, Projects_Bool_Exp, Projects_Order_By, Ticket_Statuses_Enum, Tickets_Bool_Exp } from '../../../../generated/graphql';
 import { ProjectsService } from '../projects.service';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { EventEmitter, inject } from '@angular/core';
-import { CustomDataSource } from '../../shared/abstract/datasource';
+import { CustomDataSource } from '../../core/abstract-classes/datasource';
+import { cloneDeep } from 'lodash';
 
 /**
  * Data source for the ProjectsList view. This class should
@@ -16,7 +17,7 @@ import { CustomDataSource } from '../../shared/abstract/datasource';
 export class ProjectsListDataSource extends CustomDataSource<ProjectFieldsFragment, GetProjectsQuery> {
   private readonly projectsService: ProjectsService = inject(ProjectsService);
   private readonly order_by: Projects_Order_By = { created_at: Order_By.Asc };
-  private readonly condition: Projects_Bool_Exp = {}; // attach filter logic here
+  private readonly condition: BehaviorSubject<Projects_Bool_Exp> = new BehaviorSubject({});
   forceReload: EventEmitter<true> = new EventEmitter();
 
   setPaginatorAndSort(paginator: MatPaginator, sort: MatSort) {
@@ -32,9 +33,25 @@ export class ProjectsListDataSource extends CustomDataSource<ProjectFieldsFragme
     this.queryRef = this.projectsService.getProjects(
       limit,
       offset,
-      this.condition,
+      this.condition.getValue(),
       this.order_by
     );
+  }
+
+  filterBy(selectedOption: string, options: string[]) {
+    const tempCondition = cloneDeep(this.condition.getValue());
+    const andArray: Projects_Bool_Exp[] = [
+      //{ role: { _eq: selectedOption as User_Roles_Enum } }
+    ];
+    if (selectedOption === options[0]) {
+      //tempCondition._and = 
+    } else {
+      andArray.push(
+        { status: { _eq: selectedOption as Project_Statuses_Enum } }
+      );
+    }
+    tempCondition._and = andArray
+    this.condition.next(tempCondition);
   }
 
   /**
@@ -42,33 +59,21 @@ export class ProjectsListDataSource extends CustomDataSource<ProjectFieldsFragme
    * the returned stream emits new items.
    * @returns A stream of the items to be rendered.
    */
-
-  //[ApolloQueryResult<GetProjectsQuery>  , PageEvent, Sort]  
-  //Observable<ApolloQueryResult<GetProjectsQuery['projects']> | null> 
-  connect(): Observable<ProjectFieldsFragment[]> {//Observable<GetProjectsQuery['projects'] > 
+  connect(): Observable<ProjectFieldsFragment[]> {
     if (this.paginator && this.sort) {
-      // Combine everything that affects the rendered data into one update
-      // stream for the data-table to consume.
-      const dataMutations = [
-        this.queryRef.valueChanges,
-        // this.paginator.page,
-        //  this.sort.sortChange,
-        // this.forceReload
-      ];
-
-      return merge(...dataMutations, this.paginator.page, this.sort.sortChange, this.forceReload)
+      // Combine everything that affects the rendered data into one update stream for the data-table to consume.  
+      return merge(this.queryRef.valueChanges, this.condition, this.paginator.page, this.sort.sortChange/*, this.forceReload*/)
         .pipe(
           tap((_) => {
             this.loading.set(true);
           }),
-
-          switchMap((fromWhere: ApolloQueryResult<GetProjectsQuery> | PageEvent | Sort | boolean) => {
+          switchMap((fromWhere: ApolloQueryResult<GetProjectsQuery> | Projects_Bool_Exp | PageEvent | Sort) => {
             console.log(fromWhere);
             let order: any = new Object({});
             if (this.sort?.active && this.sort.active.length > 0) {
-              const field = this.sort.active;
+              const field: keyof ProjectFieldsFragment = this.sort.active as any;
               this.sort.direction.indexOf('sc') !== -1
-                ? (order[this.sort.active] = this.sort.direction)
+                ? (order[field] = this.sort.direction)
                 : (order = {});
             }
 
@@ -76,7 +81,7 @@ export class ProjectsListDataSource extends CustomDataSource<ProjectFieldsFragme
               return from(this.queryRef.refetch({
                 limit: this.paginator.pageSize,
                 offset: this.paginator.pageIndex * this.paginator.pageSize,
-                condition: {},
+                condition: this.condition.getValue(),
                 orderBy: order,
               }));
 
@@ -87,8 +92,6 @@ export class ProjectsListDataSource extends CustomDataSource<ProjectFieldsFragme
           map((response: ApolloQueryResult<GetProjectsQuery>) => { //: ApolloQueryResult<GetProjectsQuery>
             this.loading.set(response.loading);
             if (response.errors) {
-              // console.log(response.errors);
-              // console.log(response.data);
               const errorMessage = response.errors[0].message;
               // console.log(errorMessage);
               if (errorMessage.includes('query_root')) {
@@ -99,8 +102,7 @@ export class ProjectsListDataSource extends CustomDataSource<ProjectFieldsFragme
             }
             this.aggregateCount.set(response.data.projects_aggregate.aggregate?.count ?? 0);
             return response.data.projects;
-          }
-          )
+          })
         );
 
 

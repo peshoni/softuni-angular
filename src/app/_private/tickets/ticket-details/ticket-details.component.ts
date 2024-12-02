@@ -2,19 +2,19 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MaterialModule } from '../../../modules/material.module';
-import { ProjectDetailsComponent } from '../../projects/project-details/project-details.component';
-import { DetailsBaseComponent } from '../../shared/abstract/details-base.component';
+import { ProjectDetailsComponent } from '../../projects/project-details/project-details.component'; 
 import { GetTicketByIdQuery, Ticket_Statuses_Enum, TicketFieldsFragment, Tickets_Insert_Input, Tickets_Set_Input } from '../../../../generated/graphql';
 import { TicketsService } from '../tickets.service';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { MatSnackBarConfig, MatSnackBarDismiss } from '@angular/material/snack-bar';
 import { SnackbarTypes, Util } from '../../../utils/common-utils';
 import { PathSegments } from '../../../app.routes';
-import { ProjectsService } from '../../projects/projects.service';
-import { ShortUserDataComponent } from '../../shared/short-user-data/short-user-data.component';
+import { ProjectsService } from '../../projects/projects.service'; 
 import { FormsUtil } from '../../../utils/forms-util';
 import { NgFor, NgIf } from '@angular/common';
 import { TicketLogDetailsComponent } from '../ticket-log-details/ticket-log-details.component';
+import { DetailsBaseComponent } from '../../core/abstract-classes/details-base.component';
+import { ShortUserDataComponent } from '../../core/short-user-data/short-user-data.component';
 
 @Component({
   selector: 'app-ticket-details',

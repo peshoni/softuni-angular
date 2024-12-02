@@ -1,22 +1,23 @@
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { map, switchMap, tap } from 'rxjs/operators';
-import { Observable, merge, of } from 'rxjs';
+import { BehaviorSubject, Observable, merge, of } from 'rxjs';
 import { inject } from '@angular/core';
-import { GetUsersQuery, Order_By, UserFieldsFragment, Users_Bool_Exp, Users_Order_By } from '../../../../generated/graphql';
-import { UsersService } from '../users.service';
+import { GetTicketsQuery, Order_By, Ticket_Statuses_Enum, TicketFieldsFragment, Tickets_Bool_Exp, Tickets_Order_By } from '../../../../generated/graphql';
+import { TicketsService } from '../tickets.service';
 import { ApolloQueryResult } from '@apollo/client/core';
-import { CustomDataSource } from '../../shared/abstract/datasource';
+import { CustomDataSource } from '../../core/abstract-classes/datasource';
+import { cloneDeep } from 'lodash';
 
 /**
- * Data source for the UsersList view. This class should
+ * Data source for the TicketsList view. This class should
  * encapsulate all logic for fetching and manipulating the displayed data
  * (including sorting, pagination, and filtering).
  */
-export class UsersListDataSource extends CustomDataSource<UserFieldsFragment, GetUsersQuery> {
-  private readonly usersService: UsersService = inject(UsersService);
-  private order_by: Users_Order_By = { created_at: Order_By.Asc };
-  private condition: Users_Bool_Exp = {}; // attach filter logic here
+export class TicketsListDataSource extends CustomDataSource<TicketFieldsFragment, GetTicketsQuery> {
+  private readonly ticketsService: TicketsService = inject(TicketsService);
+  private order_by: Tickets_Order_By = { created_at: Order_By.Asc };
+  private readonly condition: BehaviorSubject<Tickets_Bool_Exp> = new BehaviorSubject({});
 
   setPaginatorAndSort(paginator: MatPaginator, sort: MatSort) {
     this.paginator = paginator;
@@ -28,12 +29,27 @@ export class UsersListDataSource extends CustomDataSource<UserFieldsFragment, Ge
     const limit: number = this.paginator.pageSize;
     const offset: number = this.paginator.pageIndex * this.paginator.pageSize;
 
-    this.queryRef = this.usersService.getUsers(
+    this.queryRef = this.ticketsService.getTickets(
       limit,
       offset,
-      this.condition,
+      this.condition.getValue(),
       this.order_by
     );
+  }
+
+  filterBy(selectedOption: string, options: string[]) {
+    const tempCondition = cloneDeep(this.condition.getValue());
+    const andArray: Tickets_Bool_Exp[] = [];
+    if (selectedOption === options[0]) {
+      //tempCondition._and = 
+    } else {
+      andArray.push(
+        { status: { _eq: selectedOption as Ticket_Statuses_Enum } }
+      );
+    }
+    tempCondition._and = andArray
+    console.log(tempCondition)
+    this.condition.next(tempCondition);
   }
 
   /**
@@ -41,23 +57,20 @@ export class UsersListDataSource extends CustomDataSource<UserFieldsFragment, Ge
    * the returned stream emits new items.
    * @returns A stream of the items to be rendered.
    */
-  connect(): Observable<UserFieldsFragment[]> {
+  connect(): Observable<TicketFieldsFragment[]> {
     if (this.paginator && this.sort) {
-      // Combine everything that affects the rendered data into one update
-      // stream for the data-table to consume.
-      const dataMutations = [
-        this.queryRef.valueChanges 
-      ];
+      // Combine everything that affects the rendered data into one update  stream for the data-table to consume. 
 
-      return merge(...dataMutations, this.paginator.page, this.sort.sortChange)
+      return merge(this.queryRef.valueChanges, this.condition, this.paginator.page, this.sort.sortChange)
         .pipe(
           tap((_) => {
             console.log('loading....');/* this.loading.next(true)*/
           }),
-          switchMap((fromWhere: ApolloQueryResult<GetUsersQuery> | PageEvent | Sort) => {
+          switchMap((fromWhere: ApolloQueryResult<GetTicketsQuery> | Tickets_Bool_Exp | PageEvent | Sort) => {
             console.log(fromWhere);
             let order: any = new Object({});
             if (this.sort?.active && this.sort.active.length > 0) {
+              const field = this.sort.active;
               this.sort.direction.indexOf('sc') !== -1
                 ? (order[this.sort.active] = this.sort.direction)
                 : (order = {});
@@ -67,7 +80,7 @@ export class UsersListDataSource extends CustomDataSource<UserFieldsFragment, Ge
               return this.queryRef.refetch({
                 limit: this.paginator.pageSize,
                 offset: this.paginator.pageIndex * this.paginator.pageSize,
-                condition: {},
+                condition: this.condition.getValue(),
                 orderBy: order,
               });
 
@@ -75,18 +88,26 @@ export class UsersListDataSource extends CustomDataSource<UserFieldsFragment, Ge
               return this.queryRef?.valueChanges ?? of();
             }
           }),
-          map((response: ApolloQueryResult<GetUsersQuery>) => {
+          map((response: ApolloQueryResult<GetTicketsQuery>) => {
+            console.log(response.data);
             this.loading.set(response.loading);
             if (response.errors) {
+              console.log(response.errors);
+              console.log(response.data);
               const errorMessage = response.errors[0].message;
+              console.log(errorMessage);
               if (errorMessage.includes('query_root')) {
                 console.log('query_root');
               }
+              // this.counter.next(0);
               console.log(errorMessage);
+              //this.currentPageData.next([]);
+              // throw Error(errorMessage);
               return [];
             }
-            this.aggregateCount.set(response.data.users_aggregate.aggregate?.count ?? 0);
-            return response.data.users;
+
+            this.aggregateCount.set(response.data.tickets_aggregate.aggregate?.count ?? 0);
+            return response.data.tickets;// as GetProjectsQuery['projects'];
           }
           )
         );

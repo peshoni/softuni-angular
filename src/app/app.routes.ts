@@ -1,12 +1,12 @@
 import { Routes } from "@angular/router";
-import { authorizationGuardFn } from "./guards/auth.guard";
-import { ProjectsListComponent } from "./_authorized/projects/projects-list/projects-list.component";
-import { TicketsListComponent } from "./_authorized/tickets/tickets-list/tickets-list.component";
-import { UsersListComponent } from "./_authorized/users/users-list/users-list.component";
-import { ProjectDetailsComponent } from "./_authorized/projects/project-details/project-details.component";
-import { UserDetailsComponent } from "./_authorized/users/user-details/user-details.component";
-import { TicketDetailsComponent } from "./_authorized/tickets/ticket-details/ticket-details.component";
+import { authorizationGuardFn } from "./guards/auth.guard"; 
 import { LoginComponent } from "./_public/login/login.component";
+import { ProjectDetailsComponent } from "./_private/projects/project-details/project-details.component";
+import { ProjectsListComponent } from "./_private/projects/projects-list/projects-list.component";
+import { TicketDetailsComponent } from "./_private/tickets/ticket-details/ticket-details.component";
+import { TicketsListComponent } from "./_private/tickets/tickets-list/tickets-list.component";
+import { UserDetailsComponent } from "./_private/users/user-details/user-details.component";
+import { UsersListComponent } from "./_private/users/users-list/users-list.component";
 
 export enum PathSegments {
   LOGIN = 'login',
