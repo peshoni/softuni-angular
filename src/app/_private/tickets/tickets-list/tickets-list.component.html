@@ -1,6 +1,6 @@
 <app-table-navbar [label]="'Tickets'" [isLoading]="dataSource.loading()" (addButtonClicked)="onAddClick()">
 
-  <app-enum-filter [label]="'Status'" [hint]="'Filter by status'" [options]="statuses" 
+  <app-enum-filter [label]="'Status'" [hint]="('filter-by-status' | translate)" [options]="statuses" 
   (filterEmitter)="filterBy($event, statuses)"></app-enum-filter>
 
 </app-table-navbar>
@@ -50,10 +50,10 @@
         </button>
         <mat-menu #menu="matMenu">
           <button mat-menu-item (click)="showDetails(row)">
-            <mat-icon>{{currentUserId === cast(row).reporter.id ? 'edit':'preview'}} </mat-icon>
-            <span> {{currentUserId === cast(row).reporter.id ? 'edit':'preview'}}</span>
+            <mat-icon>{{currentUser?.id === cast(row).reporter.id ? 'edit':'preview'}} </mat-icon>
+            <span> {{currentUser?.id === cast(row).reporter.id ? 'edit':'preview'}}</span>
           </button>
-          <button *ngIf="currentUserId === cast(row).reporter.id" mat-menu-item>
+          <button *ngIf="currentUser?.id === cast(row).reporter.id" mat-menu-item>
             <mat-icon>delete</mat-icon>
             <span>delete</span>
           </button>
@@ -63,7 +63,7 @@
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row [@addTableRowAnimation]="" *matRowDef="let row; columns: displayedColumns"
-      [ngClass]="{'assigned-ticket' : cast(row).assignee?.id === currentUserId}"></tr>
+      [ngClass]="{'assigned-ticket' : cast(row).assignee?.id === currentUser?.id}"></tr>
 
     <tr #noDataRow *matNoDataRow class="mat-row no-data-row">
       <td colspan="20" style="text-align: center">{{ 'no-records-found' }}</td>

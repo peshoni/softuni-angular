@@ -15,6 +15,7 @@ import { TableBaseComponent } from '../../core/abstract-classes/table-base.compo
 import { ShortUserDataComponent } from '../../core/short-user-data/short-user-data.component';
 import { TableNavbarComponent } from '../../core/table-navbar/table-navbar.component';
 import { EnumFilterComponent } from '../../core/enum-filter/enum-filter.component';
+import { TranslatePipe } from '../../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-tickets-list',
@@ -26,7 +27,8 @@ import { EnumFilterComponent } from '../../core/enum-filter/enum-filter.componen
     ShortUserDataComponent,
     IdShrinkPipe,
     ElapsedTimePipe,
-    EnumFilterComponent
+    EnumFilterComponent,
+    TranslatePipe
   ],
   providers: [TicketsService],
   templateUrl: './tickets-list.component.html',

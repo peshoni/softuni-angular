@@ -3,7 +3,7 @@
     <mat-select #select [(value)]="selectedOption" [compareWith]="optionsComparator"
         (selectionChange)="filterEmitter.emit(select.value)">
         <mat-option *ngFor="let option of options" [value]="option">
-            {{ option }}
+            {{ option | translate}}
         </mat-option>
     </mat-select>
     <mat-hint *ngIf="hint" align="end">{{ hint }} ^</mat-hint>

@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { AuthorizationService } from '../../../services/authorization.service';
+import { User_Roles_Enum, UserShortFieldsFragment } from '../../../../generated/graphql';
 
 /**
  * Parent table component with common requisites for the lists of data.
@@ -16,6 +17,7 @@ import { AuthorizationService } from '../../../services/authorization.service';
   template: ``
 })
 export abstract class TableBaseComponent<T> {
+  readonly userRoles = User_Roles_Enum;
   protected authorizationService: AuthorizationService = inject(AuthorizationService);
   protected readonly router: Router = inject(Router);
   protected readonly dialog: MatDialog = inject(MatDialog);
@@ -23,11 +25,11 @@ export abstract class TableBaseComponent<T> {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<T>;
 
-  public currentUserId: string | undefined;
+  public currentUser: UserShortFieldsFragment | undefined;
 
   constructor() {
     effect(() => {
-      this.currentUserId = this.authorizationService.currentUser()?.id;
+      this.currentUser = this.authorizationService.currentUser();
     })
   }
 
