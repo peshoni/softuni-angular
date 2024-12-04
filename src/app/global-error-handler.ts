@@ -14,18 +14,14 @@ export class GlobalErrorHandler implements ErrorHandler {
 
     handleError(error: Error | HttpErrorResponse | ApolloError | GraphQLError): void {
         console.log(error);
-        this.showShackBar(error.message)
+        this.showShackBar(error.message);
     }
 
     private showShackBar(message: string) {
         this.zone.run(() => {
-
             const config: MatSnackBarConfig<any> = Util.getSnackbarConfig(SnackbarTypes.WARN);
             config.duration = 5000;
-            const ref = this.matSnackBar.open(message, '', config);
-            ref.afterDismissed().subscribe((dismiss: MatSnackBarDismiss) => {
-                this.router.navigate([PathSegments.LOGIN]);
-            });
+            this.matSnackBar.open(message, '', config);
         });
     }
 }

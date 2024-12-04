@@ -1,25 +1,33 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MaterialModule } from '../../../modules/material.module';
-import { ProjectDetailsComponent } from '../../projects/project-details/project-details.component'; 
-import { GetTicketByIdQuery, Ticket_Statuses_Enum, TicketFieldsFragment, Tickets_Insert_Input, Tickets_Set_Input } from '../../../../generated/graphql';
+import { ProjectDetailsComponent } from '../../projects/project-details/project-details.component';
+import { GetTicketByIdQuery, Ticket_Statuses_Enum, TicketFieldsFragment, Tickets_Insert_Input, Tickets_Set_Input, User_Roles_Enum, UserShortFieldsFragment } from '../../../../generated/graphql';
 import { TicketsService } from '../tickets.service';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { MatSnackBarConfig, MatSnackBarDismiss } from '@angular/material/snack-bar';
 import { SnackbarTypes, Util } from '../../../utils/common-utils';
 import { PathSegments } from '../../../app.routes';
-import { ProjectsService } from '../../projects/projects.service'; 
+import { ProjectsService } from '../../projects/projects.service';
 import { FormsUtil } from '../../../utils/forms-util';
 import { NgFor, NgIf } from '@angular/common';
 import { TicketLogDetailsComponent } from '../ticket-log-details/ticket-log-details.component';
 import { DetailsBaseComponent } from '../../core/abstract-classes/details-base.component';
 import { ShortUserDataComponent } from '../../core/short-user-data/short-user-data.component';
-
+import { UsersService } from '../../users/users.service'; 
 @Component({
   selector: 'app-ticket-details',
   standalone: true,
-  imports: [ReactiveFormsModule, MaterialModule, MatDialogModule, ShortUserDataComponent, NgIf, NgFor, TicketLogDetailsComponent],
+  imports: [
+    NgIf, 
+    NgFor,
+    ReactiveFormsModule, 
+    MaterialModule, 
+    MatDialogModule, 
+    ShortUserDataComponent, 
+    TicketLogDetailsComponent
+  ],
   providers: [TicketsService, ProjectsService],
   templateUrl: './ticket-details.component.html',
   styleUrl: './ticket-details.component.scss'
@@ -27,30 +35,37 @@ import { ShortUserDataComponent } from '../../core/short-user-data/short-user-da
 export class TicketDetailsComponent extends DetailsBaseComponent<ProjectDetailsComponent> implements OnInit {
   private readonly ticketsService: TicketsService = inject(TicketsService);
   private readonly projectsService: ProjectsService = inject(ProjectsService);
+  private readonly usersService: UsersService = inject(UsersService);
   statuses = Ticket_Statuses_Enum;
   ticket: TicketFieldsFragment | undefined;
+  assignees: UserShortFieldsFragment[] = [];
 
   ngOnInit(): void {
-    this.title = this.isCreateMode ? 'Add ticket details' : 'Ticket details';
+    this.title = this.isCreateMode ? 'Create ticket' : 'Ticket details';
     this.parentSegment = PathSegments.TICKETS;
 
     this.form = this.formBuilder.group({
       status: [null, Validators.required],
       description: [null, Validators.required],
+      assignee_id:[null]
     });
 
-
+    console.log(this.isCreateMode)
     if (this.isCreateMode) {
       this.currentObjectId = undefined;
-
-      this.projectsService.getProjectsOwnedById(this.currentUserId!).subscribe(
-        (data) => {
-          console.log(data);
-
-          // HERE...
+      // this.form.addControl('assignee_id', new FormControl(''));
+      this.usersService.getUserByRole(User_Roles_Enum.Assignee).subscribe(
+        (result) => {
+          console.log(result.data)
+          if (result.data.users) {
+            this.assignees = result.data.users;
+          } else {
+            const config: MatSnackBarConfig<any> = Util.getSnackbarConfig(SnackbarTypes.SUCCESS);
+            this.matSnackBar.open('Wasn\'t found any assignee. Please, try again later.', '', config);
+            this.assignees = [];
+          }
         }
       );
-
     } else {
 
       this.ticketsService.getTicketById(this.paramId).subscribe((response: ApolloQueryResult<GetTicketByIdQuery>) => {
@@ -72,7 +87,7 @@ export class TicketDetailsComponent extends DetailsBaseComponent<ProjectDetailsC
   }
 
   confirm() {
-    FormsUtil.validateFormGroupControlsRecursively(this.form);
+    FormsUtil.validateFormGroupControls(this.form);
     if (this.form.invalid) {
       return;
     }
@@ -83,6 +98,9 @@ export class TicketDetailsComponent extends DetailsBaseComponent<ProjectDetailsC
     if (this.isCreateMode) {
       const insertInput: Tickets_Insert_Input = formValue;
       insertInput.reporter_id = this.currentUserId;
+      if (this.paramProjectId) {
+        insertInput.project_id = this.paramProjectId
+      }
       this.ticketsService.insertTicket(insertInput).subscribe(
         ({ data, errors }) => {
           console.log(errors);
@@ -100,7 +118,6 @@ export class TicketDetailsComponent extends DetailsBaseComponent<ProjectDetailsC
           }
         }
       );
-      // invoke close
     }
   }
 }

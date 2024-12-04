@@ -1,4 +1,4 @@
-import { Component, effect, inject, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
@@ -13,7 +13,6 @@ import { User_Roles_Enum, UserShortFieldsFragment } from '../../../../generated/
 @Component({
   selector: 'app-table-base',
   standalone: true,
-  imports: [],
   template: ``
 })
 export abstract class TableBaseComponent<T> {
@@ -24,13 +23,12 @@ export abstract class TableBaseComponent<T> {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<T>;
-
   public currentUser: UserShortFieldsFragment | undefined;
+  public currentRole: string | undefined;
 
   constructor() {
-    effect(() => {
-      this.currentUser = this.authorizationService.currentUser();
-    })
+    this.currentUser = this.authorizationService.currentUser();
+    this.currentRole = this.currentUser?.user_role.value;
   }
 
   cast(item: T): T {

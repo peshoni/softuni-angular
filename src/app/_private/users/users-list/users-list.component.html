@@ -1,6 +1,7 @@
 <app-table-navbar [label]="'Users'" [isLoading]="dataSource.loading()" (addButtonClicked)="onAddClick()">
 
-  <app-enum-filter [label]="'Role'" [hint]="'Filter by role'" [options]="roles" (filterEmitter)="filterBy($event, roles)"></app-enum-filter> 
+  <app-enum-filter [label]="'Role'" [hint]="'Filter by role'" [options]="roles"
+    (filterEmitter)="filterBy($event, roles)"></app-enum-filter>
 
 </app-table-navbar>
 
@@ -14,12 +15,16 @@
     <!-- Created at Column -->
     <ng-container matColumnDef="created_at">
       <th mat-header-cell *matHeaderCellDef>{{'created_at'| translate }}</th>
-      <td mat-cell *matCellDef="let row">{{cast(row).created_at | date: "d.MM.YYYY HH:mm:ss" }}</td>
+      <td mat-cell *matCellDef="let row">
+        <app-date-description [date]="cast(row).created_at" />
+      </td>
     </ng-container>
     <!-- Updated at Column -->
     <ng-container matColumnDef="updated_at">
       <th mat-header-cell *matHeaderCellDef>updated</th>
-      <td mat-cell *matCellDef="let row">{{cast(row).updated_at | date: "d.MM.YYYY HH:mm:ss" }}</td>
+      <td mat-cell *matCellDef="let row">
+        <app-date-description [date]="cast(row).updated_at" />
+      </td>
     </ng-container>
     <!-- Role Column -->
     <ng-container matColumnDef="role">
@@ -50,13 +55,11 @@
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="showDetails(row)"> 
-            <mat-icon>{{(currentUser?.id === cast(row).id || userRoles.Administrator === currentUser?.user_role?.value)  ? 'edit':'preview'}} </mat-icon>
-            <span> {{(currentUser?.id === cast(row).id || userRoles.Administrator === currentUser?.user_role?.value) ? 'edit':'preview'}}</span>
-          </button>
-          <button *ngIf="currentUser?.id === cast(row).id" mat-menu-item>
-            <mat-icon>delete</mat-icon>
-            <span>delete</span>
+          <button mat-menu-item (click)="showDetails(row)">
+            <mat-icon>{{(currentUser?.id === cast(row).id || userRoles.Administrator === currentUser?.user_role?.value)
+              ? 'edit':'preview'}} </mat-icon>
+            <span> {{(currentUser?.id === cast(row).id || userRoles.Administrator === currentUser?.user_role?.value) ?
+              'edit':'preview'}}</span>
           </button>
         </mat-menu>
       </td>

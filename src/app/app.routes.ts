@@ -1,5 +1,5 @@
 import { Routes } from "@angular/router";
-import { authorizationGuardFn } from "./guards/auth.guard"; 
+import { authorizationGuardFn } from "./guards/auth.guard";
 import { LoginComponent } from "./_public/login/login.component";
 import { ProjectDetailsComponent } from "./_private/projects/project-details/project-details.component";
 import { ProjectsListComponent } from "./_private/projects/projects-list/projects-list.component";
@@ -15,6 +15,7 @@ export enum PathSegments {
   TICKETS = 'tickets',
   USERS = 'users',
   DETAILS = 'details',
+  ADD = 'add',
   EMPTY = ''
 }
 
@@ -45,6 +46,11 @@ export const routes: Routes = [
   },
   {
     path: `${PathSegments.TICKETS}/${PathSegments.DETAILS}/:id`,
+    canActivate: [authorizationGuardFn],
+    component: TicketDetailsComponent
+  },
+  {
+    path: `${PathSegments.TICKETS}/${PathSegments.ADD}/:projectId`,
     canActivate: [authorizationGuardFn],
     component: TicketDetailsComponent
   },

@@ -7,7 +7,6 @@ export const authInterceptor: HttpInterceptorFn = (request, next) => {
 
   return next(clonedRequest).pipe(
     tap(((httpEvent: HttpEvent<any>) => {
-
       if (httpEvent.type === HttpEventType.Response) {
         if (httpEvent.body.errors) {
           const message: string = httpEvent.body.errors[0]?.message;

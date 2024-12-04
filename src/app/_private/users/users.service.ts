@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { GetUserByIdGQL, GetUserByIdQuery, GetUsersGQL, InsertUserGQL, InsertUserMutation, UpdateUserGQL, UpdateUserMutation, Users_Bool_Exp, Users_Insert_Input, Users_Order_By, Users_Set_Input } from '../../../generated/graphql';
+import { GetUserByIdGQL, GetUserByIdQuery, GetUserByRoleGQL, GetUserByRoleQuery, GetUsersGQL, InsertUserGQL, InsertUserMutation, UpdateUserGQL, UpdateUserMutation, User_Roles_Enum, Users_Bool_Exp, Users_Insert_Input, Users_Order_By, Users_Set_Input } from '../../../generated/graphql';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { MutationResult } from 'apollo-angular';
 import { Observable } from 'rxjs';
@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 export class UsersService {
   private readonly getUsersGQL: GetUsersGQL = inject(GetUsersGQL);
   private readonly getUserByIdGQL: GetUserByIdGQL = inject(GetUserByIdGQL);
+  private readonly getUserByRoleGQL: GetUserByRoleGQL = inject(GetUserByRoleGQL);
   private readonly insertUserGQL: InsertUserGQL = inject(InsertUserGQL);
   private readonly updateUserGQL: UpdateUserGQL = inject(UpdateUserGQL);
 
@@ -36,8 +37,14 @@ export class UsersService {
   getUserById(id: string): Observable<ApolloQueryResult<GetUserByIdQuery>> {
     return this.getUserByIdGQL.fetch({ id }, {
       fetchPolicy: 'cache-first',
-      errorPolicy: 'all',
-      partialRefetch: true
+      errorPolicy: 'all'
+    });
+  }
+
+  getUserByRole(role: User_Roles_Enum): Observable<ApolloQueryResult<GetUserByRoleQuery>> {
+    return this.getUserByRoleGQL.fetch({ role }, {
+      fetchPolicy: 'network-only',
+      errorPolicy: 'all'
     });
   }
 

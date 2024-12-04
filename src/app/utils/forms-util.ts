@@ -19,7 +19,7 @@ export class FormsUtil {
     return config;
   }
 
-  static validateFormGroupControlsRecursively(formGroup: FormGroup): void {
+  static validateFormGroupControls(formGroup: FormGroup): void {
     Object.keys(formGroup.controls).forEach((field) => {
       const control = formGroup.get(field);
       if (control instanceof FormControl) {
@@ -30,7 +30,7 @@ export class FormsUtil {
         }
         control.markAsTouched({ onlySelf: true });
       } else if (control instanceof FormGroup) {
-        this.validateFormGroupControlsRecursively(control);
+        this.validateFormGroupControls(control);
       }
     });
   }

@@ -3,14 +3,12 @@
 Repo for the exam task for the Angular course, Softuni October 2024
 
 ## Environment requirements:
-
 - Node: 22.9.0
 - Angular CLI: 18.2.11
 - Package Manager: npm 10.9.0
 - Docker version: 27.3.1
 
 ## Installation
-
 ```bash
 # clone repo
 git clone https://github.com/peshoni/softuni-angular.git
@@ -18,10 +16,10 @@ git clone https://github.com/peshoni/softuni-angular.git
 # move to project directory
 cd softuni-angular
 
-# Install application
+### Install application
 npm install
 
-# Build the images and run as containers
+## Build the images and run as containers
 docker-compose up --build -d
 
 # Check containers:
@@ -35,22 +33,28 @@ npx hasura migrate apply --database-name default
 
 # Hydrates database with a mock data (.sql files from the /seeds/default/ folder)
 npx hasura seeds apply --database-name default
-``` 
 
-## Exposed containers:  
-
+# Done
+```
+## Exposed containers:
 1. Angular application : localhost:4200
 2. Hasura console:       localhost:8082
 3. Postgres:             localhost:5433 
-```bash
-docker container ls
-```
+ 
+RUN `docker container ls` 
 
+## NOTE!
+In the application, WASN'T applied any security practices for the data and connections. 
+All ports are exposed, and connection between containers isn't created in proper(jwt, roles, etc.) way. Please if someone decide to use this - take care of the security.
+The goal of this course is working with the Angular toolkit - components, forms, tables etc.
 ## Tech stack
 ![alt text](readme-images/stack.bmp)
 
 ## Data model : ERD
 ![alt text](readme-images/image.png)
+
+
+
 
 ## Development
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.5.
@@ -65,22 +69,19 @@ ng generate directive|pipe|service|class|guard|interface|enum|module
 ng generate @angular/material:table path/component-name
 # Generate an address form component with Angular Schematics:
 ng generate @angular/material:address-form path/component-name
-```
-
+``` 
 ## Build
-
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-
 ## Hasura - GraphQl engine with DBMS and UI console
 https://hasura.io/docs/2.0/hasura-cli/commands/hasura_init/
 Run `npm i --save-dev hasura-cli@2.36.1`
 RUN `npm run hasura`
-# For adding configuration, metadata and migrations folders
+## Add configuration, metadata and migrations folders
 RUN `npm run hasura init graphql`
 
 ## Apollo-Angular
@@ -89,22 +90,19 @@ RUN `npm run hasura init graphql`
 `npm i apollo-link-context` //for the connection settings
 
 ## Types scaffolding
-RUN `` for regeneration of types
+Docs: https://the-guild.dev/graphql/codegen/plugins/typescript/typescript
+RUN `npm run generate-types` for regeneration of types
 
 ## Hasura metadata
-Run `npm run hasura metadata export` to export current connected database metadata
-Run `npm run hasura metadata apply` to apply state of metadata from the current git branch over connected database 
-hasura metadata apply
-hasura metadata reload
-npm run hasura metadata apply  --database-name="default"
+Run `npx hasura metadata export` to export current connected database metadata
+Run `npx hasura hasura metadata apply` to apply state of metadata from the current git branch over connected database 
+npx hasura metadata apply
+npx hasura metadata reload
+npx hasura hasura metadata apply  --database-name="default"
 
 ## Hasura migrations
-For squash migrations use the global hasura-cli: 
-hasura migrate squash --skip-update-check --database-name="default" --delete-source --name "enumerators" --from 1730973747412
-hasura migrate squash --skip-update-check --database-name="default" --delete-source --name "users" --from 1730988457620
-hasura migrate squash --skip-update-check --database-name="default" --delete-source --name "projects" --from 1730988852144
-hasura migrate squash --skip-update-check --database-name="default" --delete-source --name "users" --from 1730989449789
-
-hasura migrate apply --database-name <database-name>
-
-npm run hasura migrate apply     --database-name "default"
+For squash migrations use: 
+Run `npx hasura migrate squash --skip-update-check --database-name="default" --delete-source --name "migration_name" --from 1730973747412`
+ 
+For applying migrations:
+Run `npx hasura migrate apply --database-name "default"`

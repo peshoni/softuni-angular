@@ -12,11 +12,18 @@ import { TableBaseComponent } from '../../core/abstract-classes/table-base.compo
 import { TableNavbarComponent } from '../../core/table-navbar/table-navbar.component';
 import { EnumFilterComponent } from "../../core/enum-filter/enum-filter.component";
 import { TranslatePipe } from '../../../pipes/translate.pipe';
+import { DateDescriptionComponent } from '../../core/date-description/date-description.component';
 
 @Component({
   selector: 'app-users-list',
   standalone: true,
-  imports: [MaterialModule, TableNavbarComponent, IdShrinkPipe, EnumFilterComponent, EnumFilterComponent, TranslatePipe],
+  imports: [
+    MaterialModule,
+    TableNavbarComponent,
+    IdShrinkPipe,
+    EnumFilterComponent,
+    DateDescriptionComponent,
+    TranslatePipe],
   providers: [],
   templateUrl: './users-list.component.html',
   styleUrl: './users-list.component.scss',

@@ -32,9 +32,19 @@ query GetUserById($id: uuid!) {
   }
 }
 
-query Login ($username:String!, $password:String!){
-  users(where:{_and:[{username:{_eq:$username}} ,{password:{_eq:$password}}] }){
-    ...UserFields
+query GetUserByRole($role: user_roles_enum!) {
+  users(where: { role: { _eq: $role } }, order_by: { name: asc }) {
+    ...UserShortFields
+  }
+}
+
+query Login($username: String!, $password: String!) {
+  users(
+    where: {
+      _and: [{ username: { _eq: $username } }, { password: { _eq: $password } }]
+    }
+  ) {
+    ...UserShortFields
   }
 }
 
@@ -43,6 +53,7 @@ fragment UserFields on users {
   created_at
   updated_at
   username
+  password
   name
   surname
   family
@@ -75,12 +86,11 @@ fragment UserShortFields on users {
 #   insert_users(objects:$users){
 #     affected_rows
 #   }
-# } 
+# }
 # mutation InsertMultipleProjects($projects: [projects_insert_input!]!) {
 #   insert_projects(objects: $projects) {
 #     affected_rows
 #   }
 # }
 #   // private que: InsertMultipleUSersGQL = inject(InsertMultipleUSersGQL);
-  # // private que: InsertMultipleProjectsGQL = inject(InsertMultipleProjectsGQL);
-
+# // private que: InsertMultipleProjectsGQL = inject(InsertMultipleProjectsGQL);

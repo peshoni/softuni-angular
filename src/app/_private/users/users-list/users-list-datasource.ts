@@ -16,8 +16,7 @@ import { cloneDeep } from 'lodash';
  */
 export class UsersListDataSource extends CustomDataSource<UserFieldsFragment, GetUsersQuery> {
   private readonly usersService: UsersService = inject(UsersService);
-  orderBy: Users_Order_By = { created_at: Order_By.Asc }
-  private readonly order_by: BehaviorSubject<Users_Order_By> = new BehaviorSubject(this.orderBy);
+  private readonly order_by: Users_Order_By = { created_at: Order_By.Asc };
   private readonly condition: BehaviorSubject<Users_Bool_Exp> = new BehaviorSubject({});
 
   setPaginatorAndSort(paginator: MatPaginator, sort: MatSort) {
@@ -34,7 +33,7 @@ export class UsersListDataSource extends CustomDataSource<UserFieldsFragment, Ge
       limit,
       offset,
       this.condition.getValue(),
-      this.order_by.getValue()
+      this.order_by
     );
   }
 
@@ -80,6 +79,8 @@ export class UsersListDataSource extends CustomDataSource<UserFieldsFragment, Ge
               } else {
                 order = {}
               }
+            } else {
+              order = this.order_by;
             }
 
             if (Object.keys(fromWhere).indexOf('data') < 0) {

@@ -8,6 +8,7 @@ import { TicketsService } from '../tickets.service';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { CustomDataSource } from '../../core/abstract-classes/datasource';
 import { cloneDeep } from 'lodash';
+import { isNullOrUndefined } from 'is-what';
 
 /**
  * Data source for the TicketsList view. This class should
@@ -16,7 +17,7 @@ import { cloneDeep } from 'lodash';
  */
 export class TicketsListDataSource extends CustomDataSource<TicketFieldsFragment, GetTicketsQuery> {
   private readonly ticketsService: TicketsService = inject(TicketsService);
-  private order_by: Tickets_Order_By = { created_at: Order_By.Asc };
+  private readonly order_by: Tickets_Order_By = { created_at: Order_By.Asc };
   private readonly condition: BehaviorSubject<Tickets_Bool_Exp> = new BehaviorSubject({});
 
   setPaginatorAndSort(paginator: MatPaginator, sort: MatSort) {
@@ -37,18 +38,61 @@ export class TicketsListDataSource extends CustomDataSource<TicketFieldsFragment
     );
   }
 
-  filterBy(selectedOption: string, options: string[]) {
+  filterByStatus(selectedOption: string, options: string[]) {
     const tempCondition = cloneDeep(this.condition.getValue());
+    //{ role: { _eq: selectedOption as User_Roles_Enum } }
     const andArray: Tickets_Bool_Exp[] = [];
-    if (selectedOption === options[0]) {
-      //tempCondition._and = 
+
+    if (tempCondition._and) {
+      tempCondition._and = tempCondition._and?.filter(e => isNullOrUndefined(e.status)); // remove old status filtration
     } else {
-      andArray.push(
+      tempCondition._and = andArray;
+    }
+    if (selectedOption === options[0]) {
+      tempCondition._and = tempCondition._and?.filter(e => e.status !== null /*&& e.owner_id !==null*/);
+    } else {
+      tempCondition._and.push(
         { status: { _eq: selectedOption as Ticket_Statuses_Enum } }
       );
     }
-    tempCondition._and = andArray
-    console.log(tempCondition)
+    this.condition.next(tempCondition);
+  }
+
+  filterByReporter(reporterId: string | null) {
+    console.log(reporterId)
+    const tempCondition = cloneDeep(this.condition.getValue());
+    const andArray: Tickets_Bool_Exp[] = [];
+    if (tempCondition._and) {
+      tempCondition._and = tempCondition._and?.filter(e => e.status);
+    } else {
+      tempCondition._and = andArray;
+    }
+    if (reporterId) {
+      tempCondition._and.push(
+        { reporter_id: { _eq: reporterId } }
+      );
+    } else {
+      tempCondition._and = tempCondition._and?.filter(e => e.status !== null && e.reporter_id !== null);
+    }
+    this.condition.next(tempCondition);
+  }
+
+  filterByAssignee(assigneeId: null) {
+    console.log(assigneeId)
+    const tempCondition = cloneDeep(this.condition.getValue());
+    const andArray: Tickets_Bool_Exp[] = [];
+    if (tempCondition._and) {
+      tempCondition._and = tempCondition._and?.filter(e => e.status);
+    } else {
+      tempCondition._and = andArray;
+    }
+    if (assigneeId) {
+      tempCondition._and.push(
+        { assignee_id: { _eq: assigneeId } }
+      );
+    } else {
+      tempCondition._and = tempCondition._and?.filter(e => e.status !== null && e.assignee_id !== null);
+    }
     this.condition.next(tempCondition);
   }
 
@@ -64,7 +108,7 @@ export class TicketsListDataSource extends CustomDataSource<TicketFieldsFragment
       return merge(this.queryRef.valueChanges, this.condition, this.paginator.page, this.sort.sortChange)
         .pipe(
           tap((_) => {
-            console.log('loading....');/* this.loading.next(true)*/
+            this.loading.set(true);
           }),
           switchMap((fromWhere: ApolloQueryResult<GetTicketsQuery> | Tickets_Bool_Exp | PageEvent | Sort) => {
             console.log(fromWhere);
@@ -74,6 +118,8 @@ export class TicketsListDataSource extends CustomDataSource<TicketFieldsFragment
               this.sort.direction.indexOf('sc') !== -1
                 ? (order[this.sort.active] = this.sort.direction)
                 : (order = {});
+            } else {
+              order = this.order_by;
             }
 
             if (this.queryRef && this.paginator && Object.keys(fromWhere).indexOf('data') < 0) {
@@ -89,7 +135,6 @@ export class TicketsListDataSource extends CustomDataSource<TicketFieldsFragment
             }
           }),
           map((response: ApolloQueryResult<GetTicketsQuery>) => {
-            console.log(response.data);
             this.loading.set(response.loading);
             if (response.errors) {
               console.log(response.errors);
@@ -99,10 +144,7 @@ export class TicketsListDataSource extends CustomDataSource<TicketFieldsFragment
               if (errorMessage.includes('query_root')) {
                 console.log('query_root');
               }
-              // this.counter.next(0);
               console.log(errorMessage);
-              //this.currentPageData.next([]);
-              // throw Error(errorMessage);
               return [];
             }
 

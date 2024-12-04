@@ -7,19 +7,18 @@ import { TranslatePipe } from '../../../pipes/translate.pipe';
   selector: 'app-enum-filter',
   standalone: true,
   imports: [MaterialModule, CommonModule, TranslatePipe],
-  templateUrl: './enum-filter.component.html',
-  styleUrl: './enum-filter.component.scss'
+  templateUrl: './enum-filter.component.html'
 })
 export class EnumFilterComponent implements OnChanges {
   @Input() options!: string[];
-  selectedOption!: string ;
+  selectedOption!: string;
   @Input() label: string = '';
   @Input() hint: string = '';
-  @Output() filterEmitter: EventEmitter<string> = new EventEmitter(); 
+  @Output() filterEmitter: EventEmitter<string> = new EventEmitter();
 
   ngOnChanges(changes: SimpleChanges): void {
     this.selectedOption = changes['options'].currentValue[0];
-  } 
+  }
 
   optionsComparator(firstOption: string, secondOption: string): boolean {
     if (!firstOption || !secondOption) {

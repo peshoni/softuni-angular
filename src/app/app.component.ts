@@ -4,7 +4,7 @@ import { map, Observable, shareReplay } from 'rxjs';
 import { AuthorizationService } from './services/authorization.service';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { MaterialModule } from './modules/material.module'; 
+import { MaterialModule } from './modules/material.module';
 import { authInterceptor } from './interceptors/auth.interceptor';
 import { User_Roles_Enum } from '../generated/graphql';
 import { PathSegments } from './app.routes';
@@ -19,13 +19,7 @@ import { ShortUserDataComponent } from './_private/core/short-user-data/short-us
     MaterialModule,
     ShortUserDataComponent
   ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useExisting: authInterceptor,
-      multi: true
-    }
-  ],
+  providers: [],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

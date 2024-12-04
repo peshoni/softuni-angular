@@ -5,6 +5,8 @@ import { PathSegments } from '../app.routes';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { firstValueFrom, Observable } from 'rxjs';
 
+export const USER_KEY = 'user-fragment';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -21,9 +23,25 @@ export class AuthorizationService {
     return firstValueFrom(this.loginGQL.fetch({ username, password }));
   }
 
+  getFragmentFromSessionStorage(): UserShortFieldsFragment | null {
+    const str = sessionStorage.getItem(USER_KEY);
+    if (str) {
+      const fragment: UserShortFieldsFragment = JSON.parse(str);
+      return fragment;
+    } else {
+      return null;
+    }
+  }
+
+  setCurrentUserAndNavigate(userShortFieldsFragment: UserShortFieldsFragment) {
+    this.currentUser.set(userShortFieldsFragment);
+    sessionStorage.setItem(USER_KEY, JSON.stringify(userShortFieldsFragment));
+    this.router.navigate([PathSegments.PROJECTS]);
+  }
+
   logout() {
     this.currentUser.set(undefined);
-    //clear storage data..
+    sessionStorage.removeItem(USER_KEY);
     this.router.navigate([PathSegments.LOGIN]);
   }
 }

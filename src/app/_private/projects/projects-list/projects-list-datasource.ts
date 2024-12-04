@@ -2,7 +2,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { BehaviorSubject, Observable, from, merge, of } from 'rxjs';
-import { GetProjectsQuery, Order_By, Project_Statuses_Enum, ProjectFieldsFragment, Projects_Bool_Exp, Projects_Order_By, Ticket_Statuses_Enum, Tickets_Bool_Exp } from '../../../../generated/graphql';
+import { GetProjectsQuery, Order_By, Project_Statuses_Enum, ProjectFieldsFragment, Projects_Bool_Exp, Projects_Order_By } from '../../../../generated/graphql';
 import { ProjectsService } from '../projects.service';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { EventEmitter, inject } from '@angular/core';
@@ -16,7 +16,7 @@ import { cloneDeep } from 'lodash';
  */
 export class ProjectsListDataSource extends CustomDataSource<ProjectFieldsFragment, GetProjectsQuery> {
   private readonly projectsService: ProjectsService = inject(ProjectsService);
-  private readonly order_by: Projects_Order_By = { created_at: Order_By.Asc };
+  private readonly order_by: Projects_Order_By = { created_at: Order_By.Desc };
   private readonly condition: BehaviorSubject<Projects_Bool_Exp> = new BehaviorSubject({});
   forceReload: EventEmitter<true> = new EventEmitter();
 
@@ -38,19 +38,44 @@ export class ProjectsListDataSource extends CustomDataSource<ProjectFieldsFragme
     );
   }
 
-  filterBy(selectedOption: string, options: string[]) {
+  filterByStatus(selectedOption: string, options: string[]) {
     const tempCondition = cloneDeep(this.condition.getValue());
-    const andArray: Projects_Bool_Exp[] = [
-      //{ role: { _eq: selectedOption as User_Roles_Enum } }
-    ];
-    if (selectedOption === options[0]) {
-      //tempCondition._and = 
+    //{ role: { _eq: selectedOption as User_Roles_Enum } }
+    const andArray: Projects_Bool_Exp[] = [];
+
+    if (tempCondition._and) {
+      tempCondition._and = tempCondition._and?.filter(e => e.owner_id);
     } else {
-      andArray.push(
+      tempCondition._and = andArray;
+    }
+
+    if (selectedOption === options[0]) {
+      tempCondition._and = tempCondition._and?.filter(e => e.status !== null && e.owner_id !== null);
+    } else {
+      tempCondition._and.push(
         { status: { _eq: selectedOption as Project_Statuses_Enum } }
       );
     }
-    tempCondition._and = andArray
+    this.condition.next(tempCondition);
+  }
+
+  filterByOwner(ownerId: string | null) {
+    console.log(ownerId)
+    const tempCondition = cloneDeep(this.condition.getValue());
+    const andArray: Projects_Bool_Exp[] = [];
+
+    if (tempCondition._and) {
+      tempCondition._and = tempCondition._and?.filter(e => e.status);
+    } else {
+      tempCondition._and = andArray;
+    }
+    if (ownerId) {
+      tempCondition._and.push(
+        { owner_id: { _eq: ownerId } }
+      );
+    } else {
+      tempCondition._and = tempCondition._and?.filter(e => e.status !== null && e.owner_id !== null);
+    }
     this.condition.next(tempCondition);
   }
 
@@ -75,6 +100,8 @@ export class ProjectsListDataSource extends CustomDataSource<ProjectFieldsFragme
               this.sort.direction.indexOf('sc') !== -1
                 ? (order[field] = this.sort.direction)
                 : (order = {});
+            } else {
+              order = this.order_by;
             }
 
             if (this.queryRef && this.paginator && Object.keys(fromWhere).indexOf('data') < 0) {
@@ -92,8 +119,7 @@ export class ProjectsListDataSource extends CustomDataSource<ProjectFieldsFragme
           map((response: ApolloQueryResult<GetProjectsQuery>) => { //: ApolloQueryResult<GetProjectsQuery>
             this.loading.set(response.loading);
             if (response.errors) {
-              const errorMessage = response.errors[0].message;
-              // console.log(errorMessage);
+              const errorMessage = response.errors[0].message; 
               if (errorMessage.includes('query_root')) {
                 console.log('query_root');
               }

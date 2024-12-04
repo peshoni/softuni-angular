@@ -1,4 +1,4 @@
-import { Component, effect, Inject, inject, Optional, signal } from '@angular/core';
+import { Component, Inject, inject, Optional, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -18,10 +18,11 @@ import { PathSegments } from '../../../app.routes';
 export abstract class DetailsBaseComponent<T> {
   private readonly authorizationService: AuthorizationService = inject(AuthorizationService);
 
+  protected parentSegment: PathSegments | undefined;
   protected currentUserId: string | undefined;
   protected currentUserRole: User_Roles_Enum | undefined;
-  protected parentSegment: PathSegments | undefined;
   protected readonly paramId: string;
+  protected readonly paramProjectId: string;
   protected readonly router: Router = inject(Router);
   protected readonly formBuilder: FormBuilder = inject(FormBuilder);
   protected isCreateMode: boolean = false;
@@ -38,22 +39,18 @@ export abstract class DetailsBaseComponent<T> {
     @Optional() public dialogRef: MatDialogRef<T>) {
 
     this.paramId = this.activatedRoute.snapshot.params['id'];
-    this.isCreateMode = isNullOrUndefined(this.paramId) && data;
+    this.paramProjectId = this.activatedRoute.snapshot.params['projectId'];
+    this.isCreateMode = (isNullOrUndefined(this.paramId) && isNullOrUndefined(this.paramProjectId)) && isNullOrUndefined(data);
 
-    effect(() => {
-      this.currentUserId = this.authorizationService.currentUser()?.id;
-      this.currentUserRole = this.authorizationService.currentUser()?.user_role.value as User_Roles_Enum;
-    });
-
+    this.currentUserId = this.authorizationService.currentUser()?.id;
+    this.currentUserRole = this.authorizationService.currentUser()?.user_role.value as User_Roles_Enum;
   }
 
   public cancel() {
     if (this.dialogRef) {
       this.dialogRef.close({ status: false });
-    } else {
-      if (this.parentSegment) {
-        this.router.navigate([this.parentSegment]);
-      }
+    } else if (this.parentSegment) {
+      this.router.navigate([this.parentSegment]);
     }
   }
 

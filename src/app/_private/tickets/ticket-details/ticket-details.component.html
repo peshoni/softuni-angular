@@ -7,11 +7,12 @@
 
         <!-- Inputs -->
         <mat-card-content>
-            <div *ngIf="ticket" class="user-details-wrapper">
+            <div *ngIf="ticket" class="ticket-details-wrapper">
                 Reporter: <app-short-user-data [class]="'edit-form'" [user]="ticket.reporter"></app-short-user-data>
             </div>
 
             <div class="inputs-wrapper">
+                <!-- status -->
                 <mat-form-field class="full-width" appearance="outline">
                     <mat-label>status</mat-label>
                     @if(isInPreviewMode){
@@ -25,6 +26,23 @@
                     <mat-error *ngIf="form.controls['status'].hasError('required')"> Required field </mat-error>
                 </mat-form-field>
 
+                <!-- assignee_id -->
+                <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>assignee_id</mat-label>
+                    @if(isInPreviewMode){
+                    <input matInput placeholder="assignee_id" formControlName="assignee_id"
+                        [readonly]="isInPreviewMode">
+                    } @else {
+                    <mat-select formControlName="assignee_id" placeholder="assignee_id">
+                        <mat-option *ngFor="let assignee of assignees  " [value]="assignee.id">
+                            <app-short-user-data [user]="assignee"></app-short-user-data>
+                        </mat-option>
+                    </mat-select>
+                    }
+                    <mat-error *ngIf="form.controls['status'].hasError('required')"> Required field </mat-error>
+                </mat-form-field>
+
+                <!-- description -->
                 <mat-form-field class="fit-two-grid-columns" appearance="outline">
                     <textarea matInput placeholder="description" formControlName="description" rows="4"
                         [readonly]="isInPreviewMode"></textarea>
@@ -33,13 +51,13 @@
             </div>
 
             <mat-divider></mat-divider>
+            
             <div *ngIf="ticket?.logs" class="logs-wrapper">
                 <div *ngFor="let log of ticket?.logs">
                     <app-ticket-log-details [log]="log"
                         [ticketReporterId]="ticket?.reporter?.id"></app-ticket-log-details>
                 </div>
             </div>
-
 
         </mat-card-content>
 

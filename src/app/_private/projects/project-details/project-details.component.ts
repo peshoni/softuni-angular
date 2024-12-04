@@ -1,13 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '../../../modules/material.module';
-import { MatDialogModule } from '@angular/material/dialog'; 
+import { MatDialogModule } from '@angular/material/dialog';
 import { ProjectsService } from '../projects.service';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { GetProjectByIdQuery, Project_Statuses_Enum, ProjectFieldsFragment, Projects_Insert_Input, Projects_Set_Input } from '../../../../generated/graphql';
 import { MatSnackBarConfig, MatSnackBarDismiss } from '@angular/material/snack-bar';
 import { PathSegments } from '../../../app.routes';
-import { Util, SnackbarTypes } from '../../../utils/common-utils'; 
+import { Util, SnackbarTypes } from '../../../utils/common-utils';
 import { FormsUtil } from '../../../utils/forms-util';
 import { ShortUserDataComponent } from '../../core/short-user-data/short-user-data.component';
 import { DetailsBaseComponent } from '../../core/abstract-classes/details-base.component';
@@ -37,6 +37,8 @@ export class ProjectDetailsComponent extends DetailsBaseComponent<ProjectDetails
 
     if (this.isCreateMode) {
       this.currentObjectId = undefined;
+      this.form.controls['status'].setValue(Project_Statuses_Enum.Open);
+      this.form.controls['status'].disable();
     } else {
       this.projectsService.getProjectById(this.paramId).subscribe((response: ApolloQueryResult<GetProjectByIdQuery>) => {
         if (response.error || response.errors) {
@@ -57,21 +59,23 @@ export class ProjectDetailsComponent extends DetailsBaseComponent<ProjectDetails
   }
 
   confirm() {
-    FormsUtil.validateFormGroupControlsRecursively(this.form);
+    FormsUtil.validateFormGroupControls(this.form);
     if (this.form.invalid) {
       return;
     }
     this.submitted.set(true);
-    const formValue = this.form.getRawValue();
-    console.log(formValue);
+    const formValue = this.form.getRawValue() as Projects_Insert_Input;
 
     if (this.isCreateMode) {
-      // delete formValue.id;
-      const insertInput: Projects_Insert_Input = formValue;
-      insertInput.owner_id = this.currentUserId;
-      console.log(insertInput);
+      const insertInput: Projects_Insert_Input = {
+        status: formValue.status,
+        label: formValue.label,
+        description: formValue.description,
+        owner_id: this.currentUserId
+      }
       this.projectsService.insertProject(insertInput).subscribe(
         ({ data, errors }) => {
+
           console.log(errors);
           console.log(data);
           // invoke close
@@ -86,12 +90,9 @@ export class ProjectDetailsComponent extends DetailsBaseComponent<ProjectDetails
         ({ data, errors }) => {
           console.log(errors);
           console.log(data);
-          // invoke close
-
           this.close();
         }
       );
-      // invoke close
     }
   }
 }
