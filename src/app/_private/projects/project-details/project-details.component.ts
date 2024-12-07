@@ -25,7 +25,7 @@ export class ProjectDetailsComponent extends DetailsBaseComponent<ProjectDetails
   statuses = Project_Statuses_Enum;
   project: ProjectFieldsFragment | undefined;
 
-  ngOnInit(): void {
+  ngOnInit(): void {  
     this.parentSegment = PathSegments.PROJECTS;
     this.title = this.isCreateMode ? 'Add project details' : 'Project details';
 
@@ -74,18 +74,14 @@ export class ProjectDetailsComponent extends DetailsBaseComponent<ProjectDetails
         owner_id: this.currentUserId
       }
       this.projectsService.insertProject(insertInput).subscribe(
-        ({ data, errors }) => {
-
+        ({ data, errors }) => { 
           console.log(errors);
-          console.log(data);
-          // invoke close
+          console.log(data); 
           this.close();
         }
       );
-    } else {
-
-      const setInput: Projects_Set_Input = formValue;
-
+    } else { 
+      const setInput: Projects_Set_Input = formValue; 
       this.projectsService.updateProjectById(this.currentObjectId!, setInput).subscribe(
         ({ data, errors }) => {
           console.log(errors);

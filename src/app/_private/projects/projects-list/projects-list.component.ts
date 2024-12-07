@@ -61,6 +61,7 @@ export class ProjectsListComponent extends TableBaseComponent<ProjectFieldsFragm
   }
 
   onAddClick() { // open dialog 
+  
     const closable = true;
     const config: MatDialogConfig = FormsUtil.getDialogConfig(closable, { data: {} });
     const dialogRef = this.dialog.open(ProjectDetailsComponent, config
@@ -71,7 +72,7 @@ export class ProjectsListComponent extends TableBaseComponent<ProjectFieldsFragm
   }
 
   createTicket(projectId: string) {
-    this.router.navigate([PathSegments.TICKETS, PathSegments.ADD, projectId]);
+    this.router.navigate([PathSegments.TICKETS, PathSegments.ADD, projectId]); // send data throgh router
   }
 
   showDetails(project: ProjectFieldsFragment) {

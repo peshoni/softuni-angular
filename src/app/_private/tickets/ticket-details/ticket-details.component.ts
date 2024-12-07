@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MaterialModule } from '../../../modules/material.module';
 import { ProjectDetailsComponent } from '../../projects/project-details/project-details.component';
@@ -15,17 +15,17 @@ import { NgFor, NgIf } from '@angular/common';
 import { TicketLogDetailsComponent } from '../ticket-log-details/ticket-log-details.component';
 import { DetailsBaseComponent } from '../../core/abstract-classes/details-base.component';
 import { ShortUserDataComponent } from '../../core/short-user-data/short-user-data.component';
-import { UsersService } from '../../users/users.service'; 
+import { UsersService } from '../../users/users.service';
 @Component({
   selector: 'app-ticket-details',
   standalone: true,
   imports: [
-    NgIf, 
+    NgIf,
     NgFor,
-    ReactiveFormsModule, 
-    MaterialModule, 
-    MatDialogModule, 
-    ShortUserDataComponent, 
+    ReactiveFormsModule,
+    MaterialModule,
+    MatDialogModule,
+    ShortUserDataComponent,
     TicketLogDetailsComponent
   ],
   providers: [TicketsService, ProjectsService],
@@ -42,15 +42,15 @@ export class TicketDetailsComponent extends DetailsBaseComponent<ProjectDetailsC
 
   ngOnInit(): void {
     this.title = this.isCreateMode ? 'Create ticket' : 'Ticket details';
+
     this.parentSegment = PathSegments.TICKETS;
 
     this.form = this.formBuilder.group({
       status: [null, Validators.required],
       description: [null, Validators.required],
-      assignee_id:[null]
+      assignee_id: [null]
     });
 
-    console.log(this.isCreateMode)
     if (this.isCreateMode) {
       this.currentObjectId = undefined;
       // this.form.addControl('assignee_id', new FormControl(''));

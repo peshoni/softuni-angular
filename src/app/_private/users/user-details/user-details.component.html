@@ -12,37 +12,43 @@
                 <mat-form-field class="full-width" appearance="outline">
                     <mat-label>name</mat-label>
                     <input matInput placeholder="name" formControlName="name">
-                    <mat-error *ngIf="form.controls['name'].hasError('required')"> Required field </mat-error>
+                    <mat-error *ngIf="form.controls['name'].errors">{{ form.controls['name'].errors | fieldErrors:
+                        'Enter more than 2 Letters'}} </mat-error>
                 </mat-form-field>
 
                 <mat-form-field class="full-width" appearance="outline">
                     <mat-label>surname</mat-label>
                     <input matInput placeholder="surname" formControlName="surname">
-                    <mat-error *ngIf="form.controls['surname'].hasError('required')"> Required field </mat-error>
+                    <mat-error *ngIf="form.controls['surname'].errors">{{ form.controls['surname'].errors | fieldErrors:
+                        'Enter more than 2 Letters'}} </mat-error>
                 </mat-form-field>
 
                 <mat-form-field class="full-width" appearance="outline">
                     <mat-label>family</mat-label>
                     <input matInput placeholder="family" formControlName="family">
-                    <mat-error *ngIf="form.controls['family'].hasError('required')"> Required field </mat-error>
-                </mat-form-field>
+                    <mat-error *ngIf="form.controls['family'].errors">{{ form.controls['family'].errors | fieldErrors:
+                        'Enter more than 2 Letters'}} </mat-error>
+                </mat-form-field> 
 
                 <mat-form-field class="full-width" appearance="outline">
                     <mat-label>username</mat-label>
                     <input matInput placeholder="username" formControlName="username">
-                    <mat-error *ngIf="form.controls['username'].hasError('required')"> Required field </mat-error>
+                    <mat-error *ngIf="form.controls['username'].errors">{{ form.controls['username'].errors |
+                        fieldErrors }} </mat-error>
                 </mat-form-field>
 
                 <mat-form-field class="full-width" appearance="outline">
                     <mat-label>password</mat-label>
                     <input matInput placeholder="password" formControlName="password">
-                    <mat-error *ngIf="form.controls['password'].hasError('required')"> Required field </mat-error>
+                    <mat-error *ngIf="form.controls['password'].errors">{{ form.controls['password'].errors |
+                        fieldErrors }} </mat-error>
                 </mat-form-field>
 
                 <mat-form-field class="full-width" appearance="outline">
                     <mat-label>email</mat-label>
                     <input matInput placeholder="email" formControlName="email">
-                    <mat-error *ngIf="form.controls['email'].hasError('required')"> Required field </mat-error>
+                    <mat-error *ngIf="form.controls['email'].errors">{{ form.controls['email'].errors | fieldErrors }}
+                    </mat-error>
                 </mat-form-field>
 
                 <mat-form-field class="full-width" appearance="outline">
@@ -55,8 +61,8 @@
                         </mat-option>
                     </mat-select>
                     }
-                    <mat-error *ngIf="form.controls['role'].touched && form.controls['role'].hasError('required')">
-                        Required field </mat-error>
+                    <mat-error *ngIf="form.controls['role'].errors">{{ form.controls['role'].errors | fieldErrors }}
+                    </mat-error>
                 </mat-form-field>
 
                 <mat-form-field class="full-width" appearance="outline">
@@ -70,14 +76,15 @@
                         </mat-option>
                     </mat-select>
                     }
-                    <mat-error *ngIf="form.controls['gender'].touched && form.controls['gender'].hasError('required')">
-                        Required field </mat-error>
+                    <mat-error *ngIf="form.controls['gender'].errors">{{ form.controls['gender'].errors | fieldErrors }}
+                    </mat-error>
                 </mat-form-field>
 
                 <mat-form-field class="full-width" appearance="outline">
                     <mat-label>age</mat-label>
                     <input matInput placeholder="age" formControlName="age">
-                    <mat-error *ngIf="form.controls['age'].hasError('required')"> Required field </mat-error>
+                    <mat-error *ngIf="form.controls['age'].errors">{{ form.controls['age'].errors | fieldErrors }}
+                    </mat-error>
                 </mat-form-field>
 
             </div>
@@ -86,9 +93,9 @@
         <mat-divider></mat-divider>
         <!-- Actions -->
         <mat-card-actions>
-            <div class="form-actions">
+            <div class="form-actions" [ngClass]="{'register':isRegistration}">
                 <button type="button" mat-raised-button (click)="cancel()" [disabled]="submitted()">
-                    Cancel
+                    {{isRegistration? 'Login' : 'Cancel'}}
                 </button>
                 <button mat-raised-button color="primary" type="submit" [disabled]="submitted() || form.invalid">
                     Submit

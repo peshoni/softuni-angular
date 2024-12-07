@@ -32,6 +32,7 @@ import { DateDescriptionComponent } from '../../core/date-description/date-descr
 export class UsersListComponent extends TableBaseComponent<UserFieldsFragment> implements AfterViewInit {
   readonly roles = ['all', ...Object.values(User_Roles_Enum).map(e => e)];
   dataSource = new UsersListDataSource();
+  
   displayedColumns: (keyof (UserFieldsFragment & { actions: '' }))[] =
     ['id', 'created_at', 'updated_at', 'role', 'username', 'name', 'family', 'actions'];
 

@@ -16,7 +16,7 @@ import { PathSegments } from '../../../app.routes';
   template: ``
 })
 export abstract class DetailsBaseComponent<T> {
-  private readonly authorizationService: AuthorizationService = inject(AuthorizationService);
+  protected readonly authorizationService: AuthorizationService = inject(AuthorizationService);
 
   protected parentSegment: PathSegments | undefined;
   protected currentUserId: string | undefined;
@@ -25,6 +25,7 @@ export abstract class DetailsBaseComponent<T> {
   protected readonly paramProjectId: string;
   protected readonly router: Router = inject(Router);
   protected readonly formBuilder: FormBuilder = inject(FormBuilder);
+
   protected isCreateMode: boolean = false;
   protected isInPreviewMode: boolean = false;
   protected currentObjectId: string | undefined;
@@ -40,7 +41,9 @@ export abstract class DetailsBaseComponent<T> {
 
     this.paramId = this.activatedRoute.snapshot.params['id'];
     this.paramProjectId = this.activatedRoute.snapshot.params['projectId'];
-    this.isCreateMode = (isNullOrUndefined(this.paramId) && isNullOrUndefined(this.paramProjectId)) && isNullOrUndefined(data);
+
+    const hasData = !isNullOrUndefined(data);
+    this.isCreateMode = hasData || !isNullOrUndefined(this.paramProjectId);
 
     this.currentUserId = this.authorizationService.currentUser()?.id;
     this.currentUserRole = this.authorizationService.currentUser()?.user_role.value as User_Roles_Enum;

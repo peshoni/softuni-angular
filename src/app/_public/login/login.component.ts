@@ -8,11 +8,12 @@ import { LoginQuery, UserShortFieldsFragment } from '../../../generated/graphql'
 import { ApolloQueryResult } from '@apollo/client/core';
 import { MatSnackBar, MatSnackBarConfig, MatSnackBarDismiss } from '@angular/material/snack-bar';
 import { Util, SnackbarTypes } from '../../utils/common-utils';
+import { FieldErrorsPipe } from '../../pipes/field-errors.pipe';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, MaterialModule, RouterLink],
+  imports: [ReactiveFormsModule, MaterialModule, FieldErrorsPipe, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -31,8 +32,8 @@ export class LoginComponent implements OnInit {
     //  'krum20', 'krum20' // reporter 
     //  'ivan4' , 'ivan4'  //assignee  
     this.form = this.formBuilder.group({
-      username: ['krum20', Validators.required],
-      password: ['krum20', Validators.required]
+      username: [null, FormsUtil.getUsernameValidators(5) /*FormsUtil.getPasswordValidators(5, 20)*/],
+      password: [null, FormsUtil.getUsernameValidators(5) /*FormsUtil.getPasswordValidators(5, 20)*/]
     });
   }
 

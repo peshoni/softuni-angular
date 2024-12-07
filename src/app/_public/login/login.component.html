@@ -10,13 +10,17 @@
                 <mat-form-field class="full-width" appearance="outline">
                     <mat-label>username</mat-label>
                     <input matInput placeholder="username" formControlName="username">
-                    <mat-error *ngIf="form.controls['username'].hasError('required')"> Required field </mat-error>
+                    <mat-error *ngIf="form.controls['username'].errors">{{ form.controls['username'].errors |
+                        fieldErrors }}
+                    </mat-error>
                 </mat-form-field>
 
                 <mat-form-field class="full-width" appearance="outline">
                     <mat-label>password</mat-label>
                     <input matInput placeholder="password" formControlName="password">
-                    <mat-error *ngIf="form.controls['password'].hasError('required')"> Required field </mat-error>
+                    <mat-error *ngIf="form.controls['password'].errors">{{ form.controls['password'].errors |
+                        fieldErrors }}
+                    </mat-error>
                 </mat-form-field>
 
             </div>
@@ -24,7 +28,7 @@
         <mat-divider></mat-divider>
         <!-- Actions -->
         <mat-card-actions>
-            <div class="form-actions">
+            <div class="form-actions login">
                 <button type="button" mat-raised-button routerLink="/register">
                     register
                 </button>

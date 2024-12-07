@@ -116,7 +116,7 @@ export class ProjectsListDataSource extends CustomDataSource<ProjectFieldsFragme
               return this.queryRef?.valueChanges ?? of();
             }
           }),
-          map((response: ApolloQueryResult<GetProjectsQuery>) => { //: ApolloQueryResult<GetProjectsQuery>
+          map((response: ApolloQueryResult<GetProjectsQuery>) => {  
             this.loading.set(response.loading);
             if (response.errors) {
               const errorMessage = response.errors[0].message; 

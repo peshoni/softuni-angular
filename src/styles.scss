@@ -89,6 +89,11 @@ $max-mobile-width: 600px;
         justify-content: flex-end;
         align-items: center;
 
+        &.register,
+        &.login {
+            justify-content: space-between;
+        }
+
         button {
             min-width: 120px;
         }

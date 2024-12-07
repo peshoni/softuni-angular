@@ -5,17 +5,20 @@ import { ProjectDetailsComponent } from '../../projects/project-details/project-
 import { MaterialModule } from '../../../modules/material.module';
 import { PathSegments } from '../../../app.routes';
 import { UsersService } from '../users.service';
-import { Genders_Enum, GetUserByIdQuery, User_Roles_Enum, UserFieldsFragment, Users_Set_Input } from '../../../../generated/graphql';
+import { Genders_Enum, GetUserByIdQuery, InsertUserMutation, User_Roles_Enum, UserFieldsFragment, Users_Insert_Input, Users_Set_Input, UserShortFieldsFragment } from '../../../../generated/graphql';
 import { MatSnackBarConfig, MatSnackBarDismiss } from '@angular/material/snack-bar';
-import { ApolloQueryResult } from '@apollo/client/core';
+import { ApolloError, ApolloQueryResult } from '@apollo/client/core';
 import { Util, SnackbarTypes } from '../../../utils/common-utils';
 import { DetailsBaseComponent } from '../../core/abstract-classes/details-base.component';
 import { FormsUtil } from '../../../utils/forms-util';
+import { FieldErrorsPipe } from '../../../pipes/field-errors.pipe';
+import { catchError, of } from 'rxjs';
+import { MutationResult } from 'apollo-angular';
 
 @Component({
   selector: 'app-user-details',
   standalone: true,
-  imports: [ReactiveFormsModule, MaterialModule, MatDialogModule],
+  imports: [ReactiveFormsModule, MaterialModule, MatDialogModule, FieldErrorsPipe],
   templateUrl: './user-details.component.html',
   styleUrl: './user-details.component.scss'
 })
@@ -38,31 +41,25 @@ export class UserDetailsComponent extends DetailsBaseComponent<ProjectDetailsCom
     }
 
     this.form = this.formBuilder.group({
-      name: [null, Validators.required],
-      surname: [null, Validators.required],
-      family: [null, Validators.required],
-      username: [null, Validators.required],
-      password: [null, Validators.required],
-      email: [null, Validators.required],
+      name: [null, FormsUtil.getValidatorForNames()],
+      surname: [null, FormsUtil.getValidatorForNames()],
+      family: [null, FormsUtil.getValidatorForNames()],
+      username: [null, FormsUtil.getUsernameValidators(5)],
+      password: [null, FormsUtil.getUsernameValidators(5) /*FormsUtil.getPasswordValidators(5, 20)*/],
+      email: [null, [Validators.required, Validators.email]],
       role: [null, Validators.required],
       gender: [null, Validators.required],
-      age: [null, Validators.required],
+      age: [null, FormsUtil.getNumberValidators(18, 100)],
     });
 
     if (this.isCreateMode) {
       this.currentObjectId = undefined;
-      // this.form.controls['role'].removeValidators(Validators.required);// .setErrors(null);
-      // this.form.controls['gender'].removeValidators(Validators.required);;
       console.log(this.form.invalid);
-      // this.form.updateValueAndValidity();
-      // console.log(this.form.controls['role'])
     } else {
-
       this.usersService.getUserById(this.paramId).subscribe((response: ApolloQueryResult<GetUserByIdQuery>) => {
         if (response.error || response.errors) {
           const config: MatSnackBarConfig<any> = Util.getSnackbarConfig(SnackbarTypes.WARN);
           const ref = this.matSnackBar.open('Resource wasn\'t found.', '', config);
-
           ref.afterDismissed().subscribe((dismiss: MatSnackBarDismiss) => {
             this.router.navigate([PathSegments.PROJECTS]);
           });
@@ -70,56 +67,61 @@ export class UserDetailsComponent extends DetailsBaseComponent<ProjectDetailsCom
           this.user = response.data.users[0];
           this.currentObjectId = this.user.id;
           this.isInPreviewMode = !this.isCreateMode && this.currentUserRole !== User_Roles_Enum.Administrator;
-          console.log(this.user);
-          // age          :           30
-          // created_at          :           "2024-11-23T16:17:52.633503+00:00"  
-          // updated_at          :           "2024-11-23T16:17:52.633503+00:00" 
-          //            :           "kristina15"
           this.form.patchValue(this.user);
         }
       });
     }
+  }
 
-
+  override cancel() {
+    if (this.isRegistration) {
+      this.router.navigate([PathSegments.LOGIN]);
+    } else (
+      super.cancel()
+    )
   }
 
   confirm() {
-
     FormsUtil.validateFormGroupControls(this.form);
     if (this.form.invalid) {
       return;
     }
     this.submitted.set(true);
     const formValue = this.form.getRawValue();
-    console.log(formValue);
 
     if (this.isCreateMode) {
-      console.log('CREATE');
-      // delete formValue.id;
-      // const insertInput: Projects_Insert_Input = formValue;
-      // insertInput.owner_id = this.currentUserId;
-      // console.log(insertInput);
-      // this.projectsService.insertProject(insertInput).subscribe(
-      //   ({ data, errors }) => {
-      //     console.log(errors);
-      //     console.log(data);
-      //     // invoke close
-      //     this.close();
-      //   }
-      // );
+      const insertInput: Users_Insert_Input = formValue;
+      this.usersService.insertUser(insertInput).pipe(
+        catchError((err, caught) => {
+          return of(err);
+        })
+      ).subscribe(
+        (result: MutationResult<InsertUserMutation> | ApolloError) => {
+          if (result instanceof ApolloError) {
+            const config: MatSnackBarConfig<any> = Util.getSnackbarConfig(SnackbarTypes.WARN);
+            this.matSnackBar.open('Username already exists.', '', config);
+            this.form.get('username')?.setErrors({ 'usernameExist': true });
+            this.submitted.set(false);
+            this.form.updateValueAndValidity();
+          } else if (result.data?.insert_users_one) {
+            const config: MatSnackBarConfig<any> = Util.getSnackbarConfig(SnackbarTypes.SUCCESS);
+            const ref = this.matSnackBar.open('Registration was successful.', '', config);
+            const response = result.data.insert_users_one;
+            const fragment: UserShortFieldsFragment = {
+              family: response.family,
+              id: response.id,
+              name: response.name,
+              user_role: response.user_role
+            }
+            ref.afterDismissed().subscribe((dismiss: MatSnackBarDismiss) => {
+              this.authorizationService.setCurrentUserAndNavigate(fragment);
+            });
+          }
+        }
+      );
+
     } else {
-      console.log('UPDATE');
-      //  const clone:Users_Set_Input =  cloneDeep(pick(formValue,  'age'));
-      const setInput: Users_Set_Input = {
-        age: formValue.age,
-        email: formValue.email,
-        family: formValue.family,
-        gender: formValue.gender,
-        name: formValue.name,
-        role: formValue.role,
-        surname: formValue.surname,
-        username: formValue.username
-      };
+      const setInput: Users_Set_Input = formValue;
       this.usersService.updateUserById(this.currentObjectId!, setInput).subscribe(
         ({ data, errors }) => {
           console.log(errors);
@@ -128,12 +130,5 @@ export class UserDetailsComponent extends DetailsBaseComponent<ProjectDetailsCom
         }
       );
     }
-
-
-    // if (this.dialogRef) {
-    //   this.dialogRef.close({ status: true });
-    // } else {
-    //   this.router.navigate([PathSegments.USERS]);
-    // }
   }
 }

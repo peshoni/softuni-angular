@@ -58,8 +58,7 @@ export class TicketsListDataSource extends CustomDataSource<TicketFieldsFragment
     this.condition.next(tempCondition);
   }
 
-  filterByReporter(reporterId: string | null) {
-    console.log(reporterId)
+  filterByReporter(reporterId: string | null) { 
     const tempCondition = cloneDeep(this.condition.getValue());
     const andArray: Tickets_Bool_Exp[] = [];
     if (tempCondition._and) {
@@ -77,8 +76,7 @@ export class TicketsListDataSource extends CustomDataSource<TicketFieldsFragment
     this.condition.next(tempCondition);
   }
 
-  filterByAssignee(assigneeId: null) {
-    console.log(assigneeId)
+  filterByAssignee(assigneeId: null) { 
     const tempCondition = cloneDeep(this.condition.getValue());
     const andArray: Tickets_Bool_Exp[] = [];
     if (tempCondition._and) {
@@ -110,8 +108,7 @@ export class TicketsListDataSource extends CustomDataSource<TicketFieldsFragment
           tap((_) => {
             this.loading.set(true);
           }),
-          switchMap((fromWhere: ApolloQueryResult<GetTicketsQuery> | Tickets_Bool_Exp | PageEvent | Sort) => {
-            console.log(fromWhere);
+          switchMap((fromWhere: ApolloQueryResult<GetTicketsQuery> | Tickets_Bool_Exp | PageEvent | Sort) => { 
             let order: any = new Object({});
             if (this.sort?.active && this.sort.active.length > 0) {
               const field = this.sort.active;
