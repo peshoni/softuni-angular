@@ -101,8 +101,9 @@ npx hasura metadata reload
 npx hasura hasura metadata apply  --database-name="default"
 
 ## Hasura migrations
+Run `npx hasura console` to save all database mutations as migrations
 For squash migrations use: 
-Run `npx hasura migrate squash --skip-update-check --database-name="default" --delete-source --name "migration_name" --from 1730973747412`
+Run `npx hasura migrate squash --skip-update-check --database-name="default" --delete-source --name "migration_name" --from 1730973747412` to..
  
 For applying migrations:
 Run `npx hasura migrate apply --database-name "default"`

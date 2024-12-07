@@ -37,6 +37,27 @@ query GetTicketById($id: uuid!) {
   }
 }
 
+# Ticket logs
+mutation InsertLog($input: ticket_logs_insert_input!) {
+  insert_ticket_logs_one(object: $input) {
+    ...TicketLog
+  } 
+}
+
+mutation UpdateLog($id: uuid!, $input: ticket_logs_set_input!) {
+  update_ticket_logs_by_pk(pk_columns: {id: $id}, _set: $input) {
+    ...TicketLog
+  }
+}
+
+mutation DeleteLog($id: uuid!) {
+  delete_ticket_logs_by_pk(id: $id) {
+    id
+  }
+}
+
+# FRAGMENTS
+
 fragment TicketFields on tickets {
   id
   created_at
@@ -59,7 +80,6 @@ fragment TicketLog on ticket_logs {
   id
   created_at
   updated_at
-  deleted
   description
   ticket_id
   user {

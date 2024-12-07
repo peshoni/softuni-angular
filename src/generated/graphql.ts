@@ -19,19 +19,6 @@ export type Scalars = {
   uuid: { input: any; output: any; }
 };
 
-/** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
-export type Boolean_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['Boolean']['input']>;
-  _gt?: InputMaybe<Scalars['Boolean']['input']>;
-  _gte?: InputMaybe<Scalars['Boolean']['input']>;
-  _in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
-  _lt?: InputMaybe<Scalars['Boolean']['input']>;
-  _lte?: InputMaybe<Scalars['Boolean']['input']>;
-  _neq?: InputMaybe<Scalars['Boolean']['input']>;
-  _nin?: InputMaybe<Array<Scalars['Boolean']['input']>>;
-};
-
 /** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
 export type Int_Comparison_Exp = {
   _eq?: InputMaybe<Scalars['Int']['input']>;
@@ -1673,7 +1660,6 @@ export type Subscription_RootUsers_StreamArgs = {
 export type Ticket_Logs = {
   __typename?: 'ticket_logs';
   created_at: Scalars['timestamptz']['output'];
-  deleted: Scalars['Boolean']['output'];
   description: Scalars['String']['output'];
   id: Scalars['uuid']['output'];
   /** An object relationship */
@@ -1693,23 +1679,7 @@ export type Ticket_Logs_Aggregate = {
 };
 
 export type Ticket_Logs_Aggregate_Bool_Exp = {
-  bool_and?: InputMaybe<Ticket_Logs_Aggregate_Bool_Exp_Bool_And>;
-  bool_or?: InputMaybe<Ticket_Logs_Aggregate_Bool_Exp_Bool_Or>;
   count?: InputMaybe<Ticket_Logs_Aggregate_Bool_Exp_Count>;
-};
-
-export type Ticket_Logs_Aggregate_Bool_Exp_Bool_And = {
-  arguments: Ticket_Logs_Select_Column_Ticket_Logs_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<Ticket_Logs_Bool_Exp>;
-  predicate: Boolean_Comparison_Exp;
-};
-
-export type Ticket_Logs_Aggregate_Bool_Exp_Bool_Or = {
-  arguments: Ticket_Logs_Select_Column_Ticket_Logs_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<Ticket_Logs_Bool_Exp>;
-  predicate: Boolean_Comparison_Exp;
 };
 
 export type Ticket_Logs_Aggregate_Bool_Exp_Count = {
@@ -1754,7 +1724,6 @@ export type Ticket_Logs_Bool_Exp = {
   _not?: InputMaybe<Ticket_Logs_Bool_Exp>;
   _or?: InputMaybe<Array<Ticket_Logs_Bool_Exp>>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
-  deleted?: InputMaybe<Boolean_Comparison_Exp>;
   description?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   ticket?: InputMaybe<Tickets_Bool_Exp>;
@@ -1773,7 +1742,6 @@ export enum Ticket_Logs_Constraint {
 /** input type for inserting data into table "ticket_logs" */
 export type Ticket_Logs_Insert_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  deleted?: InputMaybe<Scalars['Boolean']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   ticket?: InputMaybe<Tickets_Obj_Rel_Insert_Input>;
@@ -1844,7 +1812,6 @@ export type Ticket_Logs_On_Conflict = {
 /** Ordering options when selecting data from "ticket_logs". */
 export type Ticket_Logs_Order_By = {
   created_at?: InputMaybe<Order_By>;
-  deleted?: InputMaybe<Order_By>;
   description?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   ticket?: InputMaybe<Tickets_Order_By>;
@@ -1864,8 +1831,6 @@ export enum Ticket_Logs_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
-  Deleted = 'deleted',
-  /** column name */
   Description = 'description',
   /** column name */
   Id = 'id',
@@ -1877,22 +1842,9 @@ export enum Ticket_Logs_Select_Column {
   UserId = 'user_id'
 }
 
-/** select "ticket_logs_aggregate_bool_exp_bool_and_arguments_columns" columns of table "ticket_logs" */
-export enum Ticket_Logs_Select_Column_Ticket_Logs_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
-  /** column name */
-  Deleted = 'deleted'
-}
-
-/** select "ticket_logs_aggregate_bool_exp_bool_or_arguments_columns" columns of table "ticket_logs" */
-export enum Ticket_Logs_Select_Column_Ticket_Logs_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
-  /** column name */
-  Deleted = 'deleted'
-}
-
 /** input type for updating data in table "ticket_logs" */
 export type Ticket_Logs_Set_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  deleted?: InputMaybe<Scalars['Boolean']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   ticket_id?: InputMaybe<Scalars['uuid']['input']>;
@@ -1911,7 +1863,6 @@ export type Ticket_Logs_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type Ticket_Logs_Stream_Cursor_Value_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  deleted?: InputMaybe<Scalars['Boolean']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   ticket_id?: InputMaybe<Scalars['uuid']['input']>;
@@ -1923,8 +1874,6 @@ export type Ticket_Logs_Stream_Cursor_Value_Input = {
 export enum Ticket_Logs_Update_Column {
   /** column name */
   CreatedAt = 'created_at',
-  /** column name */
-  Deleted = 'deleted',
   /** column name */
   Description = 'description',
   /** column name */
@@ -3087,14 +3036,14 @@ export type GetTicketsQueryVariables = Exact<{
 }>;
 
 
-export type GetTicketsQuery = { __typename?: 'query_root', tickets: Array<{ __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, assignee?: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } | null, logs: Array<{ __typename?: 'ticket_logs', id: any, created_at: any, updated_at: any, deleted: boolean, description: string, ticket_id: any, user: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } }> }>, tickets_aggregate: { __typename?: 'tickets_aggregate', aggregate?: { __typename?: 'tickets_aggregate_fields', count: number } | null } };
+export type GetTicketsQuery = { __typename?: 'query_root', tickets: Array<{ __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, assignee?: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } | null, logs: Array<{ __typename?: 'ticket_logs', id: any, created_at: any, updated_at: any, description: string, ticket_id: any, user: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } }> }>, tickets_aggregate: { __typename?: 'tickets_aggregate', aggregate?: { __typename?: 'tickets_aggregate_fields', count: number } | null } };
 
 export type InsertTicketMutationVariables = Exact<{
   input: Tickets_Insert_Input;
 }>;
 
 
-export type InsertTicketMutation = { __typename?: 'mutation_root', insert_tickets_one?: { __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, assignee?: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } | null, logs: Array<{ __typename?: 'ticket_logs', id: any, created_at: any, updated_at: any, deleted: boolean, description: string, ticket_id: any, user: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } }> } | null };
+export type InsertTicketMutation = { __typename?: 'mutation_root', insert_tickets_one?: { __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, assignee?: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } | null, logs: Array<{ __typename?: 'ticket_logs', id: any, created_at: any, updated_at: any, description: string, ticket_id: any, user: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } }> } | null };
 
 export type UpdateTicketMutationVariables = Exact<{
   id: Scalars['uuid']['input'];
@@ -3102,18 +3051,40 @@ export type UpdateTicketMutationVariables = Exact<{
 }>;
 
 
-export type UpdateTicketMutation = { __typename?: 'mutation_root', update_tickets_by_pk?: { __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, assignee?: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } | null, logs: Array<{ __typename?: 'ticket_logs', id: any, created_at: any, updated_at: any, deleted: boolean, description: string, ticket_id: any, user: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } }> } | null };
+export type UpdateTicketMutation = { __typename?: 'mutation_root', update_tickets_by_pk?: { __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, assignee?: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } | null, logs: Array<{ __typename?: 'ticket_logs', id: any, created_at: any, updated_at: any, description: string, ticket_id: any, user: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } }> } | null };
 
 export type GetTicketByIdQueryVariables = Exact<{
   id: Scalars['uuid']['input'];
 }>;
 
 
-export type GetTicketByIdQuery = { __typename?: 'query_root', tickets: Array<{ __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, assignee?: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } | null, logs: Array<{ __typename?: 'ticket_logs', id: any, created_at: any, updated_at: any, deleted: boolean, description: string, ticket_id: any, user: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } }> }> };
+export type GetTicketByIdQuery = { __typename?: 'query_root', tickets: Array<{ __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, assignee?: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } | null, logs: Array<{ __typename?: 'ticket_logs', id: any, created_at: any, updated_at: any, description: string, ticket_id: any, user: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } }> }> };
 
-export type TicketFieldsFragment = { __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, assignee?: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } | null, logs: Array<{ __typename?: 'ticket_logs', id: any, created_at: any, updated_at: any, deleted: boolean, description: string, ticket_id: any, user: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } }> };
+export type InsertLogMutationVariables = Exact<{
+  input: Ticket_Logs_Insert_Input;
+}>;
 
-export type TicketLogFragment = { __typename?: 'ticket_logs', id: any, created_at: any, updated_at: any, deleted: boolean, description: string, ticket_id: any, user: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } };
+
+export type InsertLogMutation = { __typename?: 'mutation_root', insert_ticket_logs_one?: { __typename?: 'ticket_logs', id: any, created_at: any, updated_at: any, description: string, ticket_id: any, user: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } } | null };
+
+export type UpdateLogMutationVariables = Exact<{
+  id: Scalars['uuid']['input'];
+  input: Ticket_Logs_Set_Input;
+}>;
+
+
+export type UpdateLogMutation = { __typename?: 'mutation_root', update_ticket_logs_by_pk?: { __typename?: 'ticket_logs', id: any, created_at: any, updated_at: any, description: string, ticket_id: any, user: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } } | null };
+
+export type DeleteLogMutationVariables = Exact<{
+  id: Scalars['uuid']['input'];
+}>;
+
+
+export type DeleteLogMutation = { __typename?: 'mutation_root', delete_ticket_logs_by_pk?: { __typename?: 'ticket_logs', id: any } | null };
+
+export type TicketFieldsFragment = { __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, assignee?: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } | null, logs: Array<{ __typename?: 'ticket_logs', id: any, created_at: any, updated_at: any, description: string, ticket_id: any, user: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } }> };
+
+export type TicketLogFragment = { __typename?: 'ticket_logs', id: any, created_at: any, updated_at: any, description: string, ticket_id: any, user: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } };
 
 export type GetUsersQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -3200,7 +3171,6 @@ export const TicketLogFragmentDoc = gql`
   id
   created_at
   updated_at
-  deleted
   description
   ticket_id
   user {
@@ -3419,6 +3389,60 @@ export const GetTicketByIdDocument = gql`
   })
   export class GetTicketByIdGQL extends Apollo.Query<GetTicketByIdQuery, GetTicketByIdQueryVariables> {
     document = GetTicketByIdDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const InsertLogDocument = gql`
+    mutation InsertLog($input: ticket_logs_insert_input!) {
+  insert_ticket_logs_one(object: $input) {
+    ...TicketLog
+  }
+}
+    ${TicketLogFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class InsertLogGQL extends Apollo.Mutation<InsertLogMutation, InsertLogMutationVariables> {
+    document = InsertLogDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const UpdateLogDocument = gql`
+    mutation UpdateLog($id: uuid!, $input: ticket_logs_set_input!) {
+  update_ticket_logs_by_pk(pk_columns: {id: $id}, _set: $input) {
+    ...TicketLog
+  }
+}
+    ${TicketLogFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UpdateLogGQL extends Apollo.Mutation<UpdateLogMutation, UpdateLogMutationVariables> {
+    document = UpdateLogDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const DeleteLogDocument = gql`
+    mutation DeleteLog($id: uuid!) {
+  delete_ticket_logs_by_pk(id: $id) {
+    id
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DeleteLogGQL extends Apollo.Mutation<DeleteLogMutation, DeleteLogMutationVariables> {
+    document = DeleteLogDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
