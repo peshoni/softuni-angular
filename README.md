@@ -28,24 +28,24 @@ npm install
 ## Build the images and run as containers
 docker-compose up --build -d
 
-# Check containers:
-docker container ls
-
-# Applies metadata over Hasura and Postgres
-npx hasura metadata apply
-
 # Applies migrations over the Postgres
 npx hasura migrate apply --database-name default
 
-# Hydrates database with a mock data (.sql files from the /seeds/default/ folder)
+# Applies metadata over Hasura and Postgres
+npx hasura metadata apply --skip-update-check
+
+# Check if Metadata is consistent
+npx hasura metadata reload --skip-update-check
+
+# Plant seeds - mock data (.sql files from the /seeds/default/ folder)
 npx hasura seeds apply --database-name default
 
-# Done
+# That's all :  Done!
 ```
 ## Exposed containers:
 1. Angular application : localhost:4200
 2. Hasura console:       localhost:8082
-3. Postgres:             localhost:5433 
+3. Postgres:             localhost:5433
 ! If these ports are busy on your machine, you can edit them in the docker-compose file. Clear and Run containers again.
 
 ## NOTE!

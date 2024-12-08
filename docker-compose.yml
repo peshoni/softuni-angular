@@ -14,7 +14,7 @@ services:
     networks:
       - "softuni-angular-net"
     ports:
-      - "4201:80"
+      - "4200:80"
   ###
   postgres:
     image: postgres:15.3

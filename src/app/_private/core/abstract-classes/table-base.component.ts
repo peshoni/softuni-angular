@@ -24,7 +24,7 @@ export abstract class TableBaseComponent<T> {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<T>;
   public currentUser: UserShortFieldsFragment | undefined;
-  public currentRole: string | undefined;
+  public currentRole: string | undefined; 
 
   constructor() {
     this.currentUser = this.authorizationService.currentUser();

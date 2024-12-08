@@ -128,24 +128,24 @@ export class DataGenerator {
     }
     createLogsForTicket(ownerId: string, assignee_id: any): Ticket_Logs_Insert_Input[] {
         const logs: Ticket_Logs_Insert_Input[] = [];
-        const randomReporterComment = this.getRandomInteger(0,1);
-        if( randomReporterComment){ 
-            logs.push( {
+        const randomReporterComment = this.getRandomInteger(0, 1);
+        if (randomReporterComment) {
+            logs.push({
                 user_id: ownerId,
                 description: 'Additional notes from reporter...'
             });
-        }else{
+        } else {
             console.log('WITHOUT LOG...')
         }
 
-        const randomLogsSize = this.getRandomInteger(1,6);
+        const randomLogsSize = this.getRandomInteger(1, 6);
         for (let index = 0; index <= randomLogsSize; index++) {
             const log2: Ticket_Logs_Insert_Input = {
                 user_id: assignee_id,
-                description: `Job description ${index+1} ....`
+                description: `Job description ${index + 1} ....`
             };
-            logs.push(log2) 
-        }  
+            logs.push(log2)
+        }
         return logs;
     }
 
