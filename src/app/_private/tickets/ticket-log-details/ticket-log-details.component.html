@@ -4,7 +4,7 @@
             <div class="formatted-date">{{log.updated_at| date: "d.MM.YYYY HH:mm"}}</div>
         </app-short-user-data>
 
-        @if(log.user.id === currentUserId){
+        @if(log.user.id === currentUserId && currentUserId === ticketReporterId){
         <div class="buttons-wrapper">
             <mat-icon (click)="updateLog(log, area.value)">update</mat-icon>
             <mat-icon (click)="deleteLog(log.id)">delete</mat-icon>

@@ -8,5 +8,6 @@ RUN npm config set maxsockets 1 && npm install && npm run build
 
 # stage 2
 FROM nginx:alpine
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=softuni-angular /app/dist/softuni-tickets-app/browser/ /usr/share/nginx/html
 EXPOSE 80

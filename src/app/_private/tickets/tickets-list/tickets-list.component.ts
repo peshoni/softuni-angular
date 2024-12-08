@@ -36,18 +36,18 @@ import { FilterOptions } from '../../../enums/filter-options';
   styleUrl: './tickets-list.component.scss',
   animations: [addTableRowAnimation],
 })
-export class TicketsListComponent extends TableBaseComponent<TicketFieldsFragment> implements AfterViewInit {
- 
-  readonly reporters_or_assignee = [FilterOptions.MY_TICKETS, FilterOptions.ALL];
+export class TicketsListComponent extends TableBaseComponent<TicketFieldsFragment> implements AfterViewInit { 
   readonly statuses = [FilterOptions.ALL, ...Object.values(Ticket_Statuses_Enum).map(e => e)];
+  readonly reporters_or_assignee = [FilterOptions.MY_TICKETS, FilterOptions.ALL];
   dataSource = new TicketsListDataSource();
-  displayedColumns: (keyof (TicketFieldsFragment & { actions: '' }))[] = ['id', 'status', 'reporter', 'assignee', 'created_at', 'updated_at', 'actions'];
-
+  displayedColumns: (keyof (TicketFieldsFragment & { actions: '' }))[] = ['id', 'status', 'reporter', 'assignee', 'created_at', 'updated_at', 'actions']; 
 
   ngAfterViewInit(): void {
     this.dataSource.setPaginatorAndSort(this.paginator, this.sort);
-    this.table.dataSource = this.dataSource;
+    this.table.dataSource = this.dataSource; 
+    
     this.filterByReporter(this.reporters_or_assignee[0]);
+    this.filterByAssignee(this.reporters_or_assignee[0]); 
   }
 
   filterByStatus(selectedOption: string, options: string[]) {

@@ -28,9 +28,9 @@ export class LoginComponent implements OnInit {
   constructor(protected matSnackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    //  'admin' , 'admin'  // admin 
-    //  'krum20', 'krum20' // reporter 
-    //  'ivan4' , 'ivan4'  //assignee  
+    //  administrator: 'admin' , 'admin'  
+    //  reporter     : 'krum20', 'krum20' 
+    //  assignee     : 'ivan4' , 'ivan4'  
     this.form = this.formBuilder.group({
       username: [null, FormsUtil.getUsernameValidators(5) /*FormsUtil.getPasswordValidators(5, 20)*/],
       password: [null, FormsUtil.getUsernameValidators(5) /*FormsUtil.getPasswordValidators(5, 20)*/]

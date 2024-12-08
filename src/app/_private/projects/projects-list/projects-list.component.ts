@@ -1,7 +1,7 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { ProjectsListDataSource } from './projects-list-datasource';
 import { addTableRowAnimation } from '../../../animations/add-row-animation';
-import { Project_Statuses_Enum, ProjectFieldsFragment } from '../../../../generated/graphql';
+import { Project_Statuses_Enum, ProjectFieldsFragment, User_Roles_Enum } from '../../../../generated/graphql';
 import { ProjectsService } from '../projects.service';
 import { MaterialModule } from '../../../modules/material.module';
 import { MatDialogConfig } from '@angular/material/dialog';
@@ -37,8 +37,7 @@ import { TranslatePipe } from '../../../pipes/translate.pipe';
   animations: [addTableRowAnimation]
 })
 
-export class ProjectsListComponent extends TableBaseComponent<ProjectFieldsFragment> implements AfterViewInit {
- 
+export class ProjectsListComponent extends TableBaseComponent<ProjectFieldsFragment> implements AfterViewInit { 
   readonly owners = [FilterOptions.MY_PROJECTS, FilterOptions.ALL];
   readonly statuses = [FilterOptions.ALL, ...Object.values(Project_Statuses_Enum).map(e => e)];
   dataSource: ProjectsListDataSource = new ProjectsListDataSource();
@@ -48,6 +47,11 @@ export class ProjectsListComponent extends TableBaseComponent<ProjectFieldsFragm
   ngAfterViewInit(): void {
     this.dataSource.setPaginatorAndSort(this.paginator, this.sort);
     this.table.dataSource = this.dataSource;
+    if(this.currentRole !== User_Roles_Enum.Administrator){ 
+      this.filterByOwner(this.owners[0]);
+    }else{
+      this.filterByOwner(this.owners[1]);
+    }
   }
 
   filterByStatus(selectedOption: string, options: string[]) {
