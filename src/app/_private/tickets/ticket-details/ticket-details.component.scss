@@ -1,3 +1,8 @@
+.inputs-wrapper {
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
 .ticket-details-wrapper {
     display: flex;
     align-items: center;
@@ -5,9 +10,24 @@
 }
 
 .logs-wrapper {
-    width: 100%;
     display: flex;
-    flex-direction: column;
-    gap: 4px;
-    background: rgb(244, 246, 247);
+    width: 100%;
+    padding-bottom: 16px;
+    
+    mat-expansion-panel {
+        width: 100%;
+    }
+
+    .add-log-wrapper {
+        padding: 4px;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .log-details-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        background: rgb(244, 246, 247);
+    }
 }

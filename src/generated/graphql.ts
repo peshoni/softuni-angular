@@ -2662,7 +2662,9 @@ export type Users_Bool_Exp = {
 /** unique or primary key constraints on table "users" */
 export enum Users_Constraint {
   /** unique or primary key constraint on columns "id" */
-  UsersPkey = 'users_pkey'
+  UsersPkey = 'users_pkey',
+  /** unique or primary key constraint on columns "username" */
+  UsersUsernameKey = 'users_username_key'
 }
 
 /** input type for incrementing numeric columns in table "users" */
@@ -3060,20 +3062,12 @@ export type GetTicketByIdQueryVariables = Exact<{
 
 export type GetTicketByIdQuery = { __typename?: 'query_root', tickets: Array<{ __typename?: 'tickets', id: any, created_at: any, updated_at: any, project_id: any, status: Ticket_Statuses_Enum, description: string, reporter: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } }, assignee?: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } | null, logs: Array<{ __typename?: 'ticket_logs', id: any, created_at: any, updated_at: any, description: string, ticket_id: any, user: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } }> }> };
 
-export type InsertLogMutationVariables = Exact<{
+export type UpsertLogMutationVariables = Exact<{
   input: Ticket_Logs_Insert_Input;
 }>;
 
 
-export type InsertLogMutation = { __typename?: 'mutation_root', insert_ticket_logs_one?: { __typename?: 'ticket_logs', id: any, created_at: any, updated_at: any, description: string, ticket_id: any, user: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } } | null };
-
-export type UpdateLogMutationVariables = Exact<{
-  id: Scalars['uuid']['input'];
-  input: Ticket_Logs_Set_Input;
-}>;
-
-
-export type UpdateLogMutation = { __typename?: 'mutation_root', update_ticket_logs_by_pk?: { __typename?: 'ticket_logs', id: any, created_at: any, updated_at: any, description: string, ticket_id: any, user: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } } | null };
+export type UpsertLogMutation = { __typename?: 'mutation_root', insert_ticket_logs_one?: { __typename?: 'ticket_logs', id: any, created_at: any, updated_at: any, description: string, ticket_id: any, user: { __typename?: 'users', id: any, name: string, family: string, user_role: { __typename?: 'user_roles', value: string, content: string } } } | null };
 
 export type DeleteLogMutationVariables = Exact<{
   id: Scalars['uuid']['input'];
@@ -3192,7 +3186,7 @@ export const TicketFieldsFragmentDoc = gql`
   assignee: user {
     ...UserShortFields
   }
-  logs: ticket_logs {
+  logs: ticket_logs(order_by: {created_at: desc}) {
     ...TicketLog
   }
 }
@@ -3394,9 +3388,12 @@ export const GetTicketByIdDocument = gql`
       super(apollo);
     }
   }
-export const InsertLogDocument = gql`
-    mutation InsertLog($input: ticket_logs_insert_input!) {
-  insert_ticket_logs_one(object: $input) {
+export const UpsertLogDocument = gql`
+    mutation UpsertLog($input: ticket_logs_insert_input!) {
+  insert_ticket_logs_one(
+    object: $input
+    on_conflict: {constraint: ticket_logs_pkey, update_columns: [description]}
+  ) {
     ...TicketLog
   }
 }
@@ -3405,26 +3402,8 @@ export const InsertLogDocument = gql`
   @Injectable({
     providedIn: 'root'
   })
-  export class InsertLogGQL extends Apollo.Mutation<InsertLogMutation, InsertLogMutationVariables> {
-    document = InsertLogDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
-export const UpdateLogDocument = gql`
-    mutation UpdateLog($id: uuid!, $input: ticket_logs_set_input!) {
-  update_ticket_logs_by_pk(pk_columns: {id: $id}, _set: $input) {
-    ...TicketLog
-  }
-}
-    ${TicketLogFragmentDoc}`;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class UpdateLogGQL extends Apollo.Mutation<UpdateLogMutation, UpdateLogMutationVariables> {
-    document = UpdateLogDocument;
+  export class UpsertLogGQL extends Apollo.Mutation<UpsertLogMutation, UpsertLogMutationVariables> {
+    document = UpsertLogDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

@@ -7,12 +7,27 @@
         padding: 4px;
     }
 
+    .left {
+        display: flex;
+        justify-content: flex-start;
+    }
+
     textarea {
         resize: vertical;
     }
-}
 
-.right {
-    display: flex;
-    justify-content: flex-end;
+    .right {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+    }
+
+    .buttons-wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .formatted-date { 
+        font-size: 14px;
+    }
 }

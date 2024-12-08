@@ -19,7 +19,7 @@ export abstract class DetailsBaseComponent<T> {
   protected readonly authorizationService: AuthorizationService = inject(AuthorizationService);
 
   protected parentSegment: PathSegments | undefined;
-  protected currentUserId: string | undefined;
+  protected currentUserId!: string;
   protected currentUserRole: User_Roles_Enum | undefined;
   protected readonly paramId: string;
   protected readonly paramProjectId: string;
@@ -62,7 +62,7 @@ export abstract class DetailsBaseComponent<T> {
       this.dialogRef.close({ status: true });
     } else {
       this.submitted.set(true);
-      this.router.navigate([PathSegments.PROJECTS]);
+      this.router.navigate([this.parentSegment]);
     }
   }
 }

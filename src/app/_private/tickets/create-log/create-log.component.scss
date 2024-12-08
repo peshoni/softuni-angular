@@ -1,0 +1,10 @@
+form{
+    max-height: 80vh;
+}
+.text-area-wrapper {
+    width: -webkit-fill-available;
+
+    mat-form-field {
+        width: 100%; 
+    } 
+}

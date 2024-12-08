@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-import { MatExpansionModule } from '@angular/material/expansion';
+import { MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
@@ -51,7 +51,9 @@ const materialModules = [
   MatOptionModule,
 
   MatSnackBarModule,
-  MatTooltipModule
+  MatTooltipModule,
+
+  MatExpansionPanel
 ];
 @NgModule({
   imports: [...materialModules

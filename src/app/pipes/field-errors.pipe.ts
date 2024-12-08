@@ -1,6 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
-import { partialRight } from 'lodash';
 
 @Pipe({
   name: 'fieldErrors',

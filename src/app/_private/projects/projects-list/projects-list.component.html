@@ -22,7 +22,7 @@
     <ng-container matColumnDef="status">
       <!-- Sortable -->
       <th mat-header-cell *matHeaderCellDef mat-sort-header>status</th>
-      <td mat-cell *matCellDef="let row">{{cast(row).status}}</td>
+      <td mat-cell *matCellDef="let row">{{cast(row).status | translate}}</td>
     </ng-container>
     <!-- Created at Column -->
     <ng-container matColumnDef="created_at">

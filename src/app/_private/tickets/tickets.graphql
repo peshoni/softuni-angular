@@ -38,17 +38,22 @@ query GetTicketById($id: uuid!) {
 }
 
 # Ticket logs
-mutation InsertLog($input: ticket_logs_insert_input!) {
-  insert_ticket_logs_one(object: $input) {
-    ...TicketLog
-  } 
-}
-
-mutation UpdateLog($id: uuid!, $input: ticket_logs_set_input!) {
-  update_ticket_logs_by_pk(pk_columns: {id: $id}, _set: $input) {
+mutation UpsertLog($input: ticket_logs_insert_input!) {
+  insert_ticket_logs_one(object: $input, on_conflict: {constraint: ticket_logs_pkey, update_columns: [description]}) {
     ...TicketLog
   }
 }
+# mutation InsertLog($input: ticket_logs_insert_input!) {
+#   insert_ticket_logs_one(object: $input) {
+#     ...TicketLog
+#   } 
+# }
+
+# mutation UpdateLog($id: uuid!, $input: ticket_logs_set_input!) {
+#   update_ticket_logs_by_pk(pk_columns: {id: $id}, _set: $input) {
+#     ...TicketLog
+#   }
+# }
 
 mutation DeleteLog($id: uuid!) {
   delete_ticket_logs_by_pk(id: $id) {
@@ -71,7 +76,7 @@ fragment TicketFields on tickets {
   assignee: user {
     ...UserShortFields
   }
-  logs: ticket_logs {
+  logs: ticket_logs(order_by: {created_at: desc}) {
     ...TicketLog
   }
 }

@@ -1,0 +1,30 @@
+<form [formGroup]="form" novalidate (ngSubmit)="submit()" class="dialog-container">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>{{ title }}</mat-card-title>
+        </mat-card-header>
+        <mat-divider></mat-divider>
+
+        <mat-card-content class="text-area-wrapper">
+
+            <mat-form-field appearance="outline">
+                <textarea matInput placeholder="description" formControlName="description" [rows]="15"></textarea>
+                <mat-error *ngIf="form.controls['description'].hasError('required')"> Required field </mat-error>
+            </mat-form-field>
+
+        </mat-card-content>
+
+        <mat-divider></mat-divider>
+        <!-- Actions -->
+        <mat-card-actions>
+            <div class="form-actions">
+                <button type="button" mat-raised-button (click)="close()">
+                    Close
+                </button>
+                <button mat-raised-button color="primary" type="submit" [disabled]="submitted()  ">
+                    Submit
+                </button>
+            </div>
+        </mat-card-actions>
+    </mat-card>
+</form>

@@ -18368,6 +18368,12 @@
             "description": "unique or primary key constraint on columns \"id\"",
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "users_username_key",
+            "description": "unique or primary key constraint on columns \"username\"",
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "possibleTypes": null

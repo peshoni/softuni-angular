@@ -1,7 +1,7 @@
 <form [formGroup]="form" novalidate (ngSubmit)="confirm()" class="dialog-container">
     <mat-card>
         <mat-card-header>
-            <mat-card-title>{{ title }}</mat-card-title>
+            <mat-card-title>{{ title }} </mat-card-title>
         </mat-card-header>
         <mat-divider></mat-divider>
 
@@ -9,6 +9,7 @@
         <mat-card-content>
             <div *ngIf="ticket" class="ticket-details-wrapper">
                 Reporter: <app-short-user-data [class]="'edit-form'" [user]="ticket.reporter"></app-short-user-data>
+
             </div>
 
             <div class="inputs-wrapper">
@@ -33,15 +34,16 @@
                     <input matInput placeholder="assignee_id" formControlName="assignee_id"
                         [readonly]="isInPreviewMode">
                     } @else {
+
                     <mat-select formControlName="assignee_id" placeholder="assignee_id">
-                        <mat-option *ngFor="let assignee of assignees  " [value]="assignee.id">
+                        <mat-option *ngFor="let assignee of assignees" [value]="assignee.id">
                             <app-short-user-data [user]="assignee"></app-short-user-data>
                         </mat-option>
                     </mat-select>
+
                     }
                     <mat-error *ngIf="form.controls['status'].hasError('required')"> Required field </mat-error>
                 </mat-form-field>
-
                 <!-- description -->
                 <mat-form-field class="fit-two-grid-columns" appearance="outline">
                     <textarea matInput placeholder="description" formControlName="description" rows="4"
@@ -50,15 +52,37 @@
                 </mat-form-field>
             </div>
 
-            <mat-divider></mat-divider>
-            
             <div *ngIf="ticket?.logs" class="logs-wrapper">
-                <div *ngFor="let log of ticket?.logs">
-                    <app-ticket-log-details [log]="log"
-                        [ticketReporterId]="ticket?.reporter?.id"></app-ticket-log-details>
-                </div>
-            </div>
+                <mat-expansion-panel #panel class="mat-elevation-z2" [expanded]="isPanelLogPanelExpanded"
+                    (opened)="isPanelLogPanelExpanded= true" (closed)="isPanelLogPanelExpanded = false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-description>
+                            <div style="width: 100%;">
 
+                                Ticket logs
+                            </div>
+
+                            <div *ngIf="isPanelLogPanelExpanded=== true" class="add-log-wrapper">
+                                <button type="button" [disableRipple]="true" mat-mini-fab
+                                    aria-label="Icon button with a add icon"
+                                    (click)="$event.stopPropagation(); openAddLogDialog()" matTooltip="Add log">
+                                    <!--Prevents closing accordion ^ -->
+                                    <mat-icon>add</mat-icon>
+                                </button>
+                            </div>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+                    <div class="log-details-wrapper">
+                        <app-ticket-log-details *ngFor="let log of ticket?.logs" [log]="log"
+                            [ticketReporterId]="ticket?.reporter?.id" [currentUserId]="currentUserId"
+                            [disabledLogTextArea]="log.user.id !== currentUserId  && log.user.id !== ticket?.reporter?.id"
+                            (deleteLogEmitter)="deleteLogById($event)"
+                            (updateLogEmitter)="upsertLog($event)">
+                        </app-ticket-log-details>
+                    </div>
+                </mat-expansion-panel>
+            </div>
         </mat-card-content>
 
         <mat-divider></mat-divider>

@@ -39,20 +39,14 @@ export class UsersListDataSource extends CustomDataSource<UserFieldsFragment, Ge
 
   filterBy(selectedOption: string, options: string[]) {
     const tempCondition = cloneDeep(this.condition.getValue());
-    const andArray: Users_Bool_Exp[] = [
-      //{ role: { _eq: selectedOption as User_Roles_Enum } }
-    ];
-    if (selectedOption === options[0]) {
-      //tempCondition._and = 
-    } else {
+    const andArray: Users_Bool_Exp[] = [];
+    if (selectedOption !== options[0]) {
       andArray.push(
         { role: { _eq: selectedOption as User_Roles_Enum } }
       );
     }
-
     tempCondition._and = andArray
     this.condition.next(tempCondition);
-    console.log(tempCondition)
   }
 
   /**
@@ -69,8 +63,7 @@ export class UsersListDataSource extends CustomDataSource<UserFieldsFragment, Ge
           tap((_) => {
             this.loading.set(true);
           }),
-          switchMap((fromWhere: ApolloQueryResult<GetUsersQuery> | Users_Bool_Exp | PageEvent | Sort) => {
-            console.log(fromWhere);
+          switchMap((fromWhere: ApolloQueryResult<GetUsersQuery> | Users_Bool_Exp | PageEvent | Sort) => { 
             let order: any = new Object({});
 
             if (this.sort?.active && this.sort.active.length > 0) {

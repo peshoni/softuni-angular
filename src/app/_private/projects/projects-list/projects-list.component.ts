@@ -15,6 +15,8 @@ import { ShortUserDataComponent } from '../../core/short-user-data/short-user-da
 import { TableNavbarComponent } from '../../core/table-navbar/table-navbar.component';
 import { EnumFilterComponent } from '../../core/enum-filter/enum-filter.component';
 import { DateDescriptionComponent } from '../../core/date-description/date-description.component';
+import { FilterOptions } from '../../../enums/filter-options';
+import { TranslatePipe } from '../../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-projects-list',
@@ -25,6 +27,7 @@ import { DateDescriptionComponent } from '../../core/date-description/date-descr
     TableNavbarComponent,
     ShortUserDataComponent,
     IdShrinkPipe,
+    TranslatePipe,
     EnumFilterComponent,
     DateDescriptionComponent
   ],
@@ -35,10 +38,9 @@ import { DateDescriptionComponent } from '../../core/date-description/date-descr
 })
 
 export class ProjectsListComponent extends TableBaseComponent<ProjectFieldsFragment> implements AfterViewInit {
-
-  private readonly ALL = 'all';
-  readonly owners = [this.ALL, 'my-projects'];
-  readonly statuses = [this.ALL, ...Object.values(Project_Statuses_Enum).map(e => e)];
+ 
+  readonly owners = [FilterOptions.MY_PROJECTS, FilterOptions.ALL];
+  readonly statuses = [FilterOptions.ALL, ...Object.values(Project_Statuses_Enum).map(e => e)];
   dataSource: ProjectsListDataSource = new ProjectsListDataSource();
   displayedColumns: (keyof (ProjectFieldsFragment & { actions: '' }))[] = ['id', 'status', 'owner', 'created_at', 'updated_at', 'label', 'tickets_aggregate', 'actions'];
 
@@ -53,15 +55,14 @@ export class ProjectsListComponent extends TableBaseComponent<ProjectFieldsFragm
   }
 
   filterByOwner(ownerOptionSelected: string) {
-    if (this.currentUser?.id && ownerOptionSelected !== this.ALL) {
+    if (this.currentUser?.id && ownerOptionSelected !== FilterOptions.ALL) {
       this.dataSource.filterByOwner(this.currentUser.id)
     } else {
       this.dataSource.filterByOwner(null)
     }
   }
 
-  onAddClick() { // open dialog 
-  
+  onAddClick() {  
     const closable = true;
     const config: MatDialogConfig = FormsUtil.getDialogConfig(closable, { data: {} });
     const dialogRef = this.dialog.open(ProjectDetailsComponent, config

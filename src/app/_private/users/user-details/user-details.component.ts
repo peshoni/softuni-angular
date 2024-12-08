@@ -53,8 +53,7 @@ export class UserDetailsComponent extends DetailsBaseComponent<ProjectDetailsCom
     });
 
     if (this.isCreateMode) {
-      this.currentObjectId = undefined;
-      console.log(this.form.invalid);
+      this.currentObjectId = undefined; 
     } else {
       this.usersService.getUserById(this.paramId).subscribe((response: ApolloQueryResult<GetUserByIdQuery>) => {
         if (response.error || response.errors) {

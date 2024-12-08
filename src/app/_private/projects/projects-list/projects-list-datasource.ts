@@ -59,8 +59,7 @@ export class ProjectsListDataSource extends CustomDataSource<ProjectFieldsFragme
     this.condition.next(tempCondition);
   }
 
-  filterByOwner(ownerId: string | null) {
-    console.log(ownerId)
+  filterByOwner(ownerId: string | null) { 
     const tempCondition = cloneDeep(this.condition.getValue());
     const andArray: Projects_Bool_Exp[] = [];
 
@@ -92,8 +91,7 @@ export class ProjectsListDataSource extends CustomDataSource<ProjectFieldsFragme
           tap((_) => {
             this.loading.set(true);
           }),
-          switchMap((fromWhere: ApolloQueryResult<GetProjectsQuery> | Projects_Bool_Exp | PageEvent | Sort) => {
-            console.log(fromWhere);
+          switchMap((fromWhere: ApolloQueryResult<GetProjectsQuery> | Projects_Bool_Exp | PageEvent | Sort) => { 
             let order: any = new Object({});
             if (this.sort?.active && this.sort.active.length > 0) {
               const field: keyof ProjectFieldsFragment = this.sort.active as any;
@@ -122,8 +120,7 @@ export class ProjectsListDataSource extends CustomDataSource<ProjectFieldsFragme
               const errorMessage = response.errors[0].message; 
               if (errorMessage.includes('query_root')) {
                 console.log('query_root');
-              }
-              console.log(errorMessage);
+              } 
               return [];
             }
             this.aggregateCount.set(response.data.projects_aggregate.aggregate?.count ?? 0);

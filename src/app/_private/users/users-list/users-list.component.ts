@@ -13,6 +13,7 @@ import { TableNavbarComponent } from '../../core/table-navbar/table-navbar.compo
 import { EnumFilterComponent } from "../../core/enum-filter/enum-filter.component";
 import { TranslatePipe } from '../../../pipes/translate.pipe';
 import { DateDescriptionComponent } from '../../core/date-description/date-description.component';
+import { FilterOptions } from '../../../enums/filter-options';
 
 @Component({
   selector: 'app-users-list',
@@ -30,7 +31,7 @@ import { DateDescriptionComponent } from '../../core/date-description/date-descr
   animations: [addTableRowAnimation],
 })
 export class UsersListComponent extends TableBaseComponent<UserFieldsFragment> implements AfterViewInit {
-  readonly roles = ['all', ...Object.values(User_Roles_Enum).map(e => e)];
+  readonly roles = [FilterOptions.ALL, ...Object.values(User_Roles_Enum).map(e => e)];
   dataSource = new UsersListDataSource();
   
   displayedColumns: (keyof (UserFieldsFragment & { actions: '' }))[] =

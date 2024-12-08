@@ -74,18 +74,14 @@ export class ProjectDetailsComponent extends DetailsBaseComponent<ProjectDetails
         owner_id: this.currentUserId
       }
       this.projectsService.insertProject(insertInput).subscribe(
-        ({ data, errors }) => { 
-          console.log(errors);
-          console.log(data); 
+        ({ data, errors }) => {  
           this.close();
         }
       );
     } else { 
       const setInput: Projects_Set_Input = formValue; 
       this.projectsService.updateProjectById(this.currentObjectId!, setInput).subscribe(
-        ({ data, errors }) => {
-          console.log(errors);
-          console.log(data);
+        ({ data, errors }) => { 
           this.close();
         }
       );

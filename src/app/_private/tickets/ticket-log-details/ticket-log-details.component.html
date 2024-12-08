@@ -1,17 +1,30 @@
 <div class="wrapper">
-    <div>
+    <div class="left">
         <app-short-user-data *ngIf="log.user.id === ticketReporterId" [user]="log.user" [class]="'logs'">
+            <div class="formatted-date">{{log.updated_at| date: "d.MM.YYYY HH:mm"}}</div>
         </app-short-user-data>
-    </div>
-    <textarea #area autoHeight>{{log.description}}</textarea>
-    <div class="right">
-        <div *ngIf="log.user.id !== ticketReporterId" style="display: flex; flex-direction: column;">
-            <mat-icon (click)="action('update', log, area.value)">update</mat-icon>
-            <mat-icon (click)="action('delete',log, area.value)">delete</mat-icon>
-            <!-- <mat-icon>add</mat-icon> -->
-        </div>
 
+        @if(log.user.id === currentUserId){
+        <div class="buttons-wrapper">
+            <mat-icon (click)="updateLog(log, area.value)">update</mat-icon>
+            <mat-icon (click)="deleteLog(log.id)">delete</mat-icon>
+        </div>
+        }
+    </div>
+    <textarea #area autoHeight [disabled]="disabledLogTextArea"  [rows]="3">{{log.description}}
+    </textarea>
+
+    <div class="right">
+        <!-- Define edit and delete logic.. -->
+        @if(log.user.id === currentUserId){
+        <div *ngIf="log.user.id !== ticketReporterId" class="buttons-wrapper">
+            <mat-icon (click)="updateLog(log, area.value)">update</mat-icon>
+            <mat-icon (click)="deleteLog(log.id)">delete</mat-icon>
+        </div>
+        }
         <app-short-user-data *ngIf="log.user.id !== ticketReporterId" [user]="log.user" [class]="'logs'">
+            <div class="formatted-date">{{log.updated_at| date: "d.MM.YYYY HH:mm"}}</div>
         </app-short-user-data>
+
     </div>
 </div>

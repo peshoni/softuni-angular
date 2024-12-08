@@ -58,7 +58,7 @@ export class TicketsListDataSource extends CustomDataSource<TicketFieldsFragment
     this.condition.next(tempCondition);
   }
 
-  filterByReporter(reporterId: string | null) { 
+  filterByReporter(reporterId: string | null) {
     const tempCondition = cloneDeep(this.condition.getValue());
     const andArray: Tickets_Bool_Exp[] = [];
     if (tempCondition._and) {
@@ -76,7 +76,7 @@ export class TicketsListDataSource extends CustomDataSource<TicketFieldsFragment
     this.condition.next(tempCondition);
   }
 
-  filterByAssignee(assigneeId: null) { 
+  filterByAssignee(assigneeId: null) {
     const tempCondition = cloneDeep(this.condition.getValue());
     const andArray: Tickets_Bool_Exp[] = [];
     if (tempCondition._and) {
@@ -108,7 +108,7 @@ export class TicketsListDataSource extends CustomDataSource<TicketFieldsFragment
           tap((_) => {
             this.loading.set(true);
           }),
-          switchMap((fromWhere: ApolloQueryResult<GetTicketsQuery> | Tickets_Bool_Exp | PageEvent | Sort) => { 
+          switchMap((fromWhere: ApolloQueryResult<GetTicketsQuery> | Tickets_Bool_Exp | PageEvent | Sort) => {
             let order: any = new Object({});
             if (this.sort?.active && this.sort.active.length > 0) {
               const field = this.sort.active;
@@ -133,15 +133,11 @@ export class TicketsListDataSource extends CustomDataSource<TicketFieldsFragment
           }),
           map((response: ApolloQueryResult<GetTicketsQuery>) => {
             this.loading.set(response.loading);
-            if (response.errors) {
-              console.log(response.errors);
-              console.log(response.data);
-              const errorMessage = response.errors[0].message;
-              console.log(errorMessage);
+            if (response.errors) { 
+              const errorMessage = response.errors[0].message; 
               if (errorMessage.includes('query_root')) {
                 console.log('query_root');
-              }
-              console.log(errorMessage);
+              } 
               return [];
             }
 

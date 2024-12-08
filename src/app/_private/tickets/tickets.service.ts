@@ -1,5 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { DeleteLogGQL, DeleteLogMutation, GetTicketByIdGQL, GetTicketByIdQuery, GetTicketsGQL, InsertLogGQL, InsertLogMutation, InsertTicketGQL, InsertTicketMutation, Ticket_Logs_Insert_Input, Ticket_Logs_Set_Input, Tickets_Bool_Exp, Tickets_Insert_Input, Tickets_Order_By, Tickets_Set_Input, UpdateLogGQL, UpdateLogMutation, UpdateProjectByIdMutation, UpdateTicketGQL } from '../../../generated/graphql';
+import {
+  DeleteLogGQL, DeleteLogMutation, GetTicketByIdGQL, GetTicketByIdQuery, GetTicketsGQL, InsertTicketGQL, InsertTicketMutation, Ticket_Logs_Insert_Input,
+  Tickets_Bool_Exp, Tickets_Insert_Input, Tickets_Order_By, Tickets_Set_Input, UpdateProjectByIdMutation,
+  UpdateTicketGQL, UpsertLogGQL, UpsertLogMutation
+} from '../../../generated/graphql';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { MutationResult } from 'apollo-angular';
 import { Observable } from 'rxjs';
@@ -11,8 +15,7 @@ export class TicketsService {
   private readonly insertTicketGQL: InsertTicketGQL = inject(InsertTicketGQL);
   private readonly updateTicketGQL: UpdateTicketGQL = inject(UpdateTicketGQL);
 
-  private readonly insertLogGQL: InsertLogGQL = inject(InsertLogGQL);
-  private readonly updateLogGQL: UpdateLogGQL = inject(UpdateLogGQL);
+  private readonly upsertLogGQL: UpsertLogGQL = inject(UpsertLogGQL);
   private readonly deleteLogGQL: DeleteLogGQL = inject(DeleteLogGQL);
 
   /**
@@ -51,12 +54,8 @@ export class TicketsService {
     return this.updateTicketGQL.mutate({ id, input });
   }
 
-  insertLog(input: Ticket_Logs_Insert_Input): Observable<MutationResult<InsertLogMutation>> {
-    return this.insertLogGQL.mutate({ input }, { errorPolicy: 'all' });
-  }
-
-  updateLog(id: string, input: Ticket_Logs_Set_Input): Observable<MutationResult<UpdateLogMutation>> {
-    return this.updateLogGQL.mutate({ id, input }, { errorPolicy: 'all' });
+  upsertLog(input: Ticket_Logs_Insert_Input): Observable<MutationResult<UpsertLogMutation>> {
+    return this.upsertLogGQL.mutate({ input }, { errorPolicy: 'all' });
   }
 
   deleteLog(id: string): Observable<MutationResult<DeleteLogMutation>> {

@@ -1,4 +1,7 @@
 <div *ngIf="user" class="user-data-wrapper" [ngClass]="class">
-    <span class="names"> {{ user.name }} {{ user.family }} </span>
-    <span class="role"> ({{ user.user_role.content }})</span>
+    <div class="names-wrapper">
+        <span class="names"> {{ user.name }} {{ user.family }} </span>
+        <span class="role"> ({{ user.user_role.content }})</span>
+    </div>
+    <ng-content></ng-content>
 </div>

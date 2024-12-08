@@ -1,6 +1,5 @@
 import { Pipe, type PipeTransform } from '@angular/core';
 import moment from 'moment';
-
 @Pipe({
   name: 'appElapsedTime',
   standalone: true,

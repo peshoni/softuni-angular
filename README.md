@@ -1,6 +1,12 @@
-# Application for the managing data for Users/Projects/Tickets
+# Application for the managing data for Users, Projects and Tickets with logs.
 
 Repo for the exam task for the Angular course, Softuni October 2024
+
+## Tech stack
+![alt text](readme-images/stack.bmp)
+
+## Data model : ERD
+![alt text](readme-images/image.png)
 
 ## Environment requirements:
 - Node: 22.9.0
@@ -40,22 +46,15 @@ npx hasura seeds apply --database-name default
 1. Angular application : localhost:4200
 2. Hasura console:       localhost:8082
 3. Postgres:             localhost:5433 
- 
-RUN `docker container ls` 
+! If these ports are busy on your machine, you can edit them in the docker-compose file. Clear and Run containers again.
 
 ## NOTE!
 In the application, WASN'T applied any security practices for the data and connections. 
 All ports are exposed, and connection between containers isn't created in proper(jwt, roles, etc.) way. Please if someone decide to use this - take care of the security.
 The goal of this course is working with the Angular toolkit - components, forms, tables etc.
-## Tech stack
-![alt text](readme-images/stack.bmp)
 
-## Data model : ERD
-![alt text](readme-images/image.png)
-
-
-
-
+ 
+-----------------------------------------------------------------------
 ## Development
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.5.
 
