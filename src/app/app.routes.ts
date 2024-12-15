@@ -20,7 +20,7 @@ export enum PathSegments {
 }
 
 export const routes: Routes = [
-  { path: '', redirectTo: PathSegments.LOGIN, pathMatch: 'full' }, // try to navigate to PROJECTS
+  { path: PathSegments.EMPTY, redirectTo: PathSegments.LOGIN, pathMatch: 'full' },
   {
     path: PathSegments.LOGIN,
     component: LoginComponent
@@ -64,5 +64,5 @@ export const routes: Routes = [
     canActivate: [authorizationGuardFn],
     component: UserDetailsComponent
   },
-  { path: '**', redirectTo: '', pathMatch: 'full' } // all missing paths navigates to 'authorize'
+  { path: '**', redirectTo: PathSegments.EMPTY, pathMatch: 'full' } // all missing paths navigates to 'authorize'
 ];

@@ -47,10 +47,10 @@ export class TicketDetailsComponent extends DetailsBaseComponent<ProjectDetailsC
   ticket: TicketFieldsFragment | undefined;
   assignees: UserShortFieldsFragment[] = [];
   isPanelLogPanelExpanded: boolean = true;
+  isAddLogButtonEnabled: boolean = true;
 
   ngOnInit(): void {
     this.title = this.isCreateMode ? 'Create ticket' : 'Ticket details';
-    this.parentSegment = PathSegments.TICKETS;
 
     this.form = this.formBuilder.group({
       status: [null, Validators.required],
@@ -72,6 +72,7 @@ export class TicketDetailsComponent extends DetailsBaseComponent<ProjectDetailsC
 
     if (this.isCreateMode) {
       this.currentObjectId = undefined;
+      this.isAddLogButtonEnabled = false;
     } else {
       this.ticketsService.getTicketById(this.paramId).subscribe((response: ApolloQueryResult<GetTicketByIdQuery>) => {
         if (response.error || response.errors) {
@@ -84,6 +85,7 @@ export class TicketDetailsComponent extends DetailsBaseComponent<ProjectDetailsC
           this.ticket = cloneDeep(response.data.tickets[0]); // it's readonly before the clone
           this.currentObjectId = this.ticket.id;
           this.isInPreviewMode = !this.isCreateMode && (this.currentUserId !== this.ticket.reporter.id);
+          this.isAddLogButtonEnabled = (this.currentUserId === this.ticket.reporter.id) || (this.currentUserId === this.ticket.assignee?.id)
           this.form.patchValue(this.ticket);
           this.form.controls['assignee_id'].setValue(this.ticket.assignee?.id)
         }

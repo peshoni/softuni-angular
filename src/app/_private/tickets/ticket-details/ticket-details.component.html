@@ -58,11 +58,9 @@
                     <mat-expansion-panel-header>
                         <mat-panel-description>
                             <div style="width: 100%;">
-
                                 Ticket logs
                             </div>
-
-                            <div *ngIf="isPanelLogPanelExpanded=== true" class="add-log-wrapper">
+                            <div *ngIf="isPanelLogPanelExpanded=== true && isAddLogButtonEnabled" class="add-log-wrapper">
                                 <button type="button" [disableRipple]="true" mat-mini-fab
                                     aria-label="Icon button with a add icon"
                                     (click)="$event.stopPropagation(); openAddLogDialog()" matTooltip="Add log">
@@ -74,9 +72,10 @@
                     </mat-expansion-panel-header>
 
                     <div class="log-details-wrapper">
+                        <!-- || log.user.id !== ticket?.reporter?.id -->
                         <app-ticket-log-details *ngFor="let log of ticket?.logs" [log]="log"
                             [ticketReporterId]="ticket?.reporter?.id" [currentUserId]="currentUserId"
-                            [disabledLogTextArea]="log.user.id !== currentUserId  && log.user.id !== ticket?.reporter?.id"
+                            [disabledLogTextArea]="log.user.id !== currentUserId "
                             (deleteLogEmitter)="deleteLogById($event)"
                             (updateLogEmitter)="upsertLog($event)">
                         </app-ticket-log-details>

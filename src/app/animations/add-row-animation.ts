@@ -9,25 +9,20 @@ import {
 export const addTableRowAnimation = trigger('addTableRowAnimation', [
   transition('void => *', [
     style({
-      height: '*',
       opacity: '0',
-      transform: 'translateX(-550px)',
-      'box-shadow': 'none',
+      transform: 'translateX(-550px)' 
     }),
     sequence([
       animate(
-        '.10s ease',
+        '.35s ease',
         style({
-          height: '*',
-          opacity: '.5',
-          transform: 'translateX(0)',
-          'box-shadow': 'none',
+          opacity: 0.75,
+          transform: 'translateX(0)' 
         })
       ),
       animate(
         '.35s ease',
         style({
-          height: '*',
           opacity: 1,
           transform: 'translateX(0)',
         })

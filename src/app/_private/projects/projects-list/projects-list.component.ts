@@ -73,6 +73,7 @@ export class ProjectsListComponent extends TableBaseComponent<ProjectFieldsFragm
     );
     dialogRef.afterClosed().subscribe((result) => {
       console.log(result);
+      this.dataSource.filterByOwner(this.currentUser?.id)
     });
   }
 

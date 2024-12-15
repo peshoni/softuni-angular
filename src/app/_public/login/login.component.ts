@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
     //  reporter     : 'krum20', 'krum20' 
     //  assignee     : 'ivan4' , 'ivan4'  
     this.form = this.formBuilder.group({
-      username: [null, FormsUtil.getUsernameValidators(5) /*FormsUtil.getPasswordValidators(5, 20)*/],
+      username: [null, FormsUtil.getUsernameValidators(5)],
       password: [null, FormsUtil.getUsernameValidators(5) /*FormsUtil.getPasswordValidators(5, 20)*/]
     });
   }

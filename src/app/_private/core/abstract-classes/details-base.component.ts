@@ -44,6 +44,12 @@ export abstract class DetailsBaseComponent<T> {
 
     const hasData = !isNullOrUndefined(data);
     this.isCreateMode = hasData || !isNullOrUndefined(this.paramProjectId);
+    
+    if(!isNullOrUndefined(this.paramProjectId)){
+      this.parentSegment = PathSegments.PROJECTS;
+    } else {
+      this.parentSegment = PathSegments.TICKETS;
+    }
 
     this.currentUserId = this.authorizationService.currentUser()?.id;
     this.currentUserRole = this.authorizationService.currentUser()?.user_role.value as User_Roles_Enum;

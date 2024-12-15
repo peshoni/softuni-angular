@@ -44,10 +44,12 @@ export class TicketsListComponent extends TableBaseComponent<TicketFieldsFragmen
 
   ngAfterViewInit(): void {
     this.dataSource.setPaginatorAndSort(this.paginator, this.sort);
-    this.table.dataSource = this.dataSource; 
-    
-    this.filterByReporter(this.reporters_or_assignee[0]);
-    this.filterByAssignee(this.reporters_or_assignee[0]); 
+    this.table.dataSource = this.dataSource;
+    if (this.currentRole === this.userRoles.Assignee) {
+      this.filterByAssignee(this.reporters_or_assignee[0]);
+    } else {
+      this.filterByReporter(this.reporters_or_assignee[0]);
+    }
   }
 
   filterByStatus(selectedOption: string, options: string[]) {
@@ -55,6 +57,7 @@ export class TicketsListComponent extends TableBaseComponent<TicketFieldsFragmen
   }
 
   filterByReporter(reporterOptionSelected: string) {
+    console.log(reporterOptionSelected)
     if (this.currentUser?.id && reporterOptionSelected !== FilterOptions.ALL) {
       this.dataSource.filterByReporter(this.currentUser.id)
     } else {
@@ -63,6 +66,7 @@ export class TicketsListComponent extends TableBaseComponent<TicketFieldsFragmen
   }
 
   filterByAssignee(assigneeSelected: string) {
+    console.log(assigneeSelected)
     if (this.currentUser?.id && assigneeSelected !== FilterOptions.ALL) {
       this.dataSource.filterByAssignee(this.currentUser.id)
     } else {
