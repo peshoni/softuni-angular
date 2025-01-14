@@ -2,7 +2,7 @@ import { ApplicationConfig, ErrorHandler, inject, provideZoneChangeDetection } f
 import { provideRouter } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { routes } from './app.routes';
-import { HTTP_INTERCEPTORS, HttpHeaders, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { HttpHeaders, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideApollo } from 'apollo-angular';
 import { authInterceptor } from './interceptors/auth.interceptor';
 import { InMemoryCache } from '@apollo/client/cache';
@@ -48,11 +48,6 @@ export const appConfig: ApplicationConfig = {
       //Handles all errors and applies some business logic.
       provide: ErrorHandler,
       useClass: GlobalErrorHandler,
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useExisting: authInterceptor,
-      multi: true
     }
   ]
 };

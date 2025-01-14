@@ -1,5 +1,5 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { map, Observable, shareReplay } from 'rxjs';
 import { AuthorizationService } from './services/authorization.service';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
@@ -25,13 +25,13 @@ import { ShortUserDataComponent } from './_private/core/short-user-data/short-us
 })
 
 export class AppComponent implements OnInit {
+  authorizationService: AuthorizationService = inject(AuthorizationService)
   roles = User_Roles_Enum;
   isHandset$: Observable<boolean>;
   title = 'Softuni Tickets App';
   currentUrl: string = '';
 
   constructor(
-    public authorizationService: AuthorizationService,
     private readonly breakpointObserver: BreakpointObserver,
     private readonly router: Router
   ) {
